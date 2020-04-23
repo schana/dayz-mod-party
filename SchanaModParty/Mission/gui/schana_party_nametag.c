@@ -1,8 +1,12 @@
 class SchanaPartyNametagsMenu extends UIScriptedMenu
 {
+    static string SCHANA_PARTY_NAMETAG_DELETE = "SCHANA_PARTY_NAMETAG_DELETE";
+
     private Widget m_SchanaPartyNametagRootWidget;
     private TextWidget m_SchanaPartyNametagTextWidget;
     private PlayerBase m_SchanaPartyNametagPlayer;
+    private vector m_SchanaPartyPlayerServerPosition = "0 0 0";
+    private string m_SchanaPartyPlayerServerName = "";
 
     void SchanaPartyNametagsMenu(PlayerBase player)
     {
@@ -47,35 +51,72 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu
         {
             return false;
         }
-        if (!m_SchanaPartyNametagPlayer)
-        {
-            return false;
-        }
-        if (!m_SchanaPartyNametagPlayer.GetIdentity())
+        if (m_SchanaPartyPlayerServerName == SCHANA_PARTY_NAMETAG_DELETE)
         {
             return false;
         }
         return true;
     }
 
+    private vector SchanaPartyGetPlayerPosition()
+    {
+        if (m_SchanaPartyNametagPlayer)
+        {
+            return m_SchanaPartyNametagPlayer.GetPosition();
+        }
+        else
+        {
+            return m_SchanaPartyPlayerServerPosition;
+        }
+    }
+
+    void SchanaPartyUpdatePosition(vector position)
+    {
+        m_SchanaPartyPlayerServerPosition = position;
+    }
+
+    void SchanaPartyUpdatePlayer(PlayerBase player)
+    {
+        m_SchanaPartyNametagPlayer = player;
+    }
+
+    private string SchanaPartyGetPlayerName()
+    {
+        if (m_SchanaPartyNametagPlayer && m_SchanaPartyNametagPlayer.GetIdentity())
+        {
+            return m_SchanaPartyNametagPlayer.GetIdentity().GetName();
+        }
+        else
+        {
+            return m_SchanaPartyPlayerServerName;
+        }
+    }
+
     void SchanaPartyNametagUpdate()
     {
         float x, y, distance;
-        vector position = m_SchanaPartyNametagPlayer.GetPosition();
-
+        vector position = SchanaPartyGetPlayerPosition();
         vector screenPosition = GetGame().GetScreenPos(position + "0 1.3 0");
+
         x = Math.Round(screenPosition[0]) - 40;
         y = Math.Round(screenPosition[1]);
-        distance = Math.Round(screenPosition[2]);
         m_SchanaPartyNametagRootWidget.SetPos(x, y);
-        string text = m_SchanaPartyNametagPlayer.GetIdentity().GetName() + " " + distance.ToString() + "m";
+
+        distance = Math.Round(screenPosition[2]);
+        string distanceString = distance.ToString() + "m";
+        if (distance > 1000)
+        {
+            distanceString = (Math.Round(distance/100) / 10).ToString() + "km";
+        }
+        string text = SchanaPartyGetPlayerName() + " " + distanceString;
         m_SchanaPartyNametagTextWidget.SetText(text);
+
         m_SchanaPartyNametagRootWidget.Show(SchanaPartyNametagVisibleOnScreen());
     }
 
     private bool SchanaPartyNametagVisibleOnScreen()
     {
-        vector position = m_SchanaPartyNametagPlayer.GetPosition();
+        vector position = SchanaPartyGetPlayerPosition();
         vector screenPositionRelative = GetGame().GetScreenPosRelative(position);
 
         if (screenPositionRelative[0] >= 1 || screenPositionRelative[0] == 0 || screenPositionRelative[1] >= 1 || screenPositionRelative[1] == 0)
