@@ -6,7 +6,7 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu
     private TextWidget m_SchanaPartyNametagTextWidget;
     private PlayerBase m_SchanaPartyNametagPlayer;
     private vector m_SchanaPartyPlayerServerPosition = "0 0 0";
-    private string m_SchanaPartyPlayerServerName = "";
+    private string m_SchanaPartyPlayerName = "";
 
     void SchanaPartyNametagsMenu(PlayerBase player)
     {
@@ -15,7 +15,7 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu
         m_SchanaPartyNametagRootWidget.Show(false);
         m_SchanaPartyNametagPlayer = player;
 
-        GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.SchanaUpdate, 10, true);
+        GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.SchanaUpdate, 16, true);
     }
 
     void ~SchanaPartyNametagsMenu()
@@ -51,7 +51,7 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu
         {
             return false;
         }
-        if (m_SchanaPartyPlayerServerName == SCHANA_PARTY_NAMETAG_DELETE)
+        if (m_SchanaPartyPlayerName == SCHANA_PARTY_NAMETAG_DELETE)
         {
             return false;
         }
@@ -80,6 +80,11 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu
         m_SchanaPartyNametagPlayer = player;
     }
 
+    void SchanaPartyUpdateName(string name)
+    {
+        m_SchanaPartyPlayerName = name;
+    }
+
     private string SchanaPartyGetPlayerName()
     {
         if (m_SchanaPartyNametagPlayer && m_SchanaPartyNametagPlayer.GetIdentity())
@@ -88,7 +93,7 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu
         }
         else
         {
-            return m_SchanaPartyPlayerServerName;
+            return m_SchanaPartyPlayerName;
         }
     }
 
@@ -102,7 +107,7 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu
         y = Math.Round(screenPosition[1]);
         m_SchanaPartyNametagRootWidget.SetPos(x, y);
 
-        distance = Math.Round(screenPosition[2]);
+        distance = Math.Round(vector.Distance(position, GetGame().GetPlayer().GetPosition()));
         string distanceString = distance.ToString() + "m";
         if (distance > 1000)
         {

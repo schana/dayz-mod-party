@@ -1,6 +1,6 @@
 TextWidgetClass rootFrame {
  ignorepointer 1
- color 0.5059 0.8314 0.9804 1
+ color 0.8118 0.8471 0.8627 1
  position 0 0
  size 1 1
  hexactpos 1

@@ -1,13 +1,12 @@
 class SchanaPartyManagerClient
 {
     private ref map<string, ref SchanaPartyNametagsMenu> m_SchanaNametags;
-    private ref SchanaModPartySettings settings;
-	private ref map<string, vector> positions;
+    private ref map<string, vector> positions;
+    private bool hasRegistered = false;
 
     void SchanaPartyManagerClient()
     {
         Print("[SchanaParty] Client Init");
-        settings = SchanaModPartySettings.Get();
         positions = new ref map<string, vector>();
         m_SchanaNametags = new map<string, ref SchanaPartyNametagsMenu>();
         GetRPCManager().AddRPC("SchanaModParty", "ClientUpdatePartyInfoRPC", this, SingleplayerExecutionType.Both);
@@ -25,26 +24,26 @@ class SchanaPartyManagerClient
         Param2<ref array<ref string>, ref array<ref vector>> data;
         if (!ctx.Read(data))
             return;
-		
-		string result;
-		JsonSerializer().WriteToString(data, false, result);
-		Print("[SchanaParty] " + result);
-		
+
+        string result;
+        JsonSerializer().WriteToString(data, false, result);
+        Print("[SchanaParty] " + result);
+
         ClientUpdatePartyInfo(data.param1, data.param2);
     }
-	
-	void ClientUpdatePartyInfo(ref array<ref string> party_ids, ref array<ref vector> server_positions)
-	{
+
+    void ClientUpdatePartyInfo(ref array<ref string> party_ids, ref array<ref vector> server_positions)
+    {
         Print("[SchanaParty] ClientUpdatePartyInfo");
-		
-		positions.Clear();
-		
-		int i;
-		for(i=0; i<party_ids.Count(); ++i)
-		{
-			positions.Insert(party_ids[i], server_positions[i]);
-		}
-	}
+
+        positions.Clear();
+
+        int i;
+        for (i = 0; i < party_ids.Count(); ++i)
+        {
+            positions.Insert(party_ids[i], server_positions[i]);
+        }
+    }
 
     private void Update()
     {
@@ -55,6 +54,13 @@ class SchanaPartyManagerClient
         {
             string activePlayerId = activePlayer.GetIdentity().GetId();
 
+            if (!hasRegistered)
+            {
+                auto members = SchanaModPartySettings.Get().GetMembers();
+                auto data = new Param2<string, ref array<ref string>>(activePlayerId, members);
+                GetRPCManager().SendRPC("SchanaModParty", "ServerRegisterPartyRPC", data);
+                hasRegistered = true;
+            }
             foreach (string party_id, vector position : positions)
             {
                 if (!m_SchanaNametags.Get(party_id))
@@ -62,8 +68,9 @@ class SchanaPartyManagerClient
                     m_SchanaNametags[party_id] = new SchanaPartyNametagsMenu(null);
                 }
                 m_SchanaNametags[party_id].SchanaPartyUpdatePosition(position);
+                m_SchanaNametags[party_id].SchanaPartyUpdateName(SchanaModPartySettings.Get().GetName(party_id));
             }
-            
+
             foreach (Man man : ClientData.m_PlayerBaseList)
             {
                 PlayerBase player = PlayerBase.Cast(man);
@@ -72,7 +79,7 @@ class SchanaPartyManagerClient
                     string id = player.GetIdentity().GetId();
                     if (positions.Get(id) && id != activePlayerId)
                     {
-                        m_SchanaNametags[id].SchanaPartyUpdatePlayer(player);	
+                        m_SchanaNametags[id].SchanaPartyUpdatePlayer(player);
                     }
                 }
             }

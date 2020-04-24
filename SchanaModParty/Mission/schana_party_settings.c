@@ -6,6 +6,11 @@ class SchanaModPartySettings
     private static ref SchanaModPartySettings settings;
 
     private ref map<string, string> players;
+	
+	void SchanaModPartySettings()
+	{
+		players = new map<string, string>();
+	}
 
     void Add(string id, string name)
     {
@@ -28,6 +33,24 @@ class SchanaModPartySettings
     {
         return players.Contains(id);
     }
+	
+	ref array<ref string> GetMembers()
+	{
+		string result;
+		JsonSerializer().WriteToString(players, false, result);
+		Print("[SchanaParty] SettingsGetMembers Players " + result);
+		
+		auto members = new ref array<ref string>();
+		foreach (string key, string item : players)
+		{
+			members.Insert(key);
+		}
+		
+		JsonSerializer().WriteToString(members, false, result);
+		Print("[SchanaParty] SettingsGetMembers Members " + result);
+		
+		return members;
+	}
 
     private void Save()
     {
@@ -45,7 +68,7 @@ class SchanaModPartySettings
             return settings;
         }
 
-        ref SchanaModPartySettings data = new ref SchanaModPartySettings;
+        ref SchanaModPartySettings data = new SchanaModPartySettings();
 
         if (FileExist(PATH))
         {

@@ -5,6 +5,7 @@ class SchanaPartyManagerServer
     void SchanaPartyManagerServer()
     {
         Print("[SchanaParty] Server Init");
+		configurations = new ref map<string, ref set<string>>();
         GetRPCManager().AddRPC("SchanaModParty", "ServerAddToPartyRPC", this, SingleplayerExecutionType.Both);
         GetRPCManager().AddRPC("SchanaModParty", "ServerRemoveFromPartyRPC", this, SingleplayerExecutionType.Both);
         GetRPCManager().AddRPC("SchanaModParty", "ServerRegisterPartyRPC", this, SingleplayerExecutionType.Both);
@@ -46,37 +47,46 @@ class SchanaPartyManagerServer
 
     void ServerRegisterPartyRPC(CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target)
     {
-        Param2<string, ref set<string>> data;
+        Param2<string, ref array<ref string>> data;
         if (!ctx.Read(data))
             return;
+
+        string result;
+		JsonSerializer().WriteToString(data, false, result);
+		Print("[SchanaParty] ServerRegisterPartyRPC " + result);
 		
 		ServerRegisterParty(data.param1, data.param2);
     }
 
-    void ServerRegisterParty(string key, ref set<string> ids)
+    void ServerRegisterParty(string key, ref array<ref string> ids)
     {
         Print("[SchanaParty] Register " + ids.Count().ToString() + " to " + key);
-        configurations.Set(key, ids);
+		auto party_members = new ref set<string>();
+		foreach (string id : ids)
+		{
+			party_members.Insert(id);
+		}
+        configurations.Set(key, party_members);
         SendInfo();
     }
 
-    private map<string, set<string>> GetParties()
+    private ref map<ref string, ref set<ref string>> GetParties()
     {
-        auto parties = new map<string, set<string>>();
+        auto parties = new ref map<ref string, ref set<ref string>>();
 
         foreach(auto key, auto ids : configurations)
         {
-            auto party_ids = new set<string>;
+            auto party_ids = new ref set<ref string>();
 
             foreach(string id : configurations.Get(key))
             {
-                if(configurations.Get(id) && configurations.Get(id).Find(key) != -1)
+                if(id == "a" || id == "b" || id == "c" || configurations.Get(id) && configurations.Get(id).Find(key) != -1)
                 {
                     party_ids.Insert(id);
                 }
             }
 
-            if (ids.Count() > 0)
+            if (party_ids.Count() > 0)
             {
                 parties.Insert(key, party_ids);
             }
@@ -85,51 +95,7 @@ class SchanaPartyManagerServer
         return parties;
     }
 
-    private map<string, vector> GetPositions()
-    {
-        auto positions = new map<string, vector>();
-		
-		MissionServer mission = MissionServer.Cast(GetGame().GetMission());
-
-        foreach(Man man : mission.m_Players)
-        {
-            PlayerBase player = PlayerBase.Cast(man);
-            if(player && player.GetIdentity())
-            {
-                positions.Insert(player.GetIdentity().GetId(), player.GetPosition());
-            }
-        }
-
-        return positions;
-    }
-	
-	private ref map<ref string, ref set<ref string>> GetMockParties()
-    {
-        auto parties = new ref map<ref string, ref set<ref string>>();
-		ref set<ref string> party_members = new ref set<ref string>();
-		party_members.Insert("a");
-		party_members.Insert("b");
-		party_members.Insert("c");
-
-        MissionServer mission = MissionServer.Cast(GetGame().GetMission());
-
-        foreach(Man man : mission.m_Players)
-        {
-            PlayerBase player = PlayerBase.Cast(man);
-            if(player && player.GetIdentity())
-            {
-                parties.Insert(player.GetIdentity().GetId(), party_members);
-            }
-        }
-		
-		string result;
-		JsonSerializer().WriteToString(parties, false, result);
-		Print("[SchanaParty] MockParties " + result);
-
-        return parties;
-    }
-
-    private ref map<ref string, ref vector> GetMockPositions()
+    private ref map<ref string, ref vector> GetPositions()
     {
         auto positions = new ref map<ref string, ref vector>();
 		
@@ -144,14 +110,10 @@ class SchanaPartyManagerServer
             }
         }
 		
-		positions.Insert("a", "4500 400 10000");
-		positions.Insert("b", "4500 100 2500");
-		positions.Insert("c", "14000 200 13000");
+		positions.Insert("a", "4500 400 10000" + Vector(Math.RandomFloat(-100, 100), 0, 0));
+		positions.Insert("b", "4500 100 2500" + Vector(Math.RandomFloat(-100, 100), 0, 0));
+		positions.Insert("c", "14000 200 13000" + Vector(Math.RandomFloat(-100, 100), 0, 0));
 
-		string result;
-		JsonSerializer().WriteToString(positions, false, result);
-		Print("[SchanaParty] MockPositions " + result);
-		
         return positions;
     }
 
@@ -171,24 +133,31 @@ class SchanaPartyManagerServer
             }
         }
 		
-		auto positions = GetMockPositions();
-		auto parties = GetMockParties();
+		auto positions = GetPositions();
+		auto parties = GetParties();
 		foreach (auto id, auto party_ids : parties)
 		{
-			auto ids = new ref array<ref string>;
-			auto locations = new ref array<ref vector>;
-			foreach (string party_id : party_ids)
+			if (!positions.Get(id))
 			{
-				ids.Insert(party_id);
-				locations.Insert(positions.Get(party_id));
+				configurations.Remove(id);
 			}
-			auto info = new Param2<ref array<ref string>, ref array<ref vector>>(ids, locations);
-			
-			string result;
-			JsonSerializer().WriteToString(info, false, result);
-			Print("[SchanaParty] SendInfo " + result);
-			
-			GetRPCManager().SendRPC("SchanaModParty", "ClientUpdatePartyInfoRPC", info, false, id_map.Get(id).GetIdentity());
+			else
+			{
+				auto ids = new ref array<ref string>;
+				auto locations = new ref array<ref vector>;
+				foreach (string party_id : party_ids)
+				{
+					ids.Insert(party_id);
+					locations.Insert(positions.Get(party_id));
+				}
+				auto info = new Param2<ref array<ref string>, ref array<ref vector>>(ids, locations);
+				
+				string result;
+				JsonSerializer().WriteToString(info, false, result);
+				Print("[SchanaParty] SendInfo to " + id + " " + result);
+				
+				GetRPCManager().SendRPC("SchanaModParty", "ClientUpdatePartyInfoRPC", info, false, id_map.Get(id).GetIdentity());
+			}
 		}
     }
 }
