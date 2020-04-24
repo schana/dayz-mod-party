@@ -2,14 +2,17 @@ class SchanaPartyManagerClient
 {
     private ref map<string, ref SchanaPartyNametagsMenu> m_SchanaNametags;
     private ref map<string, vector> positions;
+	private ref map<string, string> allPlayers;
     private bool hasRegistered = false;
 
     void SchanaPartyManagerClient()
     {
         Print("[SchanaParty] Client Init");
         positions = new ref map<string, vector>();
+		allPlayers = new ref map<string, string>();
         m_SchanaNametags = new map<string, ref SchanaPartyNametagsMenu>();
         GetRPCManager().AddRPC("SchanaModParty", "ClientUpdatePartyInfoRPC", this, SingleplayerExecutionType.Both);
+		GetRPCManager().AddRPC("SchanaModParty", "ClientUpdatePlayersInfoRPC", this, SingleplayerExecutionType.Both);
 
         GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.Update, 1000, true);
     }
@@ -44,6 +47,32 @@ class SchanaPartyManagerClient
             positions.Insert(party_ids[i], server_positions[i]);
         }
     }
+	
+	void ClientUpdatePlayersInfoRPC(CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target)
+    {
+        Param2<ref array<ref string>, ref array<ref string>> data;
+        if (!ctx.Read(data))
+            return;
+
+        string result;
+        JsonSerializer().WriteToString(data, false, result);
+        Print("[SchanaParty] " + result);
+
+        ClientUpdatePlayersInfo(data.param1, data.param2);
+    }
+	
+	void ClientUpdatePlayersInfo(ref array<ref string> player_ids, ref array<ref string> player_names)
+    {
+        Print("[SchanaParty] ClientUpdatePlayersInfo");
+
+        allPlayers.Clear();
+
+        int i;
+        for (i = 0; i < player_ids.Count(); ++i)
+        {
+            allPlayers.Insert(player_ids[i], player_names[i]);
+        }
+    }
 
     private void Update()
     {
@@ -70,6 +99,16 @@ class SchanaPartyManagerClient
                 m_SchanaNametags[party_id].SchanaPartyUpdatePosition(position);
                 m_SchanaNametags[party_id].SchanaPartyUpdateName(SchanaModPartySettings.Get().GetName(party_id));
             }
+			
+			auto member_ids = m_SchanaNametags.GetKeyArray();
+			foreach (auto member_id : member_ids)
+			{
+				if(!positions.Get(member_id))
+				{
+					delete m_SchanaNametags[member_id];
+					m_SchanaNametags.Remove(member_id);
+				}
+			}
 
             foreach (Man man : ClientData.m_PlayerBaseList)
             {
@@ -85,6 +124,30 @@ class SchanaPartyManagerClient
             }
         }
     }
+
+    void AddPlayerToParty(string id)
+    {
+		SchanaModPartySettings.Get().Add(id, GetOnlinePlayers().Get(id));
+		hasRegistered = false;
+		Update();
+    }
+
+    void RemovePlayerFromParty(string id)
+    {
+        SchanaModPartySettings.Get().Remove(id);
+		hasRegistered = false;
+		Update();
+    }
+	
+	bool IsPartyMemberOnline(string id)
+	{
+		return positions.Contains(id);
+	}
+	
+	ref map<string, string> GetOnlinePlayers()
+	{
+		return allPlayers;
+	}
 }
 
 static ref SchanaPartyManagerClient g_SchanaPartyManagerClient;

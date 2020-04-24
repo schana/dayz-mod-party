@@ -2,10 +2,9 @@ class CfgPatches
 {
 	class SchanaModParty
 	{
-		requiredAddons[] =
-		{
-			"DZ_Data"
-		};
+		requiredAddons[] = {};
+		units[] = {};
+		weapons[] = {};
 	};
 };
 
@@ -17,9 +16,21 @@ class CfgMods
 		action = "https://github.com/schana/dayz-mod-party";
 		author = "schana";
 		type = "mod";
-
+		inputs = "SchanaModParty/Data/Inputs.xml";
+		dependencies[] =
+		{
+			"Game",
+			"Mission"
+		};
 		class defs
 		{
+			class gameScriptModule
+			{
+				value = "";
+				files[] = {
+					"SchanaModParty/Game"
+				};
+			};
 			class missionScriptModule
 			{
 				value = "";

@@ -1,0 +1,1 @@
+static const int SCHANA_PARTY_MENU = 2071036853;
