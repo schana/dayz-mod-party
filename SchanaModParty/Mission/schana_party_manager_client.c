@@ -114,7 +114,7 @@ class SchanaPartyManagerClient
 			{
 				if(!positions.Get(member_id))
 				{
-					delete m_SchanaNametags[member_id];
+					m_SchanaNametags[member_id].SchanaPartySetRemoveFlag();
 					m_SchanaNametags.Remove(member_id);
 				}
 			}
@@ -144,6 +144,7 @@ class SchanaPartyManagerClient
     void RemovePlayerFromParty(string id)
     {
         SchanaModPartySettings.Get().Remove(id);
+		positions.Remove(id);
 		hasRegistered = false;
 		Update();
     }

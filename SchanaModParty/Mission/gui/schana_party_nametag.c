@@ -84,6 +84,11 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu
     {
         m_SchanaPartyPlayerName = name;
     }
+	
+	void SchanaPartySetRemoveFlag()
+	{
+		m_SchanaPartyPlayerName = SCHANA_PARTY_NAMETAG_DELETE;
+	}
 
     private string SchanaPartyGetPlayerName()
     {
