@@ -74,12 +74,21 @@ class SchanaPartyManagerClient
         Print("[SchanaParty] ClientUpdatePlayersInfo");
 
         allPlayers.Clear();
-
-        int i;
-        for (i = 0; i < player_ids.Count(); ++i)
+		
+		PlayerBase activePlayer = PlayerBase.Cast(GetGame().GetPlayer());
+		if (activePlayer && activePlayer.GetIdentity())
         {
-            allPlayers.Insert(player_ids[i], player_names[i]);
-        }
+			string activePlayerId = activePlayer.GetIdentity().GetId();
+	
+	        int i;
+	        for (i = 0; i < player_ids.Count(); ++i)
+	        {
+				if(player_ids[i] != activePlayerId)
+				{
+	            	allPlayers.Insert(player_ids[i], player_names[i]);
+				}
+	        }
+		}
     }
 
     private void Update()
