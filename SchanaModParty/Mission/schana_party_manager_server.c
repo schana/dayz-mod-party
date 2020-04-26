@@ -52,10 +52,10 @@ class SchanaPartyManagerServer
 					{
 	                    validated_party_ids.Insert(member_id);
 	                }
-					else if(member_id == "a" || member_id == "b" || member_id == "c")
-	                {
-	                    validated_party_ids.Insert(member_id);
-	                }
+					// else if(member_id == "a" || member_id == "b" || member_id == "c")
+	                // {
+	                //     validated_party_ids.Insert(member_id);
+	                // }
 	            }
 	
 	            if (validated_party_ids.Count() > 0)
@@ -83,9 +83,9 @@ class SchanaPartyManagerServer
             }
         }
 		
-		positions.Insert("a", "4500 350 10000" + Vector(Math.RandomFloat(-100, 100), 0, 0));
-		positions.Insert("b", "4500 100 2500" + Vector(Math.RandomFloat(-100, 100), 0, 0));
-		positions.Insert("c", "14000 200 13000" + Vector(Math.RandomFloat(-100, 100), 0, 0));
+		// positions.Insert("a", "4500 350 10000" + Vector(Math.RandomFloat(-100, 100), 0, 0));
+		// positions.Insert("b", "4500 100 2500" + Vector(Math.RandomFloat(-100, 100), 0, 0));
+		// positions.Insert("c", "14000 200 13000" + Vector(Math.RandomFloat(-100, 100), 0, 0));
 
         return positions;
     }
@@ -140,12 +140,17 @@ class SchanaPartyManagerServer
 			all_player_ids.Insert(player_id);
 			all_player_names.Insert(player_base_player.GetIdentity().GetName());
 		}
-		all_player_ids.Insert("a");
-		all_player_ids.Insert("b");
-		all_player_ids.Insert("c");
-		all_player_names.Insert("A");
-		all_player_names.Insert("B");
-		all_player_names.Insert("C");
+		// all_player_ids.Insert("a");
+		// all_player_ids.Insert("b");
+		// all_player_ids.Insert("c");
+		// all_player_names.Insert("online A");
+		// all_player_names.Insert("online B");
+		// all_player_names.Insert("online C");
+		// for(int i=0; i<50; ++i)
+		// {
+		// 	all_player_ids.Insert("id" + i.ToString());
+		// 	all_player_names.Insert("player " + i.ToString());
+		// }
 		
 		auto all_player_info = new Param2<ref array<ref string>, ref array<ref string>>(all_player_ids, all_player_names);
 		
