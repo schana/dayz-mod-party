@@ -163,6 +163,11 @@ class SchanaPartyManagerClient
 		return positions.Contains(id);
 	}
 	
+	bool IsPartyMemberOnlineButNotMutual(string id)
+	{
+		return !positions.Contains(id) && allPlayers.Contains(id);
+	}
+	
 	ref map<string, string> GetOnlinePlayers()
 	{
 		return allPlayers;
