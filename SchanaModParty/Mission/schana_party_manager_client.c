@@ -4,6 +4,7 @@ class SchanaPartyManagerClient
     private ref map<string, vector> positions;
 	private ref map<string, string> allPlayers;
     private bool hasRegistered = false;
+	private bool canRegisterAgain = true;
 
     void SchanaPartyManagerClient()
     {
@@ -15,12 +16,19 @@ class SchanaPartyManagerClient
 		GetRPCManager().AddRPC("SchanaModParty", "ClientUpdatePlayersInfoRPC", this, SingleplayerExecutionType.Both);
 
         GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.Update, 1000, true);
+		GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.ResetRegisterLock, 1000, true);
     }
 
     void ~SchanaPartyManagerClient()
     {
         GetGame().GetCallQueue(CALL_CATEGORY_GUI).Remove(this.Update);
+		GetGame().GetCallQueue(CALL_CATEGORY_GUI).Remove(this.ResetRegisterLock);
     }
+	
+	void ResetRegisterLock()
+	{
+		canRegisterAgain = true;
+	}
 
     void ClientUpdatePartyInfoRPC(CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target)
     {
@@ -83,12 +91,13 @@ class SchanaPartyManagerClient
         {
             string activePlayerId = activePlayer.GetIdentity().GetId();
 
-            if (!hasRegistered)
+            if (!hasRegistered && canRegisterAgain)
             {
                 auto members = SchanaModPartySettings.Get().GetMembers();
                 auto data = new Param2<string, ref array<ref string>>(activePlayerId, members);
                 GetRPCManager().SendRPC("SchanaModParty", "ServerRegisterPartyRPC", data);
                 hasRegistered = true;
+				canRegisterAgain = false;
             }
             foreach (string party_id, vector position : positions)
             {
