@@ -94,14 +94,7 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu
 
     private float SchanaPartyGetPlayerHealth()
     {
-        if (m_SchanaPartyNametagPlayer)
-        {
-            return m_SchanaPartyNametagPlayer.GetHealth("", "");
-        }
-        else
-        {
-            return m_SchanaPartyPlayerServerHealth;
-        }
+        return m_SchanaPartyPlayerServerHealth;
     }
 
     void SchanaPartyUpdatePosition(vector position)
