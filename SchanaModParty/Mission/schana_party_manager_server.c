@@ -102,7 +102,7 @@ class SchanaPartyManagerServer
             PlayerBase player = PlayerBase.Cast(man);
             if(player && player.GetIdentity())
             {
-                healths.Insert(player.GetIdentity().GetId(), player.GetHealth());
+                healths.Insert(player.GetIdentity().GetId(), player.GetHealth("", ""));
             }
         }
 		
