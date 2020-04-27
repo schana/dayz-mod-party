@@ -21,12 +21,19 @@ class SchanaPartyManagerClient
 
         GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.Update, 1000, true);
 		GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.ResetRegisterLock, 1000, true);
+        GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.RenewRegistration, 5000, true);
     }
 
     void ~SchanaPartyManagerClient()
     {
         GetGame().GetCallQueue(CALL_CATEGORY_GUI).Remove(this.Update);
 		GetGame().GetCallQueue(CALL_CATEGORY_GUI).Remove(this.ResetRegisterLock);
+        GetGame().GetCallQueue(CALL_CATEGORY_GUI).Remove(this.RenewRegistration);
+    }
+
+    void RenewRegistration()
+    {
+        hasRegistered = false;
     }
 	
 	void ResetRegisterLock()
@@ -111,7 +118,7 @@ class SchanaPartyManagerClient
 				Print("[SchanaParty] Update Register");
                 auto members = SchanaModPartySettings.Get().GetMembers();
                 auto data = new Param2<string, ref array<ref string>>(activePlayerId, members);
-                GetRPCManager().SendRPC("SchanaModParty", "ServerRegisterPartyRPC", data);
+                GetRPCManager().SendRPC("SchanaModParty", "ServerRegisterPartyRPC", data, true);
                 hasRegistered = true;
 				canRegisterAgain = false;
             }
