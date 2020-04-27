@@ -4,15 +4,31 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu
 
     private Widget m_SchanaPartyNametagRootWidget;
     private TextWidget m_SchanaPartyNametagTextWidget;
+
+    private Widget m_SchanaPartyListRootWidget;
+    private ref array<ImageWidget> m_SchanaPartyListHealthWidgets;
+    private TextWidget m_SchanaPartyListTextWidget;
+
     private PlayerBase m_SchanaPartyNametagPlayer;
     private vector m_SchanaPartyPlayerServerPosition = "0 0 0";
+    private float m_SchanaPartyPlayerServerHealth = 100;
     private string m_SchanaPartyPlayerName = "";
+	private int m_SchanaPartyListIndex = 0;
 
     void SchanaPartyNametagsMenu(PlayerBase player)
     {
         m_SchanaPartyNametagRootWidget = GetGame().GetWorkspace().CreateWidgets("SchanaModParty/GUI/Layouts/nametag.layout");
         m_SchanaPartyNametagTextWidget = TextWidget.Cast(m_SchanaPartyNametagRootWidget);
         m_SchanaPartyNametagRootWidget.Show(false);
+
+        m_SchanaPartyListRootWidget = GetGame().GetWorkspace().CreateWidgets("SchanaModParty/GUI/Layouts/party.layout");
+        m_SchanaPartyListTextWidget = TextWidget.Cast(m_SchanaPartyListRootWidget.FindAnyWidget("Nametag"));
+        m_SchanaPartyListHealthWidgets = new array<ImageWidget>;
+        for (int i=0; i<5; ++i)
+        {
+            m_SchanaPartyListHealthWidgets.Insert(ImageWidget.Cast(m_SchanaPartyListRootWidget.FindAnyWidget("IconHealth" + i.ToString())));
+        }
+
         m_SchanaPartyNametagPlayer = player;
 
         GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.SchanaUpdate, 16, true);
@@ -25,6 +41,12 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu
         {
             m_SchanaPartyNametagRootWidget.Show(false);
             m_SchanaPartyNametagRootWidget.Unlink();
+        }
+
+        if (m_SchanaPartyListRootWidget != null)
+        {
+            m_SchanaPartyListRootWidget.Show(false);
+            m_SchanaPartyListRootWidget.Unlink();
         }
     }
 
@@ -70,9 +92,26 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu
         }
     }
 
+    private float SchanaPartyGetPlayerHealth()
+    {
+        if (m_SchanaPartyNametagPlayer)
+        {
+            return m_SchanaPartyNametagPlayer.GetHealth("", "");
+        }
+        else
+        {
+            return m_SchanaPartyPlayerServerHealth;
+        }
+    }
+
     void SchanaPartyUpdatePosition(vector position)
     {
         m_SchanaPartyPlayerServerPosition = position;
+    }
+
+    void SchanaPartyUpdateHealth(float health)
+    {
+        m_SchanaPartyPlayerServerHealth = health;
     }
 
     void SchanaPartyUpdatePlayer(PlayerBase player)
@@ -84,6 +123,11 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu
     {
         m_SchanaPartyPlayerName = name;
     }
+	
+	void SchanaPartyUpdateListIndex(int index)
+	{
+		m_SchanaPartyListIndex = index;
+	}
 	
 	void SchanaPartySetRemoveFlag()
 	{
@@ -120,8 +164,27 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu
         }
         string text = SchanaPartyGetPlayerName() + " " + distanceString;
         m_SchanaPartyNametagTextWidget.SetText(text);
+        
+        SchanaPartyListUpdate(text);
 
         m_SchanaPartyNametagRootWidget.Show(SchanaPartyNametagVisibleOnScreen());
+    }
+
+    void SchanaPartyListUpdate(string text)
+    {
+        m_SchanaPartyListTextWidget.SetText(text);
+        float health = SchanaPartyGetPlayerHealth() * 0.01;
+        int healthLevel = 4 - health * 4;
+        for (int i=0; i<5; ++i)
+        {
+            m_SchanaPartyListHealthWidgets[i].Show(healthLevel == i);
+        }
+		float width, height, x, y;
+		m_SchanaPartyListRootWidget.GetSize(width, height);
+		m_SchanaPartyListRootWidget.GetPos(x, y);
+		y = (5 + height) * m_SchanaPartyListIndex;
+		
+		m_SchanaPartyListRootWidget.SetPos(x, y);
     }
 
     private bool SchanaPartyNametagVisibleOnScreen()

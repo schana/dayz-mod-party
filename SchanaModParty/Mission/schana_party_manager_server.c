@@ -1,6 +1,7 @@
 class SchanaPartyManagerServer
 {
     private ref map<string, ref set<string>> configurations;
+	private bool mock_toggle = false;
 
     void SchanaPartyManagerServer()
     {
@@ -52,12 +53,12 @@ class SchanaPartyManagerServer
 					{
 	                    validated_party_ids.Insert(member_id);
 	                }
-					// else if(member_id == "a" || member_id == "b" || member_id == "c")
+					// else if(member_id == "a" || member_id == "b" || member_id == "c" && mock_toggle)
 	                // {
 	                //     validated_party_ids.Insert(member_id);
 	                // }
 	            }
-	
+				// mock_toggle = !mock_toggle;
 	            if (validated_party_ids.Count() > 0)
 	            {
 	                parties.Insert(owner_id, validated_party_ids);
@@ -84,10 +85,32 @@ class SchanaPartyManagerServer
         }
 		
 		// positions.Insert("a", "4500 350 10000" + Vector(Math.RandomFloat(-100, 100), 0, 0));
-		// positions.Insert("b", "4500 100 2500" + Vector(Math.RandomFloat(-100, 100), 0, 0));
-		// positions.Insert("c", "14000 200 13000" + Vector(Math.RandomFloat(-100, 100), 0, 0));
+		// positions.Insert("b", "4500 100 12000" + Vector(Math.RandomFloat(-100, 100), 0, 0));
+		// positions.Insert("c", "4500 200 8000" + Vector(Math.RandomFloat(-100, 100), 0, 0));
 
         return positions;
+    }
+
+	private ref map<ref string, ref float> GetHealths()
+    {
+        auto healths = new ref map<ref string, ref float>();
+		
+		MissionServer mission = MissionServer.Cast(GetGame().GetMission());
+
+        foreach(Man man : mission.m_Players)
+        {
+            PlayerBase player = PlayerBase.Cast(man);
+            if(player && player.GetIdentity())
+            {
+                healths.Insert(player.GetIdentity().GetId(), player.GetHealth());
+            }
+        }
+		
+		// healths.Insert("a", 100);
+		// healths.Insert("b", 10);
+		// healths.Insert("c", 42);
+
+        return healths;
     }
 
     void SendInfo()
@@ -108,6 +131,7 @@ class SchanaPartyManagerServer
 		
 		string result;
 		auto positions = GetPositions();
+		auto server_healths = GetHealths();
 		auto parties = GetParties();
 		foreach (auto id, auto party_ids : parties)
 		{
@@ -119,17 +143,19 @@ class SchanaPartyManagerServer
 			{
 				auto ids = new ref array<ref string>;
 				auto locations = new ref array<ref vector>;
+				auto healths = new ref array<ref float>;
 				foreach (string party_id : party_ids)
 				{
 					ids.Insert(party_id);
 					locations.Insert(positions.Get(party_id));
+					healths.Insert(server_healths.Get(party_id));
 				}
-				auto info = new Param2<ref array<ref string>, ref array<ref vector>>(ids, locations);
+				auto info = new Param3<ref array<ref string>, ref array<ref vector>, ref array<ref float>>(ids, locations, healths);
 				
 				JsonSerializer().WriteToString(info, false, result);
 				Print("[SchanaParty] SendInfo to " + id + " " + result);
 				
-				GetRPCManager().SendRPC("SchanaModParty", "ClientUpdatePartyInfoRPC", info, false, id_map.Get(id).GetIdentity());
+				GetRPCManager().SendRPC("SchanaModParty", "ClientUpdatePartyInfoRPC", info, true, id_map.Get(id).GetIdentity());
 			}
 		}
 		
@@ -143,9 +169,9 @@ class SchanaPartyManagerServer
 		// all_player_ids.Insert("a");
 		// all_player_ids.Insert("b");
 		// all_player_ids.Insert("c");
-		// all_player_names.Insert("online A");
-		// all_player_names.Insert("online B");
-		// all_player_names.Insert("online C");
+		// all_player_names.Insert("Schana");
+		// all_player_names.Insert("CarimSurvivor");
+		// all_player_names.Insert("cnofafva");
 		// for(int i=0; i<50; ++i)
 		// {
 		// 	all_player_ids.Insert("id" + i.ToString());

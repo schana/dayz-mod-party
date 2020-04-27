@@ -36,9 +36,9 @@ class SchanaModPartySettings
 	
 	ref array<ref string> GetMembers()
 	{
-		string result;
-		JsonSerializer().WriteToString(players, false, result);
-		Print("[SchanaParty] SettingsGetMembers Players " + result);
+		// string result;
+		// JsonSerializer().WriteToString(players, false, result);
+		// Print("[SchanaParty] SettingsGetMembers Players " + result);
 		
 		auto members = new ref array<ref string>();
 		foreach (string key, string item : players)
@@ -46,8 +46,8 @@ class SchanaModPartySettings
 			members.Insert(key);
 		}
 		
-		JsonSerializer().WriteToString(members, false, result);
-		Print("[SchanaParty] SettingsGetMembers Members " + result);
+		// JsonSerializer().WriteToString(members, false, result);
+		// Print("[SchanaParty] SettingsGetMembers Members " + result);
 		
 		return members;
 	}

@@ -1,5 +1,7 @@
 This Open Source mod allows creation of parties and displaying of nametags of party members.
 
+Parties are managed by the player. Open the menu (default key: 'P'), and Add players to your party. If they have also added you, then your nametags will automatically appear. Parties are saved, so you don't have to re-create it each time you login.
+
 You are free to use this mod on your monetized servers. If you repack or use the code in a Derivative Work, you [b]must[/b] include the entire contents of the NOTICE file in a readable place in accordance with the Apache License.
 
 This mod originated from the Carim DayZ project
