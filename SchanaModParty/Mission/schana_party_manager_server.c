@@ -55,8 +55,6 @@ class SchanaPartyManagerServer
 		auto parties = new ref map<ref string, ref set<ref string>>();
 
 		foreach (auto owner_id, auto party_ids : configurations)
-		{
-			if (party_ids && party_ids.Count() > 0)
 			{
 				auto validated_party_ids = new ref set<ref string>();
 
@@ -66,18 +64,10 @@ class SchanaPartyManagerServer
 					{
 						validated_party_ids.Insert(member_id);
 					}
-					// else if(member_id == "a" || member_id == "b" || member_id == "c" && mock_toggle)
-					// {
-					//     validated_party_ids.Insert(member_id);
-					// }
 				}
-				// mock_toggle = !mock_toggle;
-				if (validated_party_ids.Count() > 0)
-				{
+			
 					parties.Insert(owner_id, validated_party_ids);
 				}
-			}
-		}
 
 		return parties;
 	}
