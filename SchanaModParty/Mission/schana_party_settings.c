@@ -2,14 +2,12 @@ class SchanaModPartySettings
 {
 	private static string DIR = "$profile:SchanaModParty";
 	private static string PATH = DIR + "\\config.json";
-    private static bool initialized = false;
-    private static ref SchanaModPartySettings settings;
 
-    private ref map<string, string> players;
+    private ref map<ref string, ref string> players;
 	
 	void SchanaModPartySettings()
 	{
-		players = new map<string, string>();
+		players = new ref map<ref string, ref string>();
 	}
 
     void Add(string id, string name)
@@ -36,56 +34,49 @@ class SchanaModPartySettings
 	
 	ref array<ref string> GetMembers()
 	{
-		// string result;
-		// JsonSerializer().WriteToString(players, false, result);
-		// Print("[SchanaParty] SettingsGetMembers Players " + result);
-		
 		auto members = new ref array<ref string>();
+        
 		foreach (string key, string item : players)
 		{
 			members.Insert(key);
 		}
 		
-		// JsonSerializer().WriteToString(members, false, result);
-		// Print("[SchanaParty] SettingsGetMembers Members " + result);
-		
 		return members;
 	}
 
-    private void Save()
+    void Save()
     {
         if (GetGame().IsClient())
         {
-            MakeDirectory(DIR);
+			if (!FileExist(DIR))
+			{
+            	MakeDirectory(DIR);
+			}
             JsonFileLoader<SchanaModPartySettings>.JsonSaveFile(PATH, this);
         }
     }
 
     static ref SchanaModPartySettings Get()
     {
-        if (initialized)
-        {
-            return settings;
-        }
 
-        ref SchanaModPartySettings data = new SchanaModPartySettings();
+        auto settings = new ref SchanaModPartySettings();
 
         if (FileExist(PATH))
         {
-            JsonFileLoader<SchanaModPartySettings>.JsonLoadFile(PATH, data);
-            initialized = true;
+            JsonFileLoader<SchanaModPartySettings>.JsonLoadFile(PATH, settings);
         }
-        else
-        {
-            if (GetGame().IsClient())
-            {
-                MakeDirectory(DIR);
-                JsonFileLoader<SchanaModPartySettings>.JsonSaveFile(PATH, data);
-            }
-        }
-
-        settings = data;
 
         return settings;
     }
+}
+
+static ref SchanaModPartySettings g_SchanaPartySettings;
+static ref SchanaModPartySettings GetSchanaPartySettings()
+{
+	if (g_Game.IsClient() && !g_SchanaPartySettings)
+	{
+		g_SchanaPartySettings = SchanaModPartySettings.Get();
+		g_SchanaPartySettings.Save();
+	}
+	return g_SchanaPartySettings;
 }

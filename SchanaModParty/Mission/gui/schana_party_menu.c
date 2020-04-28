@@ -113,10 +113,10 @@ class SchanaPartyMenu extends UIScriptedMenu
 		string member_name;
 		int insert_row = 0;
 
-		auto members = SchanaModPartySettings.Get().GetMembers();
+		auto members = GetSchanaPartySettings().GetMembers();
 		foreach (auto id : members)
 		{
-			member_name = SchanaModPartySettings.Get().GetName(id);
+			member_name = GetSchanaPartySettings().GetName(id);
 			member_sorting_map.Insert(member_name + id, id);
 		}
 
@@ -125,7 +125,7 @@ class SchanaPartyMenu extends UIScriptedMenu
 		foreach (auto sorted_key : sorted_keys)
 		{
 			string member_id = member_sorting_map.Get(sorted_key);
-			member_name = SchanaModPartySettings.Get().GetName(member_id);
+			member_name = GetSchanaPartySettings().GetName(member_id);
 			if (insert_row < m_SchanaPartyPartyList.GetNumItems())
 			{
 				m_SchanaPartyPartyList.SetItem(insert_row, member_name, new Param1<string>(member_id), 0);
