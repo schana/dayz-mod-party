@@ -14,7 +14,7 @@ class SchanaPartyManagerClient
 
     void SchanaPartyManagerClient()
     {
-        Print("[SchanaParty] Client Init");
+        Print("[SchanaParty] Client Init 1.0.0");
         positions = new SchanaPartyPositions();
 		healths = new ref map<ref string, ref float>();
 		allPlayers = new ref map<ref string, ref string>();
