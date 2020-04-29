@@ -19,7 +19,7 @@ modded class MissionGameplay extends MissionBase
             {
                 m_SchanaPartyMenu.SchanaPartyMenuSetOpen(false);
                 GetGame().GetUIManager().HideScriptedMenu(m_SchanaPartyMenu);
-                UnlockControls();
+                SchanaPartyUnlockControls();
             }
         }
 
@@ -32,34 +32,34 @@ modded class MissionGameplay extends MissionBase
                     //Hide Menu
                     m_SchanaPartyMenu.SchanaPartyMenuSetOpen(false);
                     GetGame().GetUIManager().HideScriptedMenu(m_SchanaPartyMenu);
-                    UnlockControls();
+                    SchanaPartyUnlockControls();
                 }
                 else if (GetGame().GetUIManager().GetMenu() == NULL)
                 {
                     //Show Menu
                     GetGame().GetUIManager().ShowScriptedMenu(m_SchanaPartyMenu, NULL);
                     m_SchanaPartyMenu.SchanaPartyMenuSetOpen(true);
-                    LockControls();
+                    SchanaPartyLockControls();
                 }
             }
             else if (GetGame().GetUIManager().GetMenu() == NULL && m_SchanaPartyMenu == null)
             {
                 //Create Menu
-                LockControls();
+                SchanaPartyLockControls();
                 m_SchanaPartyMenu = SchanaPartyMenu.Cast(GetUIManager().EnterScriptedMenu(SCHANA_PARTY_MENU, null));
                 m_SchanaPartyMenu.SchanaPartyMenuSetOpen(true);
             }
         }
     }
 
-    private void LockControls()
+    private void SchanaPartyLockControls()
     {
         GetGame().GetMission().PlayerControlDisable(INPUT_EXCLUDE_ALL);
         GetGame().GetUIManager().ShowUICursor(true);
         GetGame().GetMission().GetHud().Show(false);
     }
 
-    private void UnlockControls()
+    private void SchanaPartyUnlockControls()
     {
         GetGame().GetMission().PlayerControlEnable(false);
         GetGame().GetInput().ResetGameFocus();
