@@ -67,3 +67,13 @@ modded class MissionGameplay extends MissionBase
         GetGame().GetMission().GetHud().Show(true);
     }
 }
+
+static ref SchanaPartyManagerClient g_SchanaPartyManagerClient;
+static ref SchanaPartyManagerClient GetSchanaPartyManagerClient()
+{
+    if (!g_Game.IsServer() && !g_SchanaPartyManagerClient)
+    {
+        g_SchanaPartyManagerClient = new SchanaPartyManagerClient;
+    }
+    return g_SchanaPartyManagerClient;
+}

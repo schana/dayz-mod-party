@@ -1,19 +1,21 @@
 class SchanaPartyManagerClient
 {
     private ref map<ref string, ref SchanaPartyNametagsMenu> m_SchanaNametags;
-    private ref map<ref string, ref vector> positions;
+    private ref SchanaPartyPositions positions;
     private ref map<ref string, ref float> healths;
 	private ref map<ref string, ref string> allPlayers;
 	private ref map<ref string, ref string> sortingMap;
+	
     private bool hasRegistered = false;
 	private bool canRegisterAgain = true;
     private bool schanaDebug = false;
+	
     private bool debugToggle = false;
 
     void SchanaPartyManagerClient()
     {
         Print("[SchanaParty] Client Init");
-        positions = new ref map<ref string, ref vector>();
+        positions = new SchanaPartyPositions();
 		healths = new ref map<ref string, ref float>();
 		allPlayers = new ref map<ref string, ref string>();
 		sortingMap = new ref map<ref string, ref string>();
@@ -100,13 +102,12 @@ class SchanaPartyManagerClient
 
     void ClientUpdatePartyInfo(ref array<ref string> party_ids, ref array<ref vector> server_positions, ref array<ref float> server_healths)
     {
-        positions.Clear();
+        positions.Replace(party_ids, server_positions);
         healths.Clear();
 
         int i;
         for (i = 0; i < party_ids.Count(); ++i)
         {
-            positions.Insert(party_ids[i], server_positions[i]);
             healths.Insert(party_ids[i], server_healths[i]);
         }
     }
@@ -176,17 +177,19 @@ class SchanaPartyManagerClient
 	
 	private void AddAndUpdateNametags()
 	{
+		auto current_positions = positions.Get();
+		
 		string result;
-       	JsonSerializer().WriteToString(positions, false, result);
+       	JsonSerializer().WriteToString(current_positions, false, result);
        	SchanaPartyUtils.LogMessage("Positions " + result);
-        foreach (string party_id : positions.GetKeyArray())
+        foreach (string party_id, vector position : current_positions)
         {
             if (!m_SchanaNametags.Get(party_id))
             {
 				Print("[SchanaParty] Adding nametag " + party_id);
                 m_SchanaNametags[party_id] = new SchanaPartyNametagsMenu(null);
             }
-            m_SchanaNametags[party_id].SchanaPartyUpdatePosition(positions.Get(party_id));
+            m_SchanaNametags[party_id].SchanaPartyUpdatePosition(position);
             m_SchanaNametags[party_id].SchanaPartyUpdateHealth(healths.Get(party_id));
             m_SchanaNametags[party_id].SchanaPartyUpdateName(GetSchanaPartySettings().GetName(party_id));
         }
@@ -194,10 +197,12 @@ class SchanaPartyManagerClient
 	
 	private void RemoveInvalidNametags()
 	{
+		auto current_positions = positions.Get();
+		
 		auto member_ids = m_SchanaNametags.GetKeyArray();
 		foreach (auto member_id : member_ids)
 		{
-			if(!positions.Get(member_id))
+			if(!current_positions.Get(member_id))
 			{
 				Print("[SchanaParty] Removing nametag " + member_id);
 				m_SchanaNametags[member_id].SchanaPartySetRemoveFlag();
@@ -208,13 +213,15 @@ class SchanaPartyManagerClient
 	
 	private void UpdateNametagsWithLocalPlayers(string activePlayerId)
 	{
+		auto current_positions = positions.Get();
+		
 		foreach (Man man : ClientData.m_PlayerBaseList)
         {
             PlayerBase player = PlayerBase.Cast(man);
             if (player && player.GetIdentity())
             {
                 string id = player.GetIdentity().GetId();
-                if (positions.Get(id) && id != activePlayerId)
+                if (current_positions.Get(id) && id != activePlayerId)
                 {
                     m_SchanaNametags[id].SchanaPartyUpdatePlayer(player);
                 }
@@ -251,32 +258,27 @@ class SchanaPartyManagerClient
     {
 		Print("[SchanaParty] RemovePlayerFromParty " + id);
         GetSchanaPartySettings().Remove(id);
-		positions.Remove(id);
+		positions.Get().Remove(id);
 		hasRegistered = false;
     }
 	
 	bool IsPartyMemberOnline(string id)
 	{
-		return positions.Contains(id);
+		return positions.Get().Contains(id);
 	}
 	
 	bool IsPartyMemberOnlineButNotMutual(string id)
 	{
-		return !positions.Contains(id) && allPlayers.Contains(id);
+		return !positions.Get().Contains(id) && allPlayers.Contains(id);
 	}
 	
 	ref map<ref string, ref string> GetOnlinePlayers()
 	{
 		return allPlayers;
 	}
-}
 
-static ref SchanaPartyManagerClient g_SchanaPartyManagerClient;
-static ref SchanaPartyManagerClient GetSchanaPartyManagerClient()
-{
-    if (!g_Game.IsServer() && !g_SchanaPartyManagerClient)
+    ref map<ref string, ref vector> GetPositions()
     {
-        g_SchanaPartyManagerClient = new SchanaPartyManagerClient;
+		return positions.Get();
     }
-    return g_SchanaPartyManagerClient;
 }
