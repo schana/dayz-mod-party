@@ -82,7 +82,7 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu
 
     private vector SchanaPartyGetPlayerPosition()
     {
-        if (m_SchanaPartyNametagPlayer)
+        if (m_SchanaPartyNametagPlayer && m_SchanaPartyNametagPlayer.IsAlive())
         {
             return m_SchanaPartyNametagPlayer.GetPosition();
         }
@@ -194,10 +194,5 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu
             return false;
         }
         return true;
-    }
-
-    PlayerBase SchanaPartyNametagGetPlayer()
-    {
-        return m_SchanaPartyNametagPlayer;
     }
 }
