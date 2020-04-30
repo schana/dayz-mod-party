@@ -6,7 +6,7 @@ class SchanaPartyManagerServer
 
 	void SchanaPartyManagerServer()
 	{
-		Print("[SchanaParty] Server Init 1.0.0");
+		Print("[SchanaParty] Server Init " + MissionBase.SCHANA_PARTY_VERSION);
 		configurations = new ref map<ref string, ref set<ref string>>();
 		GetRPCManager().AddRPC("SchanaModParty", "ServerRegisterPartyRPC", this, SingleplayerExecutionType.Both);
 
