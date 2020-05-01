@@ -24,7 +24,7 @@ class SchanaModPartyServerSettings {
     }
 
     void Save () {
-        if (GetGame ().IsClient ()) {
+        if (GetGame ().IsServer ()) {
             if (!FileExist (DIR)) {
                 MakeDirectory (DIR);
             }
