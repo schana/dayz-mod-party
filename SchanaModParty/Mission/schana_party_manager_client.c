@@ -7,63 +7,28 @@ class SchanaPartyManagerClient {
 
     private bool hasRegistered = false;
     private bool canRegisterAgain = true;
-    private bool schanaDebug = false;
-
-    private bool debugToggle = false;
 
     void SchanaPartyManagerClient () {
-        Print ("[SchanaParty] Client Init " + MissionBase.SCHANA_PARTY_VERSION);
+        SchanaPartyUtils.LogMessage ("Client Init " + MissionBase.SCHANA_PARTY_VERSION);
+
         positions = new SchanaPartyPositions ();
         healths = new ref map<ref string, ref float> ();
         allPlayers = new ref map<ref string, ref string> ();
         sortingMap = new ref map<ref string, ref string> ();
         m_SchanaNametags = new map<ref string, ref SchanaPartyNametagsMenu> ();
+
         GetRPCManager ().AddRPC ("SchanaModParty", "ClientUpdatePartyInfoRPC", this, SingleplayerExecutionType.Both);
         GetRPCManager ().AddRPC ("SchanaModParty", "ClientUpdatePlayersInfoRPC", this, SingleplayerExecutionType.Both);
 
         GetGame ().GetCallQueue (CALL_CATEGORY_GUI).CallLater (this.Update, 1000, true);
         GetGame ().GetCallQueue (CALL_CATEGORY_GUI).CallLater (this.ResetRegisterLock, 1000, true);
-        GetGame ().GetCallQueue (CALL_CATEGORY_GUI).CallLater (this.RenewRegistration, 5000, true);
-
-        if (schanaDebug) {
-            GetGame ().GetCallQueue (CALL_CATEGORY_GUI).CallLater (this.DebugUpdateMockRegistration, 10000, true);
-        }
+        GetGame ().GetCallQueue (CALL_CATEGORY_GUI).CallLater (this.RenewRegistration, 15000, true);
     }
 
     void ~SchanaPartyManagerClient () {
         GetGame ().GetCallQueue (CALL_CATEGORY_GUI).Remove (this.Update);
         GetGame ().GetCallQueue (CALL_CATEGORY_GUI).Remove (this.ResetRegisterLock);
         GetGame ().GetCallQueue (CALL_CATEGORY_GUI).Remove (this.RenewRegistration);
-
-        if (schanaDebug) {
-            GetGame ().GetCallQueue (CALL_CATEGORY_GUI).Remove (this.DebugUpdateMockRegistration);
-        }
-    }
-
-    void DebugUpdateMockRegistration () {
-        Print ("[SchanaParty] DebugUpdateMockRegister");
-
-        PlayerBase activePlayer = PlayerBase.Cast (GetGame ().GetPlayer ());
-        if (activePlayer && activePlayer.GetIdentity ()) {
-            string activePlayerId = activePlayer.GetIdentity ().GetId ();
-
-            auto members = GetSchanaPartySettings ().GetMembers ();
-            auto mock_members = new ref array<ref string>;
-            mock_members.Insert (activePlayerId);
-            foreach (auto member : members) {
-                Param2<ref string, ref array<ref string>> data;
-                if (member != "c" || debugToggle) {
-                    data = new Param2<ref string, ref array<ref string>> (member, mock_members);
-                } else {
-                    data = new Param2<ref string, ref array<ref string>> (member, new ref array<ref string>);
-                }
-                string result;
-                JsonSerializer ().WriteToString (data, false, result);
-                SchanaPartyUtils.LogMessage ("DebugRegistration " + result);
-                GetRPCManager ().SendRPC ("SchanaModParty", "ServerRegisterPartyRPC", data);
-            }
-            debugToggle = !debugToggle;
-        }
     }
 
     void RenewRegistration () {
@@ -78,10 +43,6 @@ class SchanaPartyManagerClient {
         Param3<ref array<ref string>, ref array<ref vector>, ref array<ref float>> data;
         if (!ctx.Read (data))
             return;
-
-        string result;
-        JsonSerializer ().WriteToString (data, false, result);
-        SchanaPartyUtils.LogMessage ("Update PartyInfo " + result);
 
         ClientUpdatePartyInfo (data.param1, data.param2, data.param3);
     }
@@ -100,10 +61,6 @@ class SchanaPartyManagerClient {
         Param2<ref array<ref string>, ref array<ref string>> data;
         if (!ctx.Read (data))
             return;
-
-        string result;
-        JsonSerializer ().WriteToString (data, false, result);
-        SchanaPartyUtils.LogMessage ("Update PlayersInfo " + result);
 
         ClientUpdatePlayersInfo (data.param1, data.param2);
     }
@@ -141,7 +98,7 @@ class SchanaPartyManagerClient {
 
     private void UpdateRegistration (string activePlayerId) {
         if (!hasRegistered && canRegisterAgain) {
-            Print ("[SchanaParty] Send Updated Registration");
+            SchanaPartyUtils.LogMessage ("Send Updated Registration");
             auto members = GetSchanaPartySettings ().GetMembers ();
             auto data = new Param2<ref string, ref array<ref string>> (activePlayerId, members);
             GetRPCManager ().SendRPC ("SchanaModParty", "ServerRegisterPartyRPC", data);
@@ -153,12 +110,9 @@ class SchanaPartyManagerClient {
     private void AddAndUpdateNametags () {
         auto current_positions = positions.Get ();
 
-        string result;
-        JsonSerializer ().WriteToString (current_positions, false, result);
-        SchanaPartyUtils.LogMessage ("Positions " + result);
         foreach (string party_id, vector position : current_positions) {
             if (!m_SchanaNametags.Get (party_id)) {
-                Print ("[SchanaParty] Adding nametag " + party_id);
+                SchanaPartyUtils.LogMessage ("Adding nametag " + party_id);
                 m_SchanaNametags[party_id] = new SchanaPartyNametagsMenu (null);
             }
             m_SchanaNametags[party_id].SchanaPartyUpdatePosition (position);
@@ -173,7 +127,7 @@ class SchanaPartyManagerClient {
         auto member_ids = m_SchanaNametags.GetKeyArray ();
         foreach (auto member_id : member_ids) {
             if (!current_positions.Get (member_id)) {
-                Print ("[SchanaParty] Removing nametag " + member_id);
+                SchanaPartyUtils.LogMessage ("Removing nametag " + member_id);
                 m_SchanaNametags[member_id].SchanaPartySetRemoveFlag ();
                 m_SchanaNametags.Remove (member_id);
             }
@@ -210,13 +164,13 @@ class SchanaPartyManagerClient {
     }
 
     void AddPlayerToParty (string id) {
-        Print ("[SchanaParty] AddPlayerToParty " + id);
+        SchanaPartyUtils.LogMessage ("AddPlayerToParty " + id);
         GetSchanaPartySettings ().Add (id, GetOnlinePlayers ().Get (id));
         hasRegistered = false;
     }
 
     void RemovePlayerFromParty (string id) {
-        Print ("[SchanaParty] RemovePlayerFromParty " + id);
+        SchanaPartyUtils.LogMessage ("RemovePlayerFromParty " + id);
         GetSchanaPartySettings ().Remove (id);
         positions.Get ().Remove (id);
         hasRegistered = false;

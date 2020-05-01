@@ -1,24 +1,40 @@
 class SchanaPartyManagerServer {
 	private ref map<ref string, ref set<ref string>> configurations;
 	private bool canSendInfo = true;
-	private bool schanaDebug = false;
 
 	void SchanaPartyManagerServer () {
-		Print ("[SchanaParty] Server Init " + MissionBase.SCHANA_PARTY_VERSION);
+		SchanaPartyUtils.LogMessage ("Server Init " + MissionBase.SCHANA_PARTY_VERSION);
 		configurations = new ref map<ref string, ref set<ref string>> ();
 		GetRPCManager ().AddRPC ("SchanaModParty", "ServerRegisterPartyRPC", this, SingleplayerExecutionType.Both);
 
 		GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).CallLater (this.SendInfo, 10000, true);
 		GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).CallLater (this.ResetSendInfoLock, 1000, true);
+
+		int logFrequency = GetSchanaPartyServerSettings ().GetLogFrequency ();
+		if (logFrequency > 0) {
+			GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).CallLater (this.LogParties, logFrequency * 1000, true);
+		}
 	}
 
 	void ~SchanaPartyManagerServer () {
 		GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).Remove (this.SendInfo);
 		GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).Remove (this.ResetSendInfoLock);
+
+		int logFrequency = GetSchanaPartyServerSettings ().GetLogFrequency ();
+		if (logFrequency > 0) {
+			GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).Remove (this.LogParties);
+		}
 	}
 
 	void ResetSendInfoLock () {
 		canSendInfo = true;
+	}
+
+	void LogParties () {
+		string result;
+		auto parties = GetParties ();
+		JsonSerializer ().WriteToString (parties, false, result);
+		SchanaPartyUtils.Warn ("Parties " + result);
 	}
 
 	void ServerRegisterPartyRPC (CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target) {
@@ -26,17 +42,17 @@ class SchanaPartyManagerServer {
 		if (!ctx.Read (data))
 			return;
 
-		if (schanaDebug) {
+		if (SchanaPartyUtils.WillLog (SchanaPartyUtils.DEBUG)) {
 			string result;
 			JsonSerializer ().WriteToString (data, false, result);
-			SchanaPartyUtils.LogMessage ("ServerRegisterPartyRPC " + result);
+			SchanaPartyUtils.Debug ("ServerRegisterPartyRPC " + result);
 		}
 
 		ServerRegisterParty (data.param1, data.param2);
 	}
 
 	void ServerRegisterParty (string key, ref array<ref string> ids) {
-		Print ("[SchanaParty] Register " + ids.Count ().ToString () + " to " + key);
+		SchanaPartyUtils.Info ("Register " + ids.Count ().ToString () + " to " + key);
 		auto party_members = new ref set<ref string> ();
 		foreach (string id : ids) {
 			party_members.Insert (id);
@@ -44,16 +60,16 @@ class SchanaPartyManagerServer {
 
 		string result;
 
-		if (schanaDebug) {
+		if (SchanaPartyUtils.WillLog (SchanaPartyUtils.TRACE)) {
 			JsonSerializer ().WriteToString (configurations, false, result);
-			SchanaPartyUtils.LogMessage ("ServerRegisterParty Before " + result);
+			SchanaPartyUtils.Trace ("ServerRegisterParty Before " + result);
 		}
 
 		configurations.Set (key, party_members);
 
-		if (schanaDebug) {
+		if (SchanaPartyUtils.WillLog (SchanaPartyUtils.TRACE)) {
 			JsonSerializer ().WriteToString (configurations, false, result);
-			SchanaPartyUtils.LogMessage ("ServerRegisterParty After " + result);
+			SchanaPartyUtils.Trace ("ServerRegisterParty After " + result);
 		}
 
 		SendInfo ();
@@ -89,12 +105,6 @@ class SchanaPartyManagerServer {
 			}
 		}
 
-		if (schanaDebug) {
-			positions.Insert ("a", "4500 350 10000" + Vector (Math.RandomFloat (-100, 100), 0, 0));
-			positions.Insert ("b", "4500 100 12000" + Vector (Math.RandomFloat (-100, 100), 0, 0));
-			positions.Insert ("c", "4500 200 8000" + Vector (Math.RandomFloat (-100, 100), 0, 0));
-		}
-
 		return positions;
 	}
 
@@ -110,18 +120,11 @@ class SchanaPartyManagerServer {
 			}
 		}
 
-		if (schanaDebug) {
-			healths.Insert ("a", 100);
-			healths.Insert ("b", 10);
-			healths.Insert ("c", 42);
-		}
-
 		return healths;
 	}
 
 	void SendInfo () {
 		if (canSendInfo) {
-			Print ("[SchanaParty] SendInfo");
 			auto id_map = new ref map<ref string, ref PlayerBase> ();
 
 			MissionServer mission = MissionServer.Cast (GetGame ().GetMission ());
@@ -141,17 +144,20 @@ class SchanaPartyManagerServer {
 	}
 
 	void SendPartyInfo (ref map<ref string, ref PlayerBase> id_map) {
-		string result;
+
 		auto positions = GetPositions ();
 		auto server_healths = GetHealths ();
 		auto parties = GetParties ();
 
-		JsonSerializer ().WriteToString (positions, false, result);
-		SchanaPartyUtils.LogMessage ("Positions " + result);
-		JsonSerializer ().WriteToString (server_healths, false, result);
-		SchanaPartyUtils.LogMessage ("Healths " + result);
-		JsonSerializer ().WriteToString (parties, false, result);
-		SchanaPartyUtils.LogMessage ("Parties " + result);
+		if (SchanaPartyUtils.WillLog (SchanaPartyUtils.DEBUG)) {
+			string result;
+			JsonSerializer ().WriteToString (positions, false, result);
+			SchanaPartyUtils.Debug ("Positions " + result);
+			JsonSerializer ().WriteToString (server_healths, false, result);
+			SchanaPartyUtils.Debug ("Healths " + result);
+			JsonSerializer ().WriteToString (parties, false, result);
+			SchanaPartyUtils.Debug ("Parties " + result);
+		}
 
 		foreach (auto id, auto party_ids : parties) {
 			if (!positions.Get (id)) {
@@ -169,12 +175,12 @@ class SchanaPartyManagerServer {
 				}
 				auto info = new Param3<ref array<ref string>, ref array<ref vector>, ref array<ref float>> (ids, locations, healths);
 
-				JsonSerializer ().WriteToString (info, false, result);
-				SchanaPartyUtils.LogMessage ("SendInfo to " + id + " " + result);
-
-				if (!schanaDebug || (id != "a" && id != "b" && id != "c")) {
-					GetRPCManager ().SendRPC ("SchanaModParty", "ClientUpdatePartyInfoRPC", info, false, id_map.Get (id).GetIdentity ());
+				if (SchanaPartyUtils.WillLog (SchanaPartyUtils.TRACE)) {
+					JsonSerializer ().WriteToString (info, false, result);
+					SchanaPartyUtils.Trace ("SendInfo to " + id + " " + result);
 				}
+
+				GetRPCManager ().SendRPC ("SchanaModParty", "ClientUpdatePartyInfoRPC", info, false, id_map.Get (id).GetIdentity ());
 			}
 		}
 	}
@@ -187,24 +193,13 @@ class SchanaPartyManagerServer {
 			all_player_names.Insert (player_base_player.GetIdentity ().GetName ());
 		}
 
-		if (schanaDebug) {
-			all_player_ids.Insert ("a");
-			all_player_ids.Insert ("b");
-			all_player_ids.Insert ("c");
-			all_player_names.Insert ("Schana");
-			all_player_names.Insert ("CarimSurvivor");
-			all_player_names.Insert ("cnofafva");
-			for (int i = 10; i < 15; ++i) {
-				all_player_ids.Insert ("id" + i.ToString ());
-				all_player_names.Insert ("player " + i.ToString ());
-			}
-		}
-
 		auto all_player_info = new Param2<ref array<ref string>, ref array<ref string>> (all_player_ids, all_player_names);
 
-		string result;
-		JsonSerializer ().WriteToString (all_player_info, false, result);
-		SchanaPartyUtils.LogMessage ("SendPlayers " + result);
+		if (SchanaPartyUtils.WillLog (SchanaPartyUtils.TRACE)) {
+			string result;
+			JsonSerializer ().WriteToString (all_player_info, false, result);
+			SchanaPartyUtils.Trace ("SendPlayers " + result);
+		}
 
 		GetRPCManager ().SendRPC ("SchanaModParty", "ClientUpdatePlayersInfoRPC", all_player_info);
 	}

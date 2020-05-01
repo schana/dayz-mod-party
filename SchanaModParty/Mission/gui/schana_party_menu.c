@@ -66,7 +66,7 @@ class SchanaPartyMenu extends UIScriptedMenu {
 					break;
 				}
 				m_SchanaPartyPlayerList.GetItemData (selectedRow, 0, id);
-				Print ("[SchanaParty] Menu add " + id.param1);
+				SchanaPartyUtils.LogMessage ("Menu add " + id.param1);
 				GetSchanaPartyManagerClient ().AddPlayerToParty (id.param1);
 				SchanaPartyUpdateLists ();
 				break;
@@ -77,7 +77,7 @@ class SchanaPartyMenu extends UIScriptedMenu {
 					break;
 				}
 				m_SchanaPartyPartyList.GetItemData (selectedRow, 0, id);
-				Print ("[SchanaParty] Menu remove " + id.param1);
+				SchanaPartyUtils.LogMessage ("Menu remove " + id.param1);
 				GetSchanaPartyManagerClient ().RemovePlayerFromParty (id.param1);
 				SchanaPartyUpdateLists ();
 				m_SchanaPartyPartyList.SelectRow (selectedRow - 1);
