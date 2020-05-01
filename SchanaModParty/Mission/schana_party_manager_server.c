@@ -8,7 +8,7 @@ class SchanaPartyManagerServer {
 		GetRPCManager ().AddRPC ("SchanaModParty", "ServerRegisterPartyRPC", this, SingleplayerExecutionType.Both);
 
 		GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).CallLater (this.SendInfo, 10000, true);
-		GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).CallLater (this.ResetSendInfoLock, 1000, true);
+		GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).CallLater (this.ResetSendInfoLock, GetSchanaPartyServerSettings ().GetSendInfoFrequency () * 1000, true);
 
 		int logFrequency = GetSchanaPartyServerSettings ().GetLogFrequency ();
 		if (logFrequency > 0) {
@@ -159,6 +159,8 @@ class SchanaPartyManagerServer {
 			SchanaPartyUtils.Debug ("Parties " + result);
 		}
 
+		int maxPartySize = GetSchanaPartyServerSettings ().GetMaxPartySize ();
+
 		foreach (auto id, auto party_ids : parties) {
 			if (!positions.Get (id)) {
 				configurations.Remove (id);
@@ -167,7 +169,7 @@ class SchanaPartyManagerServer {
 				auto locations = new ref array<ref vector>;
 				auto healths = new ref array<ref float>;
 				foreach (string party_id : party_ids) {
-					if (positions.Contains (party_id)) {
+					if (positions.Contains (party_id) && (maxPartySize < 0 || ids.Count () < maxPartySize)) {
 						ids.Insert (party_id);
 						locations.Insert (positions.Get (party_id));
 						healths.Insert (server_healths.Get (party_id));

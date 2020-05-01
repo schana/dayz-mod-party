@@ -4,6 +4,8 @@ class SchanaModPartyServerSettings {
 
     private int logPartiesFrequencySeconds = 10;
     private int verbosity = 1;
+    private int maxPartySize = -1;
+    private int sendInfoFrequencySeconds = 2;
 
     int GetLogFrequency () {
         return logPartiesFrequencySeconds;
@@ -11,6 +13,14 @@ class SchanaModPartyServerSettings {
 
     int GetVerbosity () {
         return verbosity;
+    }
+
+    int GetMaxPartySize () {
+        return maxPartySize;
+    }
+
+    int GetSendInfoFrequency () {
+        return sendInfoFrequencySeconds;
     }
 
     void Save () {
