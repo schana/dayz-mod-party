@@ -152,7 +152,9 @@ class SchanaPartyManagerClient {
         sortingMap.Clear ();
         auto member_ids = m_SchanaNametags.GetKeyArray ();
         foreach (auto sorting_id : member_ids) {
-            sortingMap.Insert (GetSchanaPartySettings ().GetName (sorting_id).ToLower () + sorting_id, sorting_id);
+            string name = GetSchanaPartySettings ().GetName (sorting_id);
+            name.ToLower ();
+            sortingMap.Insert (name + sorting_id, sorting_id);
         }
         auto sorted_keys = sortingMap.GetKeyArray ();
         sorted_keys.Sort ();
