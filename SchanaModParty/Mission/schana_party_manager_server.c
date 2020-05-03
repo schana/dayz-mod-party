@@ -26,11 +26,11 @@ class SchanaPartyManagerServer {
 		}
 	}
 
-	void ResetSendInfoLock () {
+	private void ResetSendInfoLock () {
 		canSendInfo = true;
 	}
 
-	void LogParties () {
+	private void LogParties () {
 		string result;
 		auto parties = GetParties ();
 		JsonSerializer ().WriteToString (parties, false, result);
@@ -51,7 +51,7 @@ class SchanaPartyManagerServer {
 		ServerRegisterParty (data.param1, data.param2);
 	}
 
-	void ServerRegisterParty (string key, ref array<ref string> ids) {
+	private void ServerRegisterParty (string key, ref array<ref string> ids) {
 		SchanaPartyUtils.Info ("Register " + ids.Count ().ToString () + " to " + key);
 		auto party_members = new ref set<ref string> ();
 		foreach (string id : ids) {
@@ -82,7 +82,7 @@ class SchanaPartyManagerServer {
 			auto validated_party_ids = new ref set<ref string> ();
 
 			foreach (string member_id : party_ids) {
-				if (configurations.Get (member_id) && configurations.Get (member_id).Find (owner_id) != -1) {
+				if (configurations.Contains (member_id) && configurations.Get (member_id).Find (owner_id) != -1) {
 					validated_party_ids.Insert (member_id);
 				}
 			}
@@ -123,7 +123,7 @@ class SchanaPartyManagerServer {
 		return healths;
 	}
 
-	void SendInfo () {
+	private void SendInfo () {
 		if (canSendInfo) {
 			auto id_map = new ref map<ref string, ref PlayerBase> ();
 
@@ -143,7 +143,7 @@ class SchanaPartyManagerServer {
 		}
 	}
 
-	void SendPartyInfo (ref map<ref string, ref PlayerBase> id_map) {
+	private void SendPartyInfo (ref map<ref string, ref PlayerBase> id_map) {
 
 		auto positions = GetPositions ();
 		auto server_healths = GetHealths ();
@@ -162,32 +162,43 @@ class SchanaPartyManagerServer {
 		int maxPartySize = GetSchanaPartyServerSettings ().GetMaxPartySize ();
 
 		foreach (auto id, auto party_ids : parties) {
-			if (!positions.Get (id)) {
+			SchanaPartyUtils.Trace ("SendInfo Begin " + id);
+			if (!positions.Contains (id)) {
 				configurations.Remove (id);
 			} else {
-				auto ids = new ref array<ref string>;
-				auto locations = new ref array<ref vector>;
-				auto healths = new ref array<ref float>;
-				foreach (string party_id : party_ids) {
-					if (positions.Contains (party_id) && (maxPartySize < 0 || ids.Count () < maxPartySize)) {
-						ids.Insert (party_id);
-						locations.Insert (positions.Get (party_id));
-						healths.Insert (server_healths.Get (party_id));
-					}
-				}
-				auto info = new Param3<ref array<ref string>, ref array<ref vector>, ref array<ref float>> (ids, locations, healths);
-
-				if (SchanaPartyUtils.WillLog (SchanaPartyUtils.TRACE)) {
-					JsonSerializer ().WriteToString (info, false, result);
-					SchanaPartyUtils.Trace ("SendInfo to " + id + " " + result);
-				}
-
-				GetRPCManager ().SendRPC ("SchanaModParty", "ClientUpdatePartyInfoRPC", info, false, id_map.Get (id).GetIdentity ());
+				SendPartyInfoToPlayer (id, party_ids, maxPartySize, positions, server_healths, id_map.Get (id));
 			}
+			SchanaPartyUtils.Trace ("SendInfo End " + id);
 		}
 	}
 
-	void SendPlayersInfo (ref map<ref string, ref PlayerBase> id_map) {
+	private void SendPartyInfoToPlayer (string id, ref set<ref string> party_ids, int maxPartySize, ref map<ref string, ref vector> positions, ref map<ref string, ref float> server_healths, PlayerBase player) {
+		auto ids = new ref array<ref string>;
+		auto locations = new ref array<ref vector>;
+		auto healths = new ref array<ref float>;
+		foreach (string party_id : party_ids) {
+			if (positions.Contains (party_id) && (maxPartySize < 0 || ids.Count () < maxPartySize)) {
+				ids.Insert (party_id);
+				locations.Insert (positions.Get (party_id));
+				healths.Insert (server_healths.Get (party_id));
+			}
+		}
+		auto info = new ref Param3<ref array<ref string>, ref array<ref vector>, ref array<ref float>> (ids, locations, healths);
+
+		if (SchanaPartyUtils.WillLog (SchanaPartyUtils.DEBUG)) {
+			string result;
+			JsonSerializer ().WriteToString (info, false, result);
+			SchanaPartyUtils.Debug ("SendInfo to " + id + " " + result);
+		}
+
+		if (player && player.GetIdentity ()) {
+			GetRPCManager ().SendRPC ("SchanaModParty", "ClientUpdatePartyInfoRPC", info, false, player.GetIdentity ());
+		} else {
+			SchanaPartyUtils.Warn ("SendInfo failed to " + id);
+		}
+	}
+
+	private void SendPlayersInfo (ref map<ref string, ref PlayerBase> id_map) {
 		auto all_player_ids = new ref array<ref string>;
 		auto all_player_names = new ref array<ref string>;
 		foreach (auto player_id, auto player_base_player : id_map) {
@@ -195,12 +206,12 @@ class SchanaPartyManagerServer {
 			all_player_names.Insert (player_base_player.GetIdentity ().GetName ());
 		}
 
-		auto all_player_info = new Param2<ref array<ref string>, ref array<ref string>> (all_player_ids, all_player_names);
+		auto all_player_info = new ref Param2<ref array<ref string>, ref array<ref string>> (all_player_ids, all_player_names);
 
-		if (SchanaPartyUtils.WillLog (SchanaPartyUtils.TRACE)) {
+		if (SchanaPartyUtils.WillLog (SchanaPartyUtils.DEBUG)) {
 			string result;
 			JsonSerializer ().WriteToString (all_player_info, false, result);
-			SchanaPartyUtils.Trace ("SendPlayers " + result);
+			SchanaPartyUtils.Debug ("SendPlayers " + result);
 		}
 
 		GetRPCManager ().SendRPC ("SchanaModParty", "ClientUpdatePlayersInfoRPC", all_player_info);
