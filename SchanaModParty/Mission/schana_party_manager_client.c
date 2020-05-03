@@ -111,7 +111,7 @@ class SchanaPartyManagerClient {
         auto current_positions = positions.Get ();
 
         foreach (string party_id, vector position : current_positions) {
-            if (!m_SchanaNametags.Get (party_id)) {
+            if (!m_SchanaNametags.Contains (party_id)) {
                 SchanaPartyUtils.LogMessage ("Adding nametag " + party_id);
                 m_SchanaNametags[party_id] = new SchanaPartyNametagsMenu (null);
             }
@@ -126,7 +126,7 @@ class SchanaPartyManagerClient {
 
         auto member_ids = m_SchanaNametags.GetKeyArray ();
         foreach (auto member_id : member_ids) {
-            if (!current_positions.Get (member_id)) {
+            if (!current_positions.Contains (member_id)) {
                 SchanaPartyUtils.LogMessage ("Removing nametag " + member_id);
                 m_SchanaNametags[member_id].SchanaPartySetRemoveFlag ();
                 m_SchanaNametags.Remove (member_id);
@@ -141,7 +141,7 @@ class SchanaPartyManagerClient {
             PlayerBase player = PlayerBase.Cast (man);
             if (player && player.GetIdentity ()) {
                 string id = player.GetIdentity ().GetId ();
-                if (current_positions.Get (id) && id != activePlayerId) {
+                if (current_positions.Contains (id) && id != activePlayerId) {
                     m_SchanaNametags[id].SchanaPartyUpdatePlayer (player);
                 }
             }
@@ -152,7 +152,9 @@ class SchanaPartyManagerClient {
         sortingMap.Clear ();
         auto member_ids = m_SchanaNametags.GetKeyArray ();
         foreach (auto sorting_id : member_ids) {
-            sortingMap.Insert (GetSchanaPartySettings ().GetName (sorting_id) + sorting_id, sorting_id);
+            string name = GetSchanaPartySettings ().GetName (sorting_id);
+            name.ToLower ();
+            sortingMap.Insert (name + sorting_id, sorting_id);
         }
         auto sorted_keys = sortingMap.GetKeyArray ();
         sorted_keys.Sort ();

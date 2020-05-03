@@ -1,4 +1,5 @@
 FrameWidgetClass rootFrame {
+ ignorepointer 1
  position 0 0
  size 1 1
  hexactpos 0
@@ -7,6 +8,7 @@ FrameWidgetClass rootFrame {
  vexactsize 0
  {
   PanelWidgetClass SchanaPartyManagerWidget {
+   ignorepointer 1
    position 0.3 0.1
    size 0.4 0.8
    hexactpos 0
@@ -26,6 +28,7 @@ FrameWidgetClass rootFrame {
      vexactsize 0
      {
       TextWidgetClass TitlePlayers {
+       ignorepointer 1
        position 0 0
        size 0.49 0.04
        hexactpos 0
@@ -38,6 +41,7 @@ FrameWidgetClass rootFrame {
        "text valign" center
       }
       TextWidgetClass TitleParty {
+       ignorepointer 1
        position 0.51 0
        size 0.49 0.04
        hexactpos 0

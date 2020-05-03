@@ -102,6 +102,7 @@ class SchanaPartyMenu extends UIScriptedMenu {
 		auto members = GetSchanaPartySettings ().GetMembers ();
 		foreach (auto id : members) {
 			member_name = GetSchanaPartySettings ().GetName (id);
+			member_name.ToLower ();
 			member_sorting_map.Insert (member_name + id, id);
 		}
 
@@ -134,6 +135,7 @@ class SchanaPartyMenu extends UIScriptedMenu {
 
 		auto onlinePlayers = GetSchanaPartyManagerClient ().GetOnlinePlayers ();
 		foreach (auto id, auto player_name : onlinePlayers) {
+			player_name.ToLower ();
 			member_sorting_map.Insert (player_name + id, id);
 		}
 
