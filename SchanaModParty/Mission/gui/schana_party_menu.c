@@ -11,7 +11,6 @@ class SchanaPartyMenu extends UIScriptedMenu {
 
 	void SchanaPartyMenu () {
 		member_sorting_map = new map<string, string> ();
-		GetGame ().GetCallQueue (CALL_CATEGORY_GUI).CallLater (this.SchanaPartyUpdatePartyStatus, 200, true);
 	}
 
 	override Widget Init () {
@@ -38,21 +37,25 @@ class SchanaPartyMenu extends UIScriptedMenu {
 		g_Game.GetUIManager ().ShowUICursor (false);
 		GetGame ().GetInput ().ResetGameFocus ();
 		GetGame ().GetMission ().PlayerControlEnable (false);
-		GetGame ().GetMission ().GetHud ().Show (true);
 
 		if (layoutRoot) {
 			layoutRoot.Unlink ();
 		}
 	}
 
+	override void OnShow () {
+		super.OnShow ();
+		GetGame ().GetCallQueue (CALL_CATEGORY_GUI).CallLater (this.SchanaPartyUpdatePartyStatus, 200, true);
+	}
+
 	override void OnHide () {
 		super.OnHide ();
+		GetGame ().GetCallQueue (CALL_CATEGORY_GUI).Remove (this.SchanaPartyUpdatePartyStatus);
 
 		g_Game.GetUIManager ().ShowCursor (true);
 		g_Game.GetUIManager ().ShowUICursor (false);
 		GetGame ().GetInput ().ResetGameFocus ();
 		GetGame ().GetMission ().PlayerControlEnable (false);
-		GetGame ().GetMission ().GetHud ().Show (true);
 	}
 
 	override bool OnClick (Widget w, int x, int y, int button) {

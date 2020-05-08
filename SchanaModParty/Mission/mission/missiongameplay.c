@@ -41,16 +41,14 @@ modded class MissionGameplay extends MissionBase {
     }
 
     private void SchanaPartyLockControls () {
-        GetGame ().GetMission ().PlayerControlDisable (INPUT_EXCLUDE_ALL);
+        GetGame ().GetMission ().PlayerControlDisable (INPUT_EXCLUDE_MOUSE_ALL);
         GetGame ().GetUIManager ().ShowUICursor (true);
-        GetGame ().GetMission ().GetHud ().Show (false);
     }
 
     private void SchanaPartyUnlockControls () {
         GetGame ().GetMission ().PlayerControlEnable (false);
         GetGame ().GetInput ().ResetGameFocus ();
         GetGame ().GetUIManager ().ShowUICursor (false);
-        GetGame ().GetMission ().GetHud ().Show (true);
     }
 }
 
