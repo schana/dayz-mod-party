@@ -1,36 +1,53 @@
 class SchanaModPartySettings {
     private static string DIR = "$profile:SchanaModParty";
-    private static string PATH = DIR + "\\config.json";
+    private static string PATH = DIR + "\\config_1.json";
 
-    private ref map<ref string, ref string> players;
+    private ref array<ref string> players;
+    private ref array<ref string> names;
 
     void SchanaModPartySettings () {
-        players = new ref map<ref string, ref string> ();
+        players = new ref array<ref string> ();
+        names = new ref array<ref string> ();
     }
 
     void Add (string id, string name) {
-        players.Set (id, name);
+        int index = players.Find (id);
+        if (index == -1) {
+            players.Insert (id);
+            names.Insert (name);
+        } else {
+            names.Set (index, name);
+        }
         Save ();
     }
 
     void Remove (string id) {
-        players.Remove (id);
+        int index = players.Find (id);
+        if (index != -1) {
+            players.Remove (index);
+            names.Remove (index);
+        }
         Save ();
     }
 
     string GetName (string id) {
-        return players.Get (id);
+        int index = players.Find (id);
+        if (index != -1) {
+            return names.Get (index);
+        }
+        return "";
     }
 
     bool Contains (string id) {
-        return players.Contains (id);
+        int index = players.Find (id);
+        return index != -1;
     }
 
     ref array<ref string> GetMembers () {
         auto members = new ref array<ref string> ();
 
-        foreach (string key, string item : players) {
-            members.Insert (key);
+        for (int i = 0; i < players.Count (); ++i) {
+            members.Insert (players.Get (i));
         }
 
         return members;
