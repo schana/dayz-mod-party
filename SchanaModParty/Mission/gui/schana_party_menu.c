@@ -30,13 +30,12 @@ class SchanaPartyMenu extends UIScriptedMenu {
 	}
 
 	void ~SchanaPartyMenu () {
-		GetGame ().GetCallQueue (CALL_CATEGORY_GUI).Remove (this.SchanaPartyUpdatePartyStatus);
+		GetGame ().GetCallQueue (CALL_CATEGORY_GUI).Remove (this.SchanaPartyUpdateLists);
 
 		GetGame ().GetUIManager ().Back ();
 		g_Game.GetUIManager ().ShowCursor (true);
 		g_Game.GetUIManager ().ShowUICursor (false);
 		GetGame ().GetInput ().ResetGameFocus ();
-		GetGame ().GetMission ().PlayerControlEnable (false);
 
 		if (layoutRoot) {
 			layoutRoot.Unlink ();
@@ -45,17 +44,16 @@ class SchanaPartyMenu extends UIScriptedMenu {
 
 	override void OnShow () {
 		super.OnShow ();
-		GetGame ().GetCallQueue (CALL_CATEGORY_GUI).CallLater (this.SchanaPartyUpdatePartyStatus, 200, true);
+		GetGame ().GetCallQueue (CALL_CATEGORY_GUI).CallLater (this.SchanaPartyUpdateLists, 500, true);
 	}
 
 	override void OnHide () {
 		super.OnHide ();
-		GetGame ().GetCallQueue (CALL_CATEGORY_GUI).Remove (this.SchanaPartyUpdatePartyStatus);
+		GetGame ().GetCallQueue (CALL_CATEGORY_GUI).Remove (this.SchanaPartyUpdateLists);
 
 		g_Game.GetUIManager ().ShowCursor (true);
 		g_Game.GetUIManager ().ShowUICursor (false);
 		GetGame ().GetInput ().ResetGameFocus ();
-		GetGame ().GetMission ().PlayerControlEnable (false);
 	}
 
 	override bool OnClick (Widget w, int x, int y, int button) {

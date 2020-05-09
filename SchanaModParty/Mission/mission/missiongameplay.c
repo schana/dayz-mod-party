@@ -3,7 +3,13 @@ modded class MissionGameplay extends MissionBase {
 
     override void OnInit () {
         super.OnInit ();
+        delete g_SchanaPartyManagerClient;
         GetSchanaPartyManagerClient ();
+    }
+
+    override void OnMissionFinish () {
+        delete g_SchanaPartyManagerClient;
+        super.OnMissionFinish ();
     }
 
     override void OnUpdate (float timeslice) {
