@@ -45,7 +45,7 @@ class SchanaPartyManagerServer {
 		if (SchanaPartyUtils.WillLog (SchanaPartyUtils.DEBUG)) {
 			string result;
 			JsonSerializer ().WriteToString (data, false, result);
-			SchanaPartyUtils.Debug ("ServerRegisterPartyRPC " + result);
+			SchanaPartyUtils.Info ("ServerRegisterPartyRPC " + result);
 		}
 
 		ServerRegisterParty (data.param1, data.param2);
@@ -188,7 +188,7 @@ class SchanaPartyManagerServer {
 		if (SchanaPartyUtils.WillLog (SchanaPartyUtils.DEBUG)) {
 			string result;
 			JsonSerializer ().WriteToString (info, false, result);
-			SchanaPartyUtils.Debug ("SendInfo to " + id + " " + result);
+			SchanaPartyUtils.Info ("SendInfo to " + id + " " + result);
 		}
 
 		if (player && player.GetIdentity ()) {
