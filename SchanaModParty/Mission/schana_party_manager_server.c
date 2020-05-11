@@ -42,7 +42,7 @@ class SchanaPartyManagerServer {
 		if (!ctx.Read (data))
 			return;
 
-		if (SchanaPartyUtils.WillLog (SchanaPartyUtils.DEBUG)) {
+		if (SchanaPartyUtils.WillLog (SchanaPartyUtils.INFO)) {
 			string result;
 			JsonSerializer ().WriteToString (data, false, result);
 			SchanaPartyUtils.Info ("ServerRegisterPartyRPC " + result);
@@ -75,7 +75,7 @@ class SchanaPartyManagerServer {
 		SendInfo ();
 	}
 
-	private ref map<ref string, ref set<ref string>> GetParties () {
+	ref map<ref string, ref set<ref string>> GetParties () {
 		auto parties = new ref map<ref string, ref set<ref string>> ();
 
 		foreach (auto owner_id, auto party_ids : configurations) {
@@ -187,7 +187,7 @@ class SchanaPartyManagerServer {
 		}
 		auto info = new ref Param3<ref array<ref string>, ref array<ref vector>, ref array<ref float>> (ids, locations, healths);
 
-		if (SchanaPartyUtils.WillLog (SchanaPartyUtils.DEBUG)) {
+		if (SchanaPartyUtils.WillLog (SchanaPartyUtils.INFO)) {
 			string result;
 			JsonSerializer ().WriteToString (info, false, result);
 			SchanaPartyUtils.Info ("SendInfo to " + id + " " + result);
