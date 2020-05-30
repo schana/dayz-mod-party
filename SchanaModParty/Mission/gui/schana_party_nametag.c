@@ -1,8 +1,10 @@
 class SchanaPartyNametagsMenu extends UIScriptedMenu {
     static string SCHANA_PARTY_NAMETAG_DELETE = "SCHANA_PARTY_NAMETAG_DELETE";
 
-    private Widget m_SchanaPartyNametagRootWidget;
-    private TextWidget m_SchanaPartyNametagTextWidget;
+    private Widget m_SchanaPartyNametagRoot;
+    private TextWidget m_SchanaPartyNametagNametag;
+    private TextWidget m_SchanaPartyNametagDistance;
+    private ImageWidget m_SchanaPartyNametagIcon;
 
     private Widget m_SchanaPartyListRootWidget;
     private ref array<ImageWidget> m_SchanaPartyListHealthWidgets;
@@ -15,8 +17,10 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu {
     private int m_SchanaPartyListIndex = 0;
 
     void SchanaPartyNametagsMenu (PlayerBase player) {
-        m_SchanaPartyNametagRootWidget = GetGame ().GetWorkspace ().CreateWidgets ("SchanaModParty/GUI/Layouts/nametag.layout");
-        m_SchanaPartyNametagTextWidget = TextWidget.Cast (m_SchanaPartyNametagRootWidget);
+        m_SchanaPartyNametagRoot = GetGame ().GetWorkspace ().CreateWidgets ("SchanaModParty/GUI/Layouts/nametag.layout");
+        m_SchanaPartyNametagNametag = TextWidget.Cast (m_SchanaPartyNametagRoot.FindAnyWidget ("nametag"));
+        m_SchanaPartyNametagDistance = TextWidget.Cast (m_SchanaPartyNametagRoot.FindAnyWidget ("distance"));
+        m_SchanaPartyNametagIcon = ImageWidget.Cast (m_SchanaPartyNametagRoot.FindAnyWidget ("icon"));
         m_SchanaPartyNametagRootWidget.Show (false);
 
         m_SchanaPartyListRootWidget = GetGame ().GetWorkspace ().CreateWidgets ("SchanaModParty/GUI/Layouts/party.layout");
@@ -115,7 +119,7 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu {
         vector position = SchanaPartyGetPlayerPosition ();
         vector screenPosition = GetGame ().GetScreenPos (position + "0 1.3 0");
 
-        x = Math.Round (screenPosition[0]) - 40;
+        x = Math.Round (screenPosition[0]);
         y = Math.Round (screenPosition[1]);
         m_SchanaPartyNametagRootWidget.SetPos (x, y);
 
@@ -125,7 +129,8 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu {
             distanceString = (Math.Round (distance / 100) / 10).ToString () + "km";
         }
         string text = SchanaPartyGetPlayerName () + " " + distanceString;
-        m_SchanaPartyNametagTextWidget.SetText (text);
+        m_SchanaPartyNametagNametag.SetText (SchanaPartyGetPlayerName ());
+        m_SchanaPartyNametagDistance.SetText (distanceString);
 
         SchanaPartyListUpdate (text);
 
