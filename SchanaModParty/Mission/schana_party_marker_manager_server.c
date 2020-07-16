@@ -2,7 +2,7 @@ class SchanaPartyMarkerManagerServer {
     private ref map<ref string, ref array<ref SchanaPartyMarkerInfo>> markers;
 
     void SchanaPartyMarkerManagerServer () {
-        SchanaPartyUtils.LogMessage ("PartyMarker Server Init " + MissionBase.SCHANA_PARTY_PLUGIN_VPP_MAP_VERSION);
+        SchanaPartyUtils.LogMessage ("PartyMarker Server Init");
         markers = new ref map<ref string, ref array<ref SchanaPartyMarkerInfo>> ();
         GetRPCManager ().AddRPC ("SchanaModParty", "ServerRegisterMarkersRPC", this, SingleplayerExecutionType.Both);
 
@@ -71,7 +71,7 @@ class SchanaPartyMarkerManagerServer {
         }
 
         if (player && player.GetIdentity ()) {
-            GetRPCManager ().SendRPC ("SchanaModPartyPluginVPPMap", "ClientUpdatePartyMarkersRPC", info, false, player.GetIdentity ());
+            GetRPCManager ().SendRPC ("SchanaModParty", "ClientUpdatePartyMarkersRPC", info, false, player.GetIdentity ());
         } else {
             SchanaPartyUtils.Warn ("SendMarkers failed to " + id);
         }

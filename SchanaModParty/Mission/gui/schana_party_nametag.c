@@ -21,7 +21,7 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu {
         m_SchanaPartyNametagNametag = TextWidget.Cast (m_SchanaPartyNametagRoot.FindAnyWidget ("nametag"));
         m_SchanaPartyNametagDistance = TextWidget.Cast (m_SchanaPartyNametagRoot.FindAnyWidget ("distance"));
         m_SchanaPartyNametagIcon = ImageWidget.Cast (m_SchanaPartyNametagRoot.FindAnyWidget ("icon"));
-        m_SchanaPartyNametagRootWidget.Show (false);
+        m_SchanaPartyNametagRoot.Show (false);
 
         m_SchanaPartyListRootWidget = GetGame ().GetWorkspace ().CreateWidgets ("SchanaModParty/GUI/Layouts/party.layout");
         m_SchanaPartyListTextWidget = TextWidget.Cast (m_SchanaPartyListRootWidget.FindAnyWidget ("Nametag"));
@@ -37,9 +37,9 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu {
 
     void ~SchanaPartyNametagsMenu () {
         GetGame ().GetCallQueue (CALL_CATEGORY_GUI).Remove (this.SchanaUpdate);
-        if (m_SchanaPartyNametagRootWidget != null) {
-            m_SchanaPartyNametagRootWidget.Show (false);
-            m_SchanaPartyNametagRootWidget.Unlink ();
+        if (m_SchanaPartyNametagRoot != null) {
+            m_SchanaPartyNametagRoot.Show (false);
+            m_SchanaPartyNametagRoot.Unlink ();
         }
 
         if (m_SchanaPartyListRootWidget != null) {
@@ -51,14 +51,14 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu {
     void SchanaUpdate () {
         if (SchanaPartyNametagShouldShow ()) {
             SchanaPartyNametagUpdate ();
-        } else if (m_SchanaPartyNametagRootWidget != null) {
-            m_SchanaPartyNametagRootWidget.Show (false);
+        } else if (m_SchanaPartyNametagRoot != null) {
+            m_SchanaPartyNametagRoot.Show (false);
             delete this;
         }
     }
 
     private bool SchanaPartyNametagShouldShow () {
-        if (m_SchanaPartyNametagRootWidget == null) {
+        if (m_SchanaPartyNametagRoot == null) {
             return false;
         }
         if (!GetGame ().GetPlayer ()) {
@@ -121,7 +121,7 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu {
 
         x = Math.Round (screenPosition[0]);
         y = Math.Round (screenPosition[1]);
-        m_SchanaPartyNametagRootWidget.SetPos (x, y);
+        m_SchanaPartyNametagRoot.SetPos (x, y);
 
         distance = Math.Round (vector.Distance (position, GetGame ().GetPlayer ().GetPosition ()));
         string distanceString = distance.ToString () + "m";
@@ -134,7 +134,7 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu {
 
         SchanaPartyListUpdate (text);
 
-        m_SchanaPartyNametagRootWidget.Show (SchanaPartyNametagVisibleOnScreen ());
+        m_SchanaPartyNametagRoot.Show (SchanaPartyNametagVisibleOnScreen ());
     }
 
     void SchanaPartyListUpdate (string text) {

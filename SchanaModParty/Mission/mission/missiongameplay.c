@@ -51,16 +51,28 @@ modded class MissionGameplay extends MissionBase {
 
             if (input.LocalPress ("UASchanaPartyPing", false)) {
                 auto marker_client = GetSchanaPartyMarkerManagerClient ();
-                auto new_marker = new SchanaPartyMarkerInfo ((marker_client.markers.Count () + 1).ToString (), "0 0 0");
+                auto new_marker = new SchanaPartyMarkerInfo (marker_client.GetNextName (), SchanaPartyGetRaycastPosition ());
                 marker_client.Add (new_marker);
-                marker_client.Send ();
             }
 
             if (input.LocalPress ("UASchanaPartyPingClear", false)) {
                 GetSchanaPartyMarkerManagerClient ().Reset ();
-                GetSchanaPartyMarkerManagerClient ().Send ();
             }
         }
+    }
+
+    private vector SchanaPartyGetRaycastPosition () {
+        vector begin = GetGame ().GetCurrentCameraPosition ();
+        vector end = begin + GetGame ().GetCurrentCameraDirection () * 8000;
+        vector contactPos;
+        vector contactDir;
+        int contactComponent;
+
+        if (DayZPhysics.RaycastRV (begin, end, contactPos, contactDir, contactComponent)) {
+            return contactPos;
+        }
+
+        return vector.Zero;
     }
 
     private void SchanaPartyLockControls () {

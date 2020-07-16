@@ -1,12 +1,13 @@
 class SchanaPartyMarkerManagerClient {
     private ref array<ref SchanaPartyMarkerInfo> markers;
     private ref array<ref SchanaPartyMarkerInfo> serverMarkers;
-    private bool haveServerMarkersChanged = false;
+    private ref array<ref SchanaPartyMarkerMenu> markerMenus;
 
     void SchanaPartyMarkerManagerClient () {
-        SchanaPartyUtils.LogMessage ("PartyMarker Client Init " + MissionBase.SCHANA_PARTY_PLUGIN_VPP_MAP_VERSION);
+        SchanaPartyUtils.LogMessage ("PartyMarker Client Init");
         markers = new ref array<ref SchanaPartyMarkerInfo>;
         serverMarkers = new ref array<ref SchanaPartyMarkerInfo>;
+        markerMenus = new ref array<ref SchanaPartyMarkerMenu>;
 
         GetRPCManager ().AddRPC ("SchanaModParty", "ClientUpdatePartyMarkersRPC", this, SingleplayerExecutionType.Both);
     }
@@ -22,30 +23,38 @@ class SchanaPartyMarkerManagerClient {
     void ClientUpdatePartyMarkers (ref array<ref SchanaPartyMarkerInfo> newServerMarkers) {
         SchanaPartyUtils.LogMessage ("ClientUpdatePartyMarkers");
         serverMarkers = newServerMarkers;
-        haveServerMarkersChanged = true;
+        int i;
+        for (i = 0; i < markerMenus.Count (); ++i) {
+            if (markerMenus[i]) {
+                markerMenus[i].SchanaPartySetRemoveFlag ();
+            }
+        }
+        for (i = 0; i < serverMarkers.Count (); ++i) {
+            markerMenus.Insert (new SchanaPartyMarkerMenu (serverMarkers[i].GetName (), serverMarkers[i].GetPosition ()));
+        }
+        for (i = 0; i < markers.Count (); ++i) {
+            markerMenus.Insert (new SchanaPartyMarkerMenu (markers[i].GetName (), markers[i].GetPosition ()));
+        }
     }
 
     void Add (SchanaPartyMarkerInfo marker) {
         markers.Insert (marker);
+        Send ();
     }
 
     void Reset () {
         markers.Clear ();
-    }
-
-    bool GetHaveServerMarkersChanged () {
-        return haveServerMarkersChanged;
-    }
-
-    ref array<ref SchanaPartyMarkerInfo> GetServerMarkers () {
-        haveServerMarkersChanged = false;
-        return serverMarkers;
+        Send ();
     }
 
     void Send () {
         SchanaPartyUtils.LogMessage ("SendMarkers");
         auto data = new Param1<ref array<ref SchanaPartyMarkerInfo>> (markers);
         GetRPCManager ().SendRPC ("SchanaModParty", "ServerRegisterMarkersRPC", data);
+    }
+
+    string GetNextName () {
+        return GetGame ().GetPlayer ().GetIdentity ().GetName () + " " + (markers.Count () + 1).ToString ();
     }
 }
 
