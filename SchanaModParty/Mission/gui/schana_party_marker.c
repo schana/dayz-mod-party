@@ -59,7 +59,7 @@ class SchanaPartyMarkerMenu extends UIScriptedMenu {
     void SchanaPartyMarkerUpdate () {
         float x, y, distance;
         vector position = m_SchanaPartyMarkerPosition;
-        vector screenPosition = GetGame ().GetScreenPos (position + "0 1.3 0");
+        vector screenPosition = GetGame ().GetScreenPos (position + "0 0.2 0");
 
         x = Math.Round (screenPosition[0]);
         y = Math.Round (screenPosition[1]);

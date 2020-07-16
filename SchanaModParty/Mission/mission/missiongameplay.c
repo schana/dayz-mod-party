@@ -62,7 +62,7 @@ modded class MissionGameplay extends MissionBase {
     }
 
     private vector SchanaPartyGetRaycastPosition () {
-        vector begin = GetGame ().GetCurrentCameraPosition ();
+        vector begin = GetGame ().GetCurrentCameraPosition () + GetGame ().GetCurrentCameraDirection ();
         vector end = begin + GetGame ().GetCurrentCameraDirection () * 8000;
         vector contactPos;
         vector contactDir;
