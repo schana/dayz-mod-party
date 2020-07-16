@@ -39,11 +39,13 @@ class SchanaPartyMarkerManagerClient {
 
     void Add (SchanaPartyMarkerInfo marker) {
         markers.Insert (marker);
+        ClientUpdatePartyMarkers (serverMarkers);
         Send ();
     }
 
     void Reset () {
         markers.Clear ();
+        ClientUpdatePartyMarkers (serverMarkers);
         Send ();
     }
 
