@@ -50,9 +50,12 @@ modded class MissionGameplay extends MissionBase {
             }
 
             if (input.LocalPress ("UASchanaPartyPing", false)) {
-                auto marker_client = GetSchanaPartyMarkerManagerClient ();
-                auto new_marker = new SchanaPartyMarkerInfo (marker_client.GetNextName (), SchanaPartyGetRaycastPosition ());
-                marker_client.Add (new_marker);
+                vector position = SchanaPartyGetRaycastPosition ();
+                if (position != vector.Zero) {
+                    auto marker_client = GetSchanaPartyMarkerManagerClient ();
+                    auto new_marker = new SchanaPartyMarkerInfo (marker_client.GetNextName (), position);
+                    marker_client.Add (new_marker);
+                }
             }
 
             if (input.LocalPress ("UASchanaPartyPingClear", false)) {
