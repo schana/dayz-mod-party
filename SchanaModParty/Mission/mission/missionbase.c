@@ -1,5 +1,5 @@
 modded class MissionBase {
-    static const string SCHANA_PARTY_VERSION = "1.1.6";
+    static const string SCHANA_PARTY_VERSION = "1.2.0";
 
     override UIScriptedMenu CreateScriptedMenu (int id) {
         UIScriptedMenu menu = NULL;

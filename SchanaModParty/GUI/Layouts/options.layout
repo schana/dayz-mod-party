@@ -1,0 +1,150 @@
+FrameWidgetClass rootFrame {
+ ignorepointer 1
+ position 0 0
+ size 1 1
+ hexactpos 0
+ vexactpos 0
+ hexactsize 0
+ vexactsize 0
+ {
+  PanelWidgetClass SchanaPartyOptionsWidget {
+   visible 1
+   ignorepointer 1
+   position 0.71 0.5
+   size 0.2 0.4
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   style rover_sim_black
+   {
+    GridSpacerWidgetClass GridSpacerWidget4 {
+     ignorepointer 1
+     color 0 0 0 1
+     position 0 0
+     size 0.005 1
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+    }
+    GridSpacerWidgetClass GridSpacerWidget5 {
+     ignorepointer 1
+     color 0 0 0 1
+     position 0.995 0
+     size 0.005 1
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+    }
+    GridSpacerWidgetClass GridSpacerWidget6 {
+     ignorepointer 1
+     color 0 0 0 1
+     position 0 0
+     size 1 0.005
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+    }
+    GridSpacerWidgetClass GridSpacerWidget7 {
+     ignorepointer 1
+     color 0 0 0 1
+     position 0 0.995
+     size 1 0.005
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+    }
+    PanelWidgetClass PanelWidget2 {
+     ignorepointer 1
+     position 0.01 0.01
+     size 0.98 0.98
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     {
+      CheckBoxWidgetClass CheckEnableParty {
+       position 0 0
+       size 1 0.05
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Default
+       text "Enable party"
+      }
+      SliderWidgetClass SliderDistance {
+       position 0 0.2
+       size 1 0.05
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Default
+       maximum 5000
+       step 100
+       current 4000
+      }
+      CheckBoxWidgetClass CheckDistanceHide {
+       position 0 0.3
+       size 1 0.05
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Default
+       text "Hide"
+      }
+      CheckBoxWidgetClass CheckDistanceSnapTop {
+       position 0 0.4
+       size 1 0.05
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Default
+       text "Snap to top"
+      }
+      CheckBoxWidgetClass CheckDistanceSnapBottom {
+       position 0 0.5
+       size 1 0.05
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Default
+       text "Snap to bottom"
+      }
+      XComboBoxWidgetClass SelectNametagStyle {
+       position 0 0.6
+       size 1 0.05
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style Default
+       items "Default;Name only;Verticle;Waypoint;Off"
+      }
+      TextWidgetClass SliderDistanceValue {
+       ignorepointer 1
+       color 0.3529 0.4275 0.7765 1
+       position 0 0.2
+       size 1 0.05
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       text "100m"
+       "text halign" center
+       "text valign" center
+      }
+     }
+    }
+   }
+  }
+ }
+}
