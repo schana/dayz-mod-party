@@ -69,6 +69,8 @@ class SchanaPartyMarkerMenu extends UIScriptedMenu {
         string distanceString = distance.ToString () + "m";
         if (distance > 1000) {
             distanceString = (Math.Round (distance / 100) / 10).ToString () + "km";
+        } else {
+            distanceString = "";
         }
         m_SchanaPartyMarkerNametag.SetText (m_SchanaPartyMarkerName);
         m_SchanaPartyMarkerDistance.SetText (distanceString);
