@@ -2,10 +2,17 @@ class SchanaModPartyServerSettings {
     private static string DIR = "$profile:SchanaModParty";
     private static string PATH = DIR + "\\server-config.json";
 
-    private int logPartiesFrequencySeconds = 10;
-    private int verbosity = 1;
-    private int maxPartySize = -1;
-    private int sendInfoFrequencySeconds = 2;
+    private static const int DEFAULT_LOG_FREQUENCY = 10;
+    private static const int DEFAULT_VERBOSITY = 1;
+    private static const int DEFAULT_MAX_PARTY_SIZE = -1;
+    private static const int DEFAULT_SEND_INFO_FREQUENCY = 2;
+    private static const int DEFAULT_MAX_MARKERS = 10;
+
+    private int logPartiesFrequencySeconds = DEFAULT_LOG_FREQUENCY;
+    private int verbosity = DEFAULT_VERBOSITY;
+    private int maxPartySize = DEFAULT_MAX_PARTY_SIZE;
+    private int sendInfoFrequencySeconds = DEFAULT_SEND_INFO_FREQUENCY;
+    private int maxMarkers = DEFAULT_MAX_MARKERS;
 
     int GetLogFrequency () {
         return logPartiesFrequencySeconds;
@@ -23,6 +30,10 @@ class SchanaModPartyServerSettings {
         return sendInfoFrequencySeconds;
     }
 
+    int GetMaxMarkers () {
+        return maxMarkers;
+    }
+
     void Save () {
         if (GetGame ().IsServer ()) {
             if (!FileExist (DIR)) {
@@ -38,11 +49,31 @@ class SchanaModPartyServerSettings {
 
         if (FileExist (PATH)) {
             JsonFileLoader<SchanaModPartyServerSettings>.JsonLoadFile (PATH, settings);
-        } else {
-            settings.Save ();
         }
 
+        LoadDefaultsIfMissing (settings);
+
+        settings.Save ();
+
         return settings;
+    }
+
+    static void LoadDefaultsIfMissing (SchanaModPartyServerSettings settings) {
+        if (settings.logPartiesFrequencySeconds == 0) {
+            settings.logPartiesFrequencySeconds = DEFAULT_LOG_FREQUENCY;
+        }
+        if (settings.verbosity == 0) {
+            settings.verbosity = DEFAULT_VERBOSITY;
+        }
+        if (settings.maxPartySize == 0) {
+            settings.maxPartySize = DEFAULT_MAX_PARTY_SIZE;
+        }
+        if (settings.sendInfoFrequencySeconds == 0) {
+            settings.sendInfoFrequencySeconds = DEFAULT_SEND_INFO_FREQUENCY;
+        }
+        if (settings.maxMarkers == 0) {
+            settings.maxMarkers = DEFAULT_MAX_MARKERS;
+        }
     }
 }
 
