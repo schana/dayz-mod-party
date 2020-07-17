@@ -2,6 +2,7 @@ class SchanaPartyMarkerManagerClient {
     private ref array<ref SchanaPartyMarkerInfo> markers;
     private ref array<ref SchanaPartyMarkerInfo> serverMarkers;
     private ref array<ref SchanaPartyMarkerMenu> markerMenus;
+    private bool initialized = false;
 
     void SchanaPartyMarkerManagerClient () {
         SchanaPartyUtils.LogMessage ("PartyMarker Client Init");
@@ -10,6 +11,19 @@ class SchanaPartyMarkerManagerClient {
         markerMenus = new ref array<ref SchanaPartyMarkerMenu>;
 
         GetRPCManager ().AddRPC ("SchanaModParty", "ClientUpdatePartyMarkersRPC", this, SingleplayerExecutionType.Both);
+    }
+
+    bool IsInitialized () {
+        return initialized;
+    }
+
+    void Init () {
+        auto positions = GetSchanaPartyMarkerSettings ().GetMarkers ();
+        for (int i = 0; i < positions.Count (); ++i) {
+            markers.Insert (new SchanaPartyMarkerInfo (GetNextName (), positions[i]));
+        }
+        ClientUpdatePartyMarkers (serverMarkers);
+        initialized = true;
     }
 
     void ClientUpdatePartyMarkersRPC (CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target) {
@@ -38,12 +52,14 @@ class SchanaPartyMarkerManagerClient {
     }
 
     void Add (SchanaPartyMarkerInfo marker) {
+        GetSchanaPartyMarkerSettings ().Add (marker.GetPosition ());
         markers.Insert (marker);
         ClientUpdatePartyMarkers (serverMarkers);
         Send ();
     }
 
     void Reset () {
+        GetSchanaPartyMarkerSettings ().Clear ();
         markers.Clear ();
         ClientUpdatePartyMarkers (serverMarkers);
         Send ();

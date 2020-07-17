@@ -18,6 +18,12 @@ modded class MissionGameplay extends MissionBase {
     override void OnUpdate (float timeslice) {
         super.OnUpdate (timeslice);
 
+        Man player = GetGame ().GetPlayer ();
+
+        if (player && !player.IsUnconscious () && !GetSchanaPartyMarkerManagerClient ().IsInitialized ()) {
+            GetSchanaPartyMarkerManagerClient ().Init ();
+        }
+
         if (GetUApi () && !m_UIManager.IsMenuOpen (MENU_CHAT_INPUT)) {
             Input input = GetGame ().GetInput ();
             if (input.LocalPress ("UAUIBack", false)) {
