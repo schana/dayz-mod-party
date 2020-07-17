@@ -16,7 +16,7 @@ FrameWidgetClass rootFrame {
    hexactsize 0
    vexactsize 0
    scaled 1
-   text "Test Nametag Player that is really too long 100m"
+   text ""
    "size to text h" 1
    "text valign" center
   }
@@ -104,6 +104,7 @@ FrameWidgetClass rootFrame {
      "src alpha" 1
     }
     TextWidgetClass TextHealth {
+     visible 0
      clipchildren 1
      ignorepointer 1
      position 0 0
