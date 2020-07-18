@@ -1,5 +1,6 @@
 class SchanaPartyMarkerManagerServer {
     private ref map<ref string, ref array<ref SchanaPartyMarkerInfo>> markers;
+    private bool canSendInfo = true;
 
     void SchanaPartyMarkerManagerServer () {
         SchanaPartyUtils.LogMessage ("PartyMarker Server Init");
@@ -7,10 +8,16 @@ class SchanaPartyMarkerManagerServer {
         GetRPCManager ().AddRPC ("SchanaModParty", "ServerRegisterMarkersRPC", this, SingleplayerExecutionType.Both);
 
         GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).CallLater (this.SendMarkers, 10000, true);
+        GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).CallLater (this.ResetSendInfoLock, GetSchanaPartyServerSettings ().GetSendMarkerFrequency () * 1000, true);
     }
 
     void ~SchanaPartyMarkerManagerServer () {
         GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).Remove (this.SendMarkers);
+        GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).Remove (this.ResetSendInfoLock);
+    }
+
+    private void ResetSendInfoLock () {
+        canSendInfo = true;
     }
 
     void ServerRegisterMarkersRPC (CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target) {
@@ -33,27 +40,33 @@ class SchanaPartyMarkerManagerServer {
             playerMarkers.RemoveOrdered (0);
         }
         markers.Set (id, playerMarkers);
+
+        SendMarkers ();
     }
 
     void SendMarkers () {
-        auto id_map = new ref map<ref string, ref PlayerBase> ();
+        if (canSendInfo) {
+            auto id_map = new ref map<ref string, ref PlayerBase> ();
 
-        MissionServer mission = MissionServer.Cast (GetGame ().GetMission ());
+            MissionServer mission = MissionServer.Cast (GetGame ().GetMission ());
 
-        foreach (Man man : mission.m_Players) {
-            PlayerBase player = PlayerBase.Cast (man);
-            if (player && player.GetIdentity ()) {
-                id_map.Insert (player.GetIdentity ().GetId (), player);
+            foreach (Man man : mission.m_Players) {
+                PlayerBase player = PlayerBase.Cast (man);
+                if (player && player.GetIdentity ()) {
+                    id_map.Insert (player.GetIdentity ().GetId (), player);
+                }
             }
-        }
 
-        auto manager = GetSchanaPartyManagerServer ();
-        auto parties = manager.GetParties ();
+            auto manager = GetSchanaPartyManagerServer ();
+            auto parties = manager.GetParties ();
 
-        foreach (auto id, auto party_ids : parties) {
-            SchanaPartyUtils.Trace ("SendMarkers Begin " + id);
-            SendMarkerInfoToPlayer (id, party_ids, id_map.Get (id));
-            SchanaPartyUtils.Trace ("SendMarkers End " + id);
+            foreach (auto id, auto party_ids : parties) {
+                SchanaPartyUtils.Trace ("SendMarkers Begin " + id);
+                SendMarkerInfoToPlayer (id, party_ids, id_map.Get (id));
+                SchanaPartyUtils.Trace ("SendMarkers End " + id);
+            }
+
+            canSendInfo = false;
         }
     }
 
