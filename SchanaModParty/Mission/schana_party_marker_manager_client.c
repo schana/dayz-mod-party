@@ -75,15 +75,15 @@ class SchanaPartyMarkerManagerClient {
         Send ();
     }
 
-    void Send () {
+    void Send (bool tryAgain = true) {
         if (canSend) {
             SchanaPartyUtils.LogMessage ("SendMarkers");
             auto data = new Param1<ref array<ref SchanaPartyMarkerInfo>> (markers);
             GetRPCManager ().SendRPC ("SchanaModParty", "ServerRegisterMarkersRPC", data);
 
             canSend = false;
-        } else {
-            GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).CallLater (this.Send, 1000);
+        } else if (tryAgain) {
+            GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).CallLater (this.Send, 1200, false, false);
         }
     }
 
