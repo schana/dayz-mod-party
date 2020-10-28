@@ -27,7 +27,6 @@ class SchanaPartyManagerClient {
     }
 
     void RenewRegistration () {
-        SchanaPartyUtils.LogMessage ("RenewRegistration");
         PlayerBase activePlayer = PlayerBase.Cast (GetGame ().GetPlayer ());
 
         if (activePlayer && activePlayer.GetIdentity ()) {
@@ -38,7 +37,6 @@ class SchanaPartyManagerClient {
     }
 
     void ClientUpdatePartyInfoRPC (CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target) {
-        SchanaPartyUtils.LogMessage ("Received Party RPC");
         Param3<ref array<ref string>, ref array<ref vector>, ref array<ref float>> data;
         if (!ctx.Read (data))
             return;
@@ -95,7 +93,6 @@ class SchanaPartyManagerClient {
     }
 
     private void UpdateRegistration (string activePlayerId) {
-        SchanaPartyUtils.LogMessage ("UpdateRegistration");
         auto members = GetSchanaPartySettings ().GetMembers ();
         auto data = new Param2<ref string, ref array<ref string>> (activePlayerId, members);
         GetRPCManager ().SendRPC ("SchanaModParty", "ServerRegisterPartyRPC", data);
