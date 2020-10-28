@@ -1,5 +1,10 @@
 modded class MissionBase {
-    static const string SCHANA_PARTY_VERSION = "1.2.1";
+    static const string SCHANA_PARTY_VERSION = "1.3.0";
+
+    override void OnInit () {
+        super.OnInit ();
+        SchanaPartyBasicMapAPI.Get ();
+    }
 
     override UIScriptedMenu CreateScriptedMenu (int id) {
         UIScriptedMenu menu = NULL;

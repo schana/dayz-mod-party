@@ -95,6 +95,26 @@ class SchanaPartyManagerServer {
 		return parties;
 	}
 
+	ref array<ref PlayerBase> GetPartyPlayers (string id) {
+		auto id_map = new ref map<ref string, ref PlayerBase> ();
+		MissionServer mission = MissionServer.Cast (GetGame ().GetMission ());
+
+		foreach (Man man : mission.m_Players) {
+			PlayerBase player = PlayerBase.Cast (man);
+			if (player && player.GetIdentity ()) {
+				id_map.Insert (player.GetIdentity ().GetId (), player);
+			}
+		}
+
+		auto players = new ref array<ref PlayerBase> ();
+
+		foreach (auto member_id : GetParties ().Get (id)) {
+			players.Insert (id_map.Get (member_id));
+		}
+
+		return players;
+	}
+
 	private ref map<ref string, ref vector> GetPositions () {
 		auto positions = new ref map<ref string, ref vector> ();
 
