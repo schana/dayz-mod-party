@@ -2,6 +2,7 @@ class SchanaPartyBasicMapAPI {
     static const string GROUP_ID_LOCAL = "schanamodparty_local";
     static const string GROUP_ID_REMOTE = "schanamodparty_remote";
     static const string DISPLAY_NAME = "Party";
+    static const string REMOTE_DISPLAY_NAME = "Party Markers";
 
     private static ref SchanaPartyBasicMapAPI api;
 
@@ -35,7 +36,7 @@ class SchanaPartyBasicMapAPI {
 #ifdef BASICMAP
         controller = BasicMap ();
         BasicMapGroupMetaData localMeta = new BasicMapGroupMetaData (GROUP_ID_LOCAL, DISPLAY_NAME, true);
-        BasicMapGroupMetaData remoteMeta = new BasicMapGroupMetaData (GROUP_ID_REMOTE, DISPLAY_NAME, false);
+        BasicMapGroupMetaData remoteMeta = new BasicMapGroupMetaData (GROUP_ID_REMOTE, REMOTE_DISPLAY_NAME, false);
         controller.RegisterGroup (GROUP_ID_LOCAL, localMeta, SchanaPartyLocalMarkerFactory ());
         controller.RegisterGroup (GROUP_ID_REMOTE, remoteMeta, SchanaPartyRemoteMarkerFactory ());
 
@@ -107,7 +108,10 @@ class SchanaPartyBasicMapAPI {
         auto manager = GetSchanaPartyManagerServer ();
 
         foreach (auto player : manager.GetPartyPlayers (id)) {
-            GetRPCManager ().SendRPC ("SchanaModParty", "ClientRegisterBasicMapMarkersRPC", data, false, player);
+			DayZPlayer ply = DayZPlayer.Cast(player);
+			if (ply && ply.GetIdentity() ){
+				GetRPCManager ().SendRPC ("SchanaModParty", "ClientRegisterBasicMapMarkersRPC", data, false, ply.GetIdentity());
+			}
         }
     }
 
@@ -120,7 +124,10 @@ class SchanaPartyBasicMapAPI {
         auto manager = GetSchanaPartyManagerServer ();
 
         foreach (auto player : manager.GetPartyPlayers (id)) {
-            GetRPCManager ().SendRPC ("SchanaModParty", "ClientAddBasicMapMarkerRPC", data, false, player);
+			DayZPlayer ply = DayZPlayer.Cast(player);
+			if (ply && ply.GetIdentity() ){
+				GetRPCManager ().SendRPC ("SchanaModParty", "ClientAddBasicMapMarkerRPC", data, false, ply.GetIdentity());
+			}
         }
     }
 
@@ -133,7 +140,10 @@ class SchanaPartyBasicMapAPI {
         auto manager = GetSchanaPartyManagerServer ();
 
         foreach (auto player : manager.GetPartyPlayers (id)) {
-            GetRPCManager ().SendRPC ("SchanaModParty", "ClientRemoveBasicMapMarkerRPC", data, false, player);
+			DayZPlayer ply = DayZPlayer.Cast(player);
+			if (ply && ply.GetIdentity() ){
+				GetRPCManager ().SendRPC ("SchanaModParty", "ClientRemoveBasicMapMarkerRPC", data, false, ply.GetIdentity());
+			}
         }
     }
 

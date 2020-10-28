@@ -6,7 +6,7 @@ class SchanaPartyManagerClient {
     private ref map<ref string, ref string> sortingMap;
 
     void SchanaPartyManagerClient () {
-        SchanaPartyUtils.LogMessage ("Client Init " + MissionBase.SCHANA_PARTY_VERSION);
+        SchanaPartyUtils.LogMessage ("Client Init " + SCHANA_PARTY_VERSION);
 
         positions = new SchanaPartyPositions ();
         healths = new ref map<ref string, ref float> ();
@@ -27,7 +27,7 @@ class SchanaPartyManagerClient {
     }
 
     void RenewRegistration () {
-        PlayerBase activePlayer = PlayerBase.Cast (GetGame ().GetPlayer ());
+        DayZPlayer activePlayer = DayZPlayer.Cast (GetGame ().GetPlayer ());
 
         if (activePlayer && activePlayer.GetIdentity ()) {
             string activePlayerId = activePlayer.GetIdentity ().GetId ();
@@ -65,7 +65,7 @@ class SchanaPartyManagerClient {
     void ClientUpdatePlayersInfo (ref array<ref string> player_ids, ref array<ref string> player_names) {
         allPlayers.Clear ();
 
-        PlayerBase activePlayer = PlayerBase.Cast (GetGame ().GetPlayer ());
+        DayZPlayer activePlayer = DayZPlayer.Cast (GetGame ().GetPlayer ());
         if (activePlayer && activePlayer.GetIdentity ()) {
             string activePlayerId = activePlayer.GetIdentity ().GetId ();
 
@@ -79,7 +79,7 @@ class SchanaPartyManagerClient {
     }
 
     private void Update () {
-        PlayerBase activePlayer = PlayerBase.Cast (GetGame ().GetPlayer ());
+        DayZPlayer activePlayer = DayZPlayer.Cast (GetGame ().GetPlayer ());
 
         if (activePlayer && activePlayer.GetIdentity ()) {
             string activePlayerId = activePlayer.GetIdentity ().GetId ();
@@ -129,7 +129,7 @@ class SchanaPartyManagerClient {
         auto current_positions = positions.Get ();
 
         foreach (Man man : ClientData.m_PlayerBaseList) {
-            PlayerBase player = PlayerBase.Cast (man);
+            DayZPlayer player = DayZPlayer.Cast (man);
             if (player && player.GetIdentity ()) {
                 string id = player.GetIdentity ().GetId ();
                 if (current_positions.Contains (id) && id != activePlayerId) {
