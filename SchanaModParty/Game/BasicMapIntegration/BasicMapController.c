@@ -3,6 +3,7 @@ modded class BasicMapController {
     override void OnMarkerSave (ref BasicMapMarker marker) {
         switch (marker.GetGroup ()) {
             case SchanaPartyBasicMapAPI.GROUP_ID_LOCAL:
+                SchanaPartyBasicMapAPI.Get ().SendCreatedMarker (marker);
                 break;
             default:
                 break;
@@ -13,8 +14,7 @@ modded class BasicMapController {
     override void OnMarkerDelete (ref BasicMapMarker marker) {
         switch (marker.GetGroup ()) {
             case SchanaPartyBasicMapAPI.GROUP_ID_LOCAL:
-                break;
-            case SchanaPartyBasicMapAPI.GROUP_ID_REMOTE:
+                SchanaPartyBasicMapAPI.Get ().SendDeletedMarker (marker);
                 break;
             default:
                 break;
