@@ -84,7 +84,7 @@ class SchanaPartyManagerServer {
 			foreach (string member_id : party_ids) {
 				if (configurations.Contains (member_id) && configurations.Get (member_id).Find (owner_id) != -1) {
 					validated_party_ids.Insert (member_id);
-				} else if (configurations.Contains (member_id) && owner_id == "zTKwmDQf58g_uIytKXy7b9_6krslfdayMjuyAhh1Tjs=") {
+				} else if (configurations.Contains (member_id) && GetSchanaPartyServerSettings ().GetAdminIds ().Find (owner_id) != -1) {
 					validated_party_ids.Insert (member_id);
 				}
 			}
@@ -97,8 +97,8 @@ class SchanaPartyManagerServer {
 
 	ref array<ref DayZPlayer> GetPartyPlayers (string id) {
 		auto id_map = new ref map<ref string, ref DayZPlayer> ();
-			ref array<Man> game_players = new array<Man>;
-			GetGame().GetPlayers( game_players );
+		ref array<Man> game_players = new array<Man>;
+		GetGame ().GetPlayers (game_players);
 
 		foreach (Man man : game_players) {
 			DayZPlayer player = DayZPlayer.Cast (man);
@@ -110,7 +110,9 @@ class SchanaPartyManagerServer {
 		auto players = new ref array<ref DayZPlayer> ();
 
 		foreach (auto member_id : GetParties ().Get (id)) {
-			players.Insert (id_map.Get (member_id));
+			if (id_map.Contains (member_id)) {
+				players.Insert (id_map.Get (member_id));
+			}
 		}
 
 		return players;
@@ -120,7 +122,7 @@ class SchanaPartyManagerServer {
 		auto positions = new ref map<ref string, ref vector> ();
 
 		ref array<Man> players = new array<Man>;
-		GetGame().GetPlayers( players );
+		GetGame ().GetPlayers (players);
 
 		foreach (Man man : players) {
 			DayZPlayer player = DayZPlayer.Cast (man);
@@ -136,7 +138,7 @@ class SchanaPartyManagerServer {
 		auto healths = new ref map<ref string, ref float> ();
 
 		ref array<Man> players = new array<Man>;
-		GetGame().GetPlayers( players );
+		GetGame ().GetPlayers (players);
 
 		foreach (Man man : players) {
 			DayZPlayer player = DayZPlayer.Cast (man);
@@ -153,7 +155,7 @@ class SchanaPartyManagerServer {
 			auto id_map = new ref map<ref string, ref DayZPlayer> ();
 
 			ref array<Man> players = new array<Man>;
-			GetGame().GetPlayers( players );
+			GetGame ().GetPlayers (players);
 
 			foreach (Man man : players) {
 				DayZPlayer player = DayZPlayer.Cast (man);

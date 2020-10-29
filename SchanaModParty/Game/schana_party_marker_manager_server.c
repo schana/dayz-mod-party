@@ -49,8 +49,8 @@ class SchanaPartyMarkerManagerServer {
     void SendMarkers () {
         if (canSendInfo) {
             auto id_map = new ref map<ref string, ref DayZPlayer> ();
-			ref array<Man> players = new array<Man>;
-			GetGame().GetPlayers( players );
+            ref array<Man> players = new array<Man>;
+            GetGame ().GetPlayers (players);
 
             foreach (Man man : players) {
                 DayZPlayer player = DayZPlayer.Cast (man);
