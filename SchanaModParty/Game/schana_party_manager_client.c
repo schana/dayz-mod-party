@@ -29,7 +29,7 @@ class SchanaPartyManagerClient {
     void RenewRegistration () {
         DayZPlayer activePlayer = DayZPlayer.Cast (GetGame ().GetPlayer ());
 
-        if (activePlayer && activePlayer.GetIdentity ()) {
+        if (activePlayer && activePlayer.GetIdentity () && activePlayer.IsAlive ()) {
             string activePlayerId = activePlayer.GetIdentity ().GetId ();
 
             UpdateRegistration (activePlayerId);
@@ -66,7 +66,7 @@ class SchanaPartyManagerClient {
         allPlayers.Clear ();
 
         DayZPlayer activePlayer = DayZPlayer.Cast (GetGame ().GetPlayer ());
-        if (activePlayer && activePlayer.GetIdentity ()) {
+        if (activePlayer && activePlayer.GetIdentity () && activePlayer.IsAlive ()) {
             string activePlayerId = activePlayer.GetIdentity ().GetId ();
 
             int i;
@@ -81,7 +81,7 @@ class SchanaPartyManagerClient {
     private void Update () {
         DayZPlayer activePlayer = DayZPlayer.Cast (GetGame ().GetPlayer ());
 
-        if (activePlayer && activePlayer.GetIdentity ()) {
+        if (activePlayer && activePlayer.GetIdentity () && activePlayer.IsAlive ()) {
             string activePlayerId = activePlayer.GetIdentity ().GetId ();
 
             AddAndUpdateNametags ();
@@ -130,7 +130,7 @@ class SchanaPartyManagerClient {
 
         foreach (Man man : ClientData.m_PlayerBaseList) {
             DayZPlayer player = DayZPlayer.Cast (man);
-            if (player && player.GetIdentity ()) {
+            if (player && player.GetIdentity () && player.IsAlive ()) {
                 string id = player.GetIdentity ().GetId ();
                 if (current_positions.Contains (id) && id != activePlayerId) {
                     m_SchanaNametags[id].SchanaPartyUpdatePlayer (player);
