@@ -178,10 +178,6 @@ class SchanaPartyBasicMapAPI {
         }
     }
 
-    void AddOrUpdatePlayerMarker (DayZPlayer player) {
-
-    }
-
     void RemoveMarker (vector position) {
         float distance = 0.1;
         controller.RemoveMarkerByVector (position, distance, true);

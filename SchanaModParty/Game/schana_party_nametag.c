@@ -11,6 +11,7 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu {
     private TextWidget m_SchanaPartyListTextWidget;
 
     private DayZPlayer m_SchanaPartyNametagPlayer;
+    private SchanaPartyMemberBasicMapMarkerHelper m_BasicMapHelper;
     private vector m_SchanaPartyPlayerServerPosition = "0 0 0";
     private float m_SchanaPartyPlayerServerHealth = 100;
     private string m_SchanaPartyPlayerName = "";
@@ -31,6 +32,7 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu {
         }
 
         m_SchanaPartyNametagPlayer = player;
+        m_BasicMapHelper = new SchanaPartyMemberBasicMapMarkerHelper ();
 
         GetGame ().GetCallQueue (CALL_CATEGORY_GUI).CallLater (this.SchanaUpdate, 16, true);
     }
@@ -135,6 +137,9 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu {
         SchanaPartyListUpdate (text);
 
         m_SchanaPartyNametagRoot.Show (SchanaPartyNametagVisibleOnScreen ());
+
+        m_BasicMapHelper.SetPosition (position);
+        m_BasicMapHelper.SetName (SchanaPartyGetPlayerName ());
     }
 
     void SchanaPartyListUpdate (string text) {
