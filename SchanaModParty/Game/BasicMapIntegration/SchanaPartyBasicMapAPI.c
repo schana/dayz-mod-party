@@ -1,8 +1,10 @@
 class SchanaPartyBasicMapAPI {
     static const string GROUP_ID_LOCAL = "schanamodparty_local";
     static const string GROUP_ID_REMOTE = "schanamodparty_remote";
-    static const string DISPLAY_NAME = "Party";
-    static const string REMOTE_DISPLAY_NAME = "Party Markers";
+    static const string GROUP_ID_MEMBERS = "schanamodparty_members";
+    static const string DISPLAY_NAME_LOCAL = "MY PARTY MARKERS";
+    static const string DISPLAY_NAME_REMOTE = "PARTY MEMBER MARKERS";
+    static const string DISPLAY_NAME_MEMBERS = "PARTY MEMBERS";
 
     private static ref SchanaPartyBasicMapAPI api;
 
@@ -34,9 +36,11 @@ class SchanaPartyBasicMapAPI {
 
     void ClientInit () {
 #ifdef BASICMAP
+		Print("[SchanaModParty] SchanaPartyBasicMapAPI - ClientInit"); //Making sure that the ifdef found
         controller = BasicMap ();
-        BasicMapGroupMetaData localMeta = new BasicMapGroupMetaData (GROUP_ID_LOCAL, DISPLAY_NAME, true);
-        BasicMapGroupMetaData remoteMeta = new BasicMapGroupMetaData (GROUP_ID_REMOTE, REMOTE_DISPLAY_NAME, false);
+        BasicMapGroupMetaData remoteMeta = new BasicMapGroupMetaData (GROUP_ID_MEMBERS, DISPLAY_NAME_MEMBERS, false); //Registering First so they are first on the list?
+        BasicMapGroupMetaData localMeta = new BasicMapGroupMetaData (GROUP_ID_LOCAL, DISPLAY_NAME_LOCAL, true);
+        BasicMapGroupMetaData partyMeta = new BasicMapGroupMetaData (GROUP_ID_REMOTE, DISPLAY_NAME_REMOTE, false);
         controller.RegisterGroup (GROUP_ID_LOCAL, localMeta, SchanaPartyLocalMarkerFactory ());
         controller.RegisterGroup (GROUP_ID_REMOTE, remoteMeta, SchanaPartyRemoteMarkerFactory ());
 
@@ -49,11 +53,18 @@ class SchanaPartyBasicMapAPI {
 
     void ServerInit () {
 #ifdef BASICMAP
+		Print("[SchanaModParty] SchanaPartyBasicMapAPI - ServerInit"); //Making sure that the ifdef found
         GetRPCManager ().AddRPC ("SchanaModParty", "ServerRegisterBasicMapMarkersRPC", this, SingleplayerExecutionType.Both);
         GetRPCManager ().AddRPC ("SchanaModParty", "ServerAddBasicMapMarkerRPC", this, SingleplayerExecutionType.Both);
         GetRPCManager ().AddRPC ("SchanaModParty", "ServerRemoveBasicMapMarkerRPC", this, SingleplayerExecutionType.Both);
 #endif
     }
+
+	void AddOrUpdatePlayerMarker(DayZPlayer thePlayer){
+		#ifdef BASICMAP
+			
+		#endif
+	}
 
 #ifdef BASICMAP
 
@@ -164,12 +175,12 @@ class SchanaPartyBasicMapAPI {
     }
 
     void AddMarker (string group, string name, vector position) {
-        controller.CreateMarker (group, name, position);
+        controller.CreateMarker (group, name, position, true);
     }
 
     void AddOrUpdateMarker (string group, string name, vector position) {
         float distance = 0.1;
-        BasicMapMarker marker = controller.GetMarkerByVector (position, distance);
+        BasicMapMarker marker = controller.GetMarkerByVector (position, distance, true);
         if (marker) {
             marker.Name = name;
         } else {
@@ -179,7 +190,7 @@ class SchanaPartyBasicMapAPI {
 
     void RemoveMarker (vector position) {
         float distance = 0.1;
-        controller.RemoveMarkerByVector (position, distance);
+        controller.RemoveMarkerByVector (position, distance, true);
     }
 #endif
 }
