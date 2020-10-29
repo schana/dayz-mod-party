@@ -110,7 +110,9 @@ class SchanaPartyManagerServer {
 		auto players = new ref array<ref DayZPlayer> ();
 
 		foreach (auto member_id : GetParties ().Get (id)) {
-			players.Insert (id_map.Get (member_id));
+			if (id_map.Contains (member_id)) {
+				players.Insert (id_map.Get (member_id));
+			}
 		}
 
 		return players;
