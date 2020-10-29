@@ -10,13 +10,14 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu {
     private ref array<ImageWidget> m_SchanaPartyListHealthWidgets;
     private TextWidget m_SchanaPartyListTextWidget;
 
-    private PlayerBase m_SchanaPartyNametagPlayer;
+    private DayZPlayer m_SchanaPartyNametagPlayer;
+    private SchanaPartyMemberBasicMapMarkerHelper m_BasicMapHelper;
     private vector m_SchanaPartyPlayerServerPosition = "0 0 0";
     private float m_SchanaPartyPlayerServerHealth = 100;
     private string m_SchanaPartyPlayerName = "";
     private int m_SchanaPartyListIndex = 0;
 
-    void SchanaPartyNametagsMenu (PlayerBase player) {
+    void SchanaPartyNametagsMenu (DayZPlayer player) {
         m_SchanaPartyNametagRoot = GetGame ().GetWorkspace ().CreateWidgets ("SchanaModParty/GUI/Layouts/nametag.layout");
         m_SchanaPartyNametagNametag = TextWidget.Cast (m_SchanaPartyNametagRoot.FindAnyWidget ("nametag"));
         m_SchanaPartyNametagDistance = TextWidget.Cast (m_SchanaPartyNametagRoot.FindAnyWidget ("distance"));
@@ -31,6 +32,7 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu {
         }
 
         m_SchanaPartyNametagPlayer = player;
+        m_BasicMapHelper = new SchanaPartyMemberBasicMapMarkerHelper ();
 
         GetGame ().GetCallQueue (CALL_CATEGORY_GUI).CallLater (this.SchanaUpdate, 16, true);
     }
@@ -90,7 +92,7 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu {
         m_SchanaPartyPlayerServerHealth = health;
     }
 
-    void SchanaPartyUpdatePlayer (PlayerBase player) {
+    void SchanaPartyUpdatePlayer (DayZPlayer player) {
         m_SchanaPartyNametagPlayer = player;
     }
 
@@ -135,6 +137,9 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu {
         SchanaPartyListUpdate (text);
 
         m_SchanaPartyNametagRoot.Show (SchanaPartyNametagVisibleOnScreen ());
+
+        m_BasicMapHelper.SetPosition (position);
+        m_BasicMapHelper.SetName (SchanaPartyGetPlayerName ());
     }
 
     void SchanaPartyListUpdate (string text) {

@@ -6,7 +6,7 @@ class SchanaPartyManagerClient {
     private ref map<ref string, ref string> sortingMap;
 
     void SchanaPartyManagerClient () {
-        SchanaPartyUtils.LogMessage ("Client Init " + MissionBase.SCHANA_PARTY_VERSION);
+        SchanaPartyUtils.LogMessage ("Client Init " + SCHANA_PARTY_VERSION);
 
         positions = new SchanaPartyPositions ();
         healths = new ref map<ref string, ref float> ();
@@ -27,10 +27,9 @@ class SchanaPartyManagerClient {
     }
 
     void RenewRegistration () {
-        SchanaPartyUtils.LogMessage ("RenewRegistration");
-        PlayerBase activePlayer = PlayerBase.Cast (GetGame ().GetPlayer ());
+        DayZPlayer activePlayer = DayZPlayer.Cast (GetGame ().GetPlayer ());
 
-        if (activePlayer && activePlayer.GetIdentity ()) {
+        if (activePlayer && activePlayer.GetIdentity () && activePlayer.IsAlive ()) {
             string activePlayerId = activePlayer.GetIdentity ().GetId ();
 
             UpdateRegistration (activePlayerId);
@@ -38,7 +37,6 @@ class SchanaPartyManagerClient {
     }
 
     void ClientUpdatePartyInfoRPC (CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target) {
-        SchanaPartyUtils.LogMessage ("Received Party RPC");
         Param3<ref array<ref string>, ref array<ref vector>, ref array<ref float>> data;
         if (!ctx.Read (data))
             return;
@@ -67,8 +65,8 @@ class SchanaPartyManagerClient {
     void ClientUpdatePlayersInfo (ref array<ref string> player_ids, ref array<ref string> player_names) {
         allPlayers.Clear ();
 
-        PlayerBase activePlayer = PlayerBase.Cast (GetGame ().GetPlayer ());
-        if (activePlayer && activePlayer.GetIdentity ()) {
+        DayZPlayer activePlayer = DayZPlayer.Cast (GetGame ().GetPlayer ());
+        if (activePlayer && activePlayer.GetIdentity () && activePlayer.IsAlive ()) {
             string activePlayerId = activePlayer.GetIdentity ().GetId ();
 
             int i;
@@ -81,9 +79,9 @@ class SchanaPartyManagerClient {
     }
 
     private void Update () {
-        PlayerBase activePlayer = PlayerBase.Cast (GetGame ().GetPlayer ());
+        DayZPlayer activePlayer = DayZPlayer.Cast (GetGame ().GetPlayer ());
 
-        if (activePlayer && activePlayer.GetIdentity ()) {
+        if (activePlayer && activePlayer.GetIdentity () && activePlayer.IsAlive ()) {
             string activePlayerId = activePlayer.GetIdentity ().GetId ();
 
             AddAndUpdateNametags ();
@@ -95,7 +93,6 @@ class SchanaPartyManagerClient {
     }
 
     private void UpdateRegistration (string activePlayerId) {
-        SchanaPartyUtils.LogMessage ("UpdateRegistration");
         auto members = GetSchanaPartySettings ().GetMembers ();
         auto data = new Param2<ref string, ref array<ref string>> (activePlayerId, members);
         GetRPCManager ().SendRPC ("SchanaModParty", "ServerRegisterPartyRPC", data);
@@ -132,8 +129,8 @@ class SchanaPartyManagerClient {
         auto current_positions = positions.Get ();
 
         foreach (Man man : ClientData.m_PlayerBaseList) {
-            PlayerBase player = PlayerBase.Cast (man);
-            if (player && player.GetIdentity ()) {
+            DayZPlayer player = DayZPlayer.Cast (man);
+            if (player && player.GetIdentity () && player.IsAlive ()) {
                 string id = player.GetIdentity ().GetId ();
                 if (current_positions.Contains (id) && id != activePlayerId) {
                     m_SchanaNametags[id].SchanaPartyUpdatePlayer (player);

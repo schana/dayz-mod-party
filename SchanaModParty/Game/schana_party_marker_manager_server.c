@@ -48,12 +48,12 @@ class SchanaPartyMarkerManagerServer {
 
     void SendMarkers () {
         if (canSendInfo) {
-            auto id_map = new ref map<ref string, ref PlayerBase> ();
+            auto id_map = new ref map<ref string, ref DayZPlayer> ();
+            ref array<Man> players = new array<Man>;
+            GetGame ().GetPlayers (players);
 
-            MissionServer mission = MissionServer.Cast (GetGame ().GetMission ());
-
-            foreach (Man man : mission.m_Players) {
-                PlayerBase player = PlayerBase.Cast (man);
+            foreach (Man man : players) {
+                DayZPlayer player = DayZPlayer.Cast (man);
                 if (player && player.GetIdentity ()) {
                     id_map.Insert (player.GetIdentity ().GetId (), player);
                 }
@@ -72,7 +72,7 @@ class SchanaPartyMarkerManagerServer {
         }
     }
 
-    private void SendMarkerInfoToPlayer (string id, ref set<ref string> party_ids, PlayerBase player) {
+    private void SendMarkerInfoToPlayer (string id, ref set<ref string> party_ids, DayZPlayer player) {
         auto playerMarkers = new ref array<ref SchanaPartyMarkerInfo>;
         foreach (string party_id : party_ids) {
             if (markers.Contains (party_id)) {

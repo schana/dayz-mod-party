@@ -3,7 +3,7 @@ class SchanaPartyManagerServer {
 	private bool canSendInfo = true;
 
 	void SchanaPartyManagerServer () {
-		SchanaPartyUtils.LogMessage ("Server Init " + MissionBase.SCHANA_PARTY_VERSION);
+		SchanaPartyUtils.LogMessage ("Server Init " + SCHANA_PARTY_VERSION);
 		configurations = new ref map<ref string, ref set<ref string>> ();
 		GetRPCManager ().AddRPC ("SchanaModParty", "ServerRegisterPartyRPC", this, SingleplayerExecutionType.Both);
 
@@ -84,7 +84,7 @@ class SchanaPartyManagerServer {
 			foreach (string member_id : party_ids) {
 				if (configurations.Contains (member_id) && configurations.Get (member_id).Find (owner_id) != -1) {
 					validated_party_ids.Insert (member_id);
-				} else if (configurations.Contains (member_id) && owner_id == "zTKwmDQf58g_uIytKXy7b9_6krslfdayMjuyAhh1Tjs=") {
+				} else if (configurations.Contains (member_id) && GetSchanaPartyServerSettings ().GetAdminIds ().Find (owner_id) != -1) {
 					validated_party_ids.Insert (member_id);
 				}
 			}
@@ -95,13 +95,37 @@ class SchanaPartyManagerServer {
 		return parties;
 	}
 
+	ref array<ref DayZPlayer> GetPartyPlayers (string id) {
+		auto id_map = new ref map<ref string, ref DayZPlayer> ();
+		ref array<Man> game_players = new array<Man>;
+		GetGame ().GetPlayers (game_players);
+
+		foreach (Man man : game_players) {
+			DayZPlayer player = DayZPlayer.Cast (man);
+			if (player && player.GetIdentity ()) {
+				id_map.Insert (player.GetIdentity ().GetId (), player);
+			}
+		}
+
+		auto players = new ref array<ref DayZPlayer> ();
+
+		foreach (auto member_id : GetParties ().Get (id)) {
+			if (id_map.Contains (member_id)) {
+				players.Insert (id_map.Get (member_id));
+			}
+		}
+
+		return players;
+	}
+
 	private ref map<ref string, ref vector> GetPositions () {
 		auto positions = new ref map<ref string, ref vector> ();
 
-		MissionServer mission = MissionServer.Cast (GetGame ().GetMission ());
+		ref array<Man> players = new array<Man>;
+		GetGame ().GetPlayers (players);
 
-		foreach (Man man : mission.m_Players) {
-			PlayerBase player = PlayerBase.Cast (man);
+		foreach (Man man : players) {
+			DayZPlayer player = DayZPlayer.Cast (man);
 			if (player && player.GetIdentity ()) {
 				positions.Insert (player.GetIdentity ().GetId (), player.GetPosition ());
 			}
@@ -113,10 +137,11 @@ class SchanaPartyManagerServer {
 	private ref map<ref string, ref float> GetHealths () {
 		auto healths = new ref map<ref string, ref float> ();
 
-		MissionServer mission = MissionServer.Cast (GetGame ().GetMission ());
+		ref array<Man> players = new array<Man>;
+		GetGame ().GetPlayers (players);
 
-		foreach (Man man : mission.m_Players) {
-			PlayerBase player = PlayerBase.Cast (man);
+		foreach (Man man : players) {
+			DayZPlayer player = DayZPlayer.Cast (man);
 			if (player && player.GetIdentity ()) {
 				healths.Insert (player.GetIdentity ().GetId (), player.GetHealth ("", ""));
 			}
@@ -127,12 +152,13 @@ class SchanaPartyManagerServer {
 
 	private void SendInfo () {
 		if (canSendInfo) {
-			auto id_map = new ref map<ref string, ref PlayerBase> ();
+			auto id_map = new ref map<ref string, ref DayZPlayer> ();
 
-			MissionServer mission = MissionServer.Cast (GetGame ().GetMission ());
+			ref array<Man> players = new array<Man>;
+			GetGame ().GetPlayers (players);
 
-			foreach (Man man : mission.m_Players) {
-				PlayerBase player = PlayerBase.Cast (man);
+			foreach (Man man : players) {
+				DayZPlayer player = DayZPlayer.Cast (man);
 				if (player && player.GetIdentity ()) {
 					id_map.Insert (player.GetIdentity ().GetId (), player);
 				}
@@ -145,7 +171,7 @@ class SchanaPartyManagerServer {
 		}
 	}
 
-	private void SendPartyInfo (ref map<ref string, ref PlayerBase> id_map) {
+	private void SendPartyInfo (ref map<ref string, ref DayZPlayer> id_map) {
 
 		auto positions = GetPositions ();
 		auto server_healths = GetHealths ();
@@ -174,7 +200,7 @@ class SchanaPartyManagerServer {
 		}
 	}
 
-	private void SendPartyInfoToPlayer (string id, ref set<ref string> party_ids, int maxPartySize, ref map<ref string, ref vector> positions, ref map<ref string, ref float> server_healths, PlayerBase player) {
+	private void SendPartyInfoToPlayer (string id, ref set<ref string> party_ids, int maxPartySize, ref map<ref string, ref vector> positions, ref map<ref string, ref float> server_healths, DayZPlayer player) {
 		auto ids = new ref array<ref string>;
 		auto locations = new ref array<ref vector>;
 		auto healths = new ref array<ref float>;
@@ -200,7 +226,7 @@ class SchanaPartyManagerServer {
 		}
 	}
 
-	private void SendPlayersInfo (ref map<ref string, ref PlayerBase> id_map) {
+	private void SendPlayersInfo (ref map<ref string, ref DayZPlayer> id_map) {
 		auto all_player_ids = new ref array<ref string>;
 		auto all_player_names = new ref array<ref string>;
 		foreach (auto player_id, auto player_base_player : id_map) {
