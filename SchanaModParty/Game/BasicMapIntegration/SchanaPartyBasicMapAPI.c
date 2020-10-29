@@ -36,7 +36,7 @@ class SchanaPartyBasicMapAPI {
 
     void ClientInit () {
 #ifdef BASICMAP
-		Print("[SchanaModParty] SchanaPartyBasicMapAPI - ClientInit"); //Making sure that the ifdef found
+        Print ("[SchanaModParty] SchanaPartyBasicMapAPI - ClientInit"); //Making sure that the ifdef found
         controller = BasicMap ();
         BasicMapGroupMetaData remoteMeta = new BasicMapGroupMetaData (GROUP_ID_MEMBERS, DISPLAY_NAME_MEMBERS, false); //Registering First so they are first on the list?
         BasicMapGroupMetaData localMeta = new BasicMapGroupMetaData (GROUP_ID_LOCAL, DISPLAY_NAME_LOCAL, true);
@@ -53,18 +53,18 @@ class SchanaPartyBasicMapAPI {
 
     void ServerInit () {
 #ifdef BASICMAP
-		Print("[SchanaModParty] SchanaPartyBasicMapAPI - ServerInit"); //Making sure that the ifdef found
+        Print ("[SchanaModParty] SchanaPartyBasicMapAPI - ServerInit"); //Making sure that the ifdef found
         GetRPCManager ().AddRPC ("SchanaModParty", "ServerRegisterBasicMapMarkersRPC", this, SingleplayerExecutionType.Both);
         GetRPCManager ().AddRPC ("SchanaModParty", "ServerAddBasicMapMarkerRPC", this, SingleplayerExecutionType.Both);
         GetRPCManager ().AddRPC ("SchanaModParty", "ServerRemoveBasicMapMarkerRPC", this, SingleplayerExecutionType.Both);
 #endif
     }
 
-	void AddOrUpdatePlayerMarker(DayZPlayer thePlayer){
-		#ifdef BASICMAP
-			
-		#endif
-	}
+    void AddOrUpdatePlayerMarker (DayZPlayer thePlayer) {
+#ifdef BASICMAP
+
+#endif
+    }
 
 #ifdef BASICMAP
 
@@ -119,10 +119,10 @@ class SchanaPartyBasicMapAPI {
         auto manager = GetSchanaPartyManagerServer ();
 
         foreach (auto player : manager.GetPartyPlayers (id)) {
-			DayZPlayer ply = DayZPlayer.Cast(player);
-			if (ply && ply.GetIdentity() ){
-				GetRPCManager ().SendRPC ("SchanaModParty", "ClientRegisterBasicMapMarkersRPC", data, false, ply.GetIdentity());
-			}
+            DayZPlayer ply = DayZPlayer.Cast (player);
+            if (ply && ply.GetIdentity ()) {
+                GetRPCManager ().SendRPC ("SchanaModParty", "ClientRegisterBasicMapMarkersRPC", data, false, ply.GetIdentity ());
+            }
         }
     }
 
@@ -135,10 +135,10 @@ class SchanaPartyBasicMapAPI {
         auto manager = GetSchanaPartyManagerServer ();
 
         foreach (auto player : manager.GetPartyPlayers (id)) {
-			DayZPlayer ply = DayZPlayer.Cast(player);
-			if (ply && ply.GetIdentity() ){
-				GetRPCManager ().SendRPC ("SchanaModParty", "ClientAddBasicMapMarkerRPC", data, false, ply.GetIdentity());
-			}
+            DayZPlayer ply = DayZPlayer.Cast (player);
+            if (ply && ply.GetIdentity ()) {
+                GetRPCManager ().SendRPC ("SchanaModParty", "ClientAddBasicMapMarkerRPC", data, false, ply.GetIdentity ());
+            }
         }
     }
 
@@ -151,10 +151,10 @@ class SchanaPartyBasicMapAPI {
         auto manager = GetSchanaPartyManagerServer ();
 
         foreach (auto player : manager.GetPartyPlayers (id)) {
-			DayZPlayer ply = DayZPlayer.Cast(player);
-			if (ply && ply.GetIdentity() ){
-				GetRPCManager ().SendRPC ("SchanaModParty", "ClientRemoveBasicMapMarkerRPC", data, false, ply.GetIdentity());
-			}
+            DayZPlayer ply = DayZPlayer.Cast (player);
+            if (ply && ply.GetIdentity ()) {
+                GetRPCManager ().SendRPC ("SchanaModParty", "ClientRemoveBasicMapMarkerRPC", data, false, ply.GetIdentity ());
+            }
         }
     }
 
