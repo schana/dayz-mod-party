@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{FC02DE9719BA816C}SchanaModParty/Carim_small.edds"
+ Author "cnofafva"
+ ChangeDate -1325242165
+ Configurations {
+  PNGResourceClass PC {
+   SourceFile "Carim_small.png"
+  }
+  PNGResourceClass XBOX_ONE : PC {
+  }
+  PNGResourceClass PS4 : PC {
+  }
+  PNGResourceClass LINUX : PC {
+  }
+ }
+}
