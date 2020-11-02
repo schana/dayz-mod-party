@@ -88,15 +88,14 @@ class SchanaPartyManagerServer {
 					validated_party_ids.Insert (member_id);
 				}
 			}
-
 			parties.Insert (owner_id, validated_party_ids);
 		}
 
 		return parties;
 	}
 
-	ref array<ref DayZPlayer> GetPartyPlayers (string id) {
-		auto id_map = new ref map<ref string, ref DayZPlayer> ();
+	ref array<DayZPlayer> GetPartyPlayers (string id) {
+		ref map<ref string, DayZPlayer> id_map = new ref map<ref string, DayZPlayer> ();
 		ref array<Man> game_players = new array<Man>;
 		GetGame ().GetPlayers (game_players);
 
@@ -106,12 +105,16 @@ class SchanaPartyManagerServer {
 				id_map.Insert (player.GetIdentity ().GetId (), player);
 			}
 		}
-
-		auto players = new ref array<ref DayZPlayer> ();
-
-		foreach (auto member_id : GetParties ().Get (id)) {
+		
+		ref array<DayZPlayer> players = new ref array<DayZPlayer>;
+		ref set<ref string> member_ids = GetParties ().Get (id);
+		for (int i = 0; i < member_ids.Count(); i++){
+			string member_id = member_ids.Get(i);
 			if (id_map.Contains (member_id)) {
-				players.Insert (id_map.Get (member_id));
+				DayZPlayer plr = DayZPlayer.Cast(id_map.Get (member_id));
+				if (plr){
+					players.Insert (plr);
+				}
 			}
 		}
 
@@ -152,7 +155,7 @@ class SchanaPartyManagerServer {
 
 	private void SendInfo () {
 		if (canSendInfo) {
-			auto id_map = new ref map<ref string, ref DayZPlayer> ();
+			auto id_map = new ref map<ref string, DayZPlayer> ();
 
 			ref array<Man> players = new array<Man>;
 			GetGame ().GetPlayers (players);
@@ -171,7 +174,7 @@ class SchanaPartyManagerServer {
 		}
 	}
 
-	private void SendPartyInfo (ref map<ref string, ref DayZPlayer> id_map) {
+	private void SendPartyInfo (ref map<ref string, DayZPlayer> id_map) {
 
 		auto positions = GetPositions ();
 		auto server_healths = GetHealths ();
@@ -226,7 +229,7 @@ class SchanaPartyManagerServer {
 		}
 	}
 
-	private void SendPlayersInfo (ref map<ref string, ref DayZPlayer> id_map) {
+	private void SendPlayersInfo (ref map<ref string, DayZPlayer> id_map) {
 		auto all_player_ids = new ref array<ref string>;
 		auto all_player_names = new ref array<ref string>;
 		foreach (auto player_id, auto player_base_player : id_map) {

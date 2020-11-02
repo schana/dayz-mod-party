@@ -11,7 +11,7 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu {
     private TextWidget m_SchanaPartyListTextWidget;
 
     private DayZPlayer m_SchanaPartyNametagPlayer;
-    private SchanaPartyMemberBasicMapMarkerHelper m_BasicMapHelper;
+    private ref SchanaPartyMemberBasicMapMarkerHelper m_BasicMapHelper;
     private vector m_SchanaPartyPlayerServerPosition = "0 0 0";
     private float m_SchanaPartyPlayerServerHealth = 100;
     private string m_SchanaPartyPlayerName = "";
