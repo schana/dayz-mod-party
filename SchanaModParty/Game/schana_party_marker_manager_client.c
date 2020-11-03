@@ -49,15 +49,15 @@ class SchanaPartyMarkerManagerClient {
         serverMarkers = newServerMarkers;
         int i;
         for (i = 0; i < markerMenus.Count (); ++i) {
-            if (markerMenus[i]) {
-                markerMenus[i].SchanaPartySetRemoveFlag ();
+            if (markerMenus.Get(i)) {
+                markerMenus.Get(i).SchanaPartySetRemoveFlag ();
             }
         }
         for (i = 0; i < serverMarkers.Count (); ++i) {
-            markerMenus.Insert (new SchanaPartyMarkerMenu (serverMarkers[i].GetName (), serverMarkers[i].GetPosition ()));
+            markerMenus.Insert (new SchanaPartyMarkerMenu (serverMarkers.Get(i).GetName (), serverMarkers.Get(i).GetPosition ()));
         }
         for (i = 0; i < markers.Count (); ++i) {
-            markerMenus.Insert (new SchanaPartyMarkerMenu (markers[i].GetName (), markers[i].GetPosition ()));
+            markerMenus.Insert (new SchanaPartyMarkerMenu (markers.Get(i).GetName (), markers.Get(i).GetPosition ()));
         }
     }
 

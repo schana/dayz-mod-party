@@ -1,18 +1,18 @@
 class SchanaPartyManagerClient {
-    private ref map<ref string, ref SchanaPartyNametagsMenu> m_SchanaNametags;
+    private ref map<string, ref SchanaPartyNametagsMenu> m_SchanaNametags;
     private ref SchanaPartyPositions positions;
-    private ref map<ref string, ref float> healths;
-    private ref map<ref string, ref string> allPlayers;
-    private ref map<ref string, ref string> sortingMap;
+    private ref map<string, float> healths;
+    private ref map<string,string> allPlayers;
+    private ref map<string,string> sortingMap;
 
     void SchanaPartyManagerClient () {
         SchanaPartyUtils.LogMessage ("Client Init " + SCHANA_PARTY_VERSION);
 
         positions = new SchanaPartyPositions ();
-        healths = new ref map<ref string, ref float> ();
-        allPlayers = new ref map<ref string, ref string> ();
-        sortingMap = new ref map<ref string, ref string> ();
-        m_SchanaNametags = new map<ref string, ref SchanaPartyNametagsMenu> ();
+        healths = new ref map<string, float> ();
+        allPlayers = new ref map<string,string> ();
+        sortingMap = new ref map<string,string> ();
+        m_SchanaNametags = new map<string, ref SchanaPartyNametagsMenu> ();
 
         GetRPCManager ().AddRPC ("SchanaModParty", "ClientUpdatePartyInfoRPC", this, SingleplayerExecutionType.Both);
         GetRPCManager ().AddRPC ("SchanaModParty", "ClientUpdatePlayersInfoRPC", this, SingleplayerExecutionType.Both);
@@ -37,32 +37,32 @@ class SchanaPartyManagerClient {
     }
 
     void ClientUpdatePartyInfoRPC (CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target) {
-        Param3<ref array<ref string>, ref array<ref vector>, ref array<ref float>> data;
+        Param3<ref array<string>, ref array<vector>, ref array<float>> data;
         if (!ctx.Read (data))
             return;
 
         ClientUpdatePartyInfo (data.param1, data.param2, data.param3);
     }
 
-    void ClientUpdatePartyInfo (ref array<ref string> party_ids, ref array<ref vector> server_positions, ref array<ref float> server_healths) {
+    void ClientUpdatePartyInfo (ref array<string> party_ids, ref array<vector> server_positions, ref array<float> server_healths) {
         positions.Replace (party_ids, server_positions);
         healths.Clear ();
 
         int i;
         for (i = 0; i < party_ids.Count (); ++i) {
-            healths.Insert (party_ids[i], server_healths[i]);
+            healths.Insert (party_ids.Get(i), server_healths.Get(i));
         }
     }
 
     void ClientUpdatePlayersInfoRPC (CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target) {
-        Param2<ref array<ref string>, ref array<ref string>> data;
+        Param2<ref array<string>, ref array<string>> data;
         if (!ctx.Read (data))
             return;
 
         ClientUpdatePlayersInfo (data.param1, data.param2);
     }
 
-    void ClientUpdatePlayersInfo (ref array<ref string> player_ids, ref array<ref string> player_names) {
+    void ClientUpdatePlayersInfo (ref array<string> player_ids, ref array<string> player_names) {
         allPlayers.Clear ();
 
         DayZPlayer activePlayer = DayZPlayer.Cast (GetGame ().GetPlayer ());
@@ -71,8 +71,8 @@ class SchanaPartyManagerClient {
 
             int i;
             for (i = 0; i < player_ids.Count (); ++i) {
-                if (player_ids[i] != activePlayerId) {
-                    allPlayers.Insert (player_ids[i], player_names[i]);
+                if (player_ids.Get(i) != activePlayerId) {
+                    allPlayers.Insert (player_ids.Get(i), player_names.Get(i));
                 }
             }
         }
@@ -94,7 +94,7 @@ class SchanaPartyManagerClient {
 
     private void UpdateRegistration (string activePlayerId) {
         auto members = GetSchanaPartySettings ().GetMembers ();
-        auto data = new Param2<ref string, ref array<ref string>> (activePlayerId, members);
+        auto data = new Param2<string, ref array<string>> (activePlayerId, members);
         GetRPCManager ().SendRPC ("SchanaModParty", "ServerRegisterPartyRPC", data);
     }
 
@@ -177,11 +177,11 @@ class SchanaPartyManagerClient {
         return !positions.Get ().Contains (id) && allPlayers.Contains (id);
     }
 
-    ref map<ref string, ref string> GetOnlinePlayers () {
+    ref map<string, string> GetOnlinePlayers () {
         return allPlayers;
     }
 
-    ref map<ref string, ref vector> GetPositions () {
+    ref map<string, vector> GetPositions () {
         return positions.Get ();
     }
 }
