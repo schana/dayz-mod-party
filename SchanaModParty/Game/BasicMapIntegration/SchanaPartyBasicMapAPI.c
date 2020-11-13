@@ -72,7 +72,7 @@ class SchanaPartyBasicMapAPI {
         auto markers = data.param1;
         int i;
 
-        for (i = 0; i < markers.Count (); i++) {
+        for (i = 0; i < markers.Count (); ++i) {
             ClientAddBasicMapMarker (markers.Get(i).GetName (), markers.Get(i).GetPosition ());
         }
     }
