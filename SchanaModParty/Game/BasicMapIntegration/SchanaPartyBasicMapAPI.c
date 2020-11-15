@@ -40,11 +40,11 @@ class SchanaPartyBasicMapAPI {
         controller = BasicMap ();
         // the order groups are registered is the same as the order they appear in BasicMap
         BasicMapGroupMetaData localMeta = new BasicMapGroupMetaData (GROUP_ID_LOCAL, DISPLAY_NAME_LOCAL, true);
-        BasicMapGroupMetaData remoteMeta = new BasicMapGroupMetaData (GROUP_ID_REMOTE, DISPLAY_NAME_REMOTE, true);
-        BasicMapGroupMetaData memberMeta = new BasicMapGroupMetaData (GROUP_ID_MEMBERS, DISPLAY_NAME_MEMBERS, true);
-        controller.RegisterGroup (GROUP_ID_LOCAL, localMeta, SchanaPartyLocalMarkerFactory ());
-        controller.RegisterGroup (GROUP_ID_REMOTE, remoteMeta, SchanaPartyRemoteMarkerFactory ());
-        controller.RegisterGroup (GROUP_ID_MEMBERS, memberMeta, SchanaPartyMemberMarkerFactory ());
+        BasicMapGroupMetaData remoteMeta = new BasicMapGroupMetaData (GROUP_ID_REMOTE, DISPLAY_NAME_REMOTE, false);
+        BasicMapGroupMetaData memberMeta = new BasicMapGroupMetaData (GROUP_ID_MEMBERS, DISPLAY_NAME_MEMBERS, false);
+        controller.RegisterGroup (GROUP_ID_LOCAL, localMeta, new SchanaPartyLocalMarkerFactory ());
+        controller.RegisterGroup (GROUP_ID_REMOTE, remoteMeta, new SchanaPartyRemoteMarkerFactory ());
+        controller.RegisterGroup (GROUP_ID_MEMBERS, memberMeta, NULL);
 
         GetRPCManager ().AddRPC ("SchanaModParty", "ClientRegisterBasicMapMarkersRPC", this, SingleplayerExecutionType.Both);
         GetRPCManager ().AddRPC ("SchanaModParty", "ClientAddBasicMapMarkerRPC", this, SingleplayerExecutionType.Both);
@@ -73,7 +73,7 @@ class SchanaPartyBasicMapAPI {
         int i;
 
         for (i = 0; i < markers.Count (); ++i) {
-            ClientAddBasicMapMarker (markers[i].GetName (), markers[i].GetPosition ());
+            ClientAddBasicMapMarker (markers.Get (i).GetName (), markers.Get (i).GetPosition ());
         }
     }
 
@@ -113,9 +113,13 @@ class SchanaPartyBasicMapAPI {
 
     void ServerRegisterBasicMapMarkers (string id, Param1<ref array<ref BasicMapMarker>> data) {
         auto manager = GetSchanaPartyManagerServer ();
-
-        foreach (auto player : manager.GetPartyPlayers (id)) {
-            GetRPCManager ().SendRPC ("SchanaModParty", "ClientRegisterBasicMapMarkersRPC", data, false, player.GetIdentity ());
+        ref array<DayZPlayer> players = manager.GetPartyPlayers (id)
+        if (players) {
+            foreach (auto player : players) {
+                if (player && player.GetIdentity ()) {
+                    GetRPCManager ().SendRPC ("SchanaModParty", "ClientRegisterBasicMapMarkersRPC", data, false, player.GetIdentity ());
+                }
+            }
         }
     }
 

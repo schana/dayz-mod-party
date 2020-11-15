@@ -15,7 +15,7 @@ class SchanaModPartyServerSettings {
     private int sendInfoFrequencySeconds = DEFAULT_SEND_INFO_FREQUENCY;
     private int sendMarkerFrequencySeconds = DEFAULT_SEND_MARKER_FREQUENCY;
     private int maxMarkers = DEFAULT_MAX_MARKERS;
-    private array<string> adminIds = new array<string> ();
+    private ref array<string> adminIds = new array<string> ();
 
     int GetLogFrequency () {
         return logPartiesFrequencySeconds;

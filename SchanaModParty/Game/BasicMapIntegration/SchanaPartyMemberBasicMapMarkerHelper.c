@@ -17,7 +17,7 @@ class SchanaPartyMemberBasicMapMarkerHelper {
 
     void SchanaPartyMemberBasicMapMarkerHelper () {
 #ifdef BASICMAP
-        marker = new BasicMapMarker ("", "0 0 0");
+        marker = new BasicMapMarker ("", "0 0 0", "BasicMap\\gui\\images\\player.paa", { 128, 80, 244 });
         BasicMap ().AddMarker (SchanaPartyBasicMapAPI.GROUP_ID_MEMBERS, marker);
 #endif
     }
