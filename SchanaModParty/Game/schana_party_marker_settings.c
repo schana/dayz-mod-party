@@ -2,10 +2,10 @@ class SchanaModPartyMarkerSettings {
     private static string DIR = "$profile:SchanaModParty";
     private static string PATH = DIR + "\\markers.json";
 
-    private ref array<ref vector> markers;
+    private ref array<vector> markers;
 
     void SchanaModPartyMarkerSettings () {
-        markers = new ref array<ref vector> ();
+        markers = new ref array<vector> ();
     }
 
     void Add (vector mark) {
@@ -18,8 +18,8 @@ class SchanaModPartyMarkerSettings {
         Save ();
     }
 
-    ref array<ref vector> GetMarkers () {
-        auto response = new ref array<ref vector> ();
+    ref array<vector> GetMarkers () {
+        auto response = new ref array<vector> ();
 
         for (int i = 0; i < markers.Count (); ++i) {
             response.Insert (markers.Get (i));
