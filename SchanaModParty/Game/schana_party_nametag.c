@@ -48,9 +48,9 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu {
             m_SchanaPartyListRootWidget.Show (false);
             m_SchanaPartyListRootWidget.Unlink ();
         }
-		if (m_BasicMapHelper){
-			delete m_BasicMapHelper;
-		}
+        if (m_BasicMapHelper) {
+            delete m_BasicMapHelper;
+        }
     }
 
     void SchanaUpdate () {
