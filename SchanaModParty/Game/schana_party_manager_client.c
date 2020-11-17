@@ -2,16 +2,16 @@ class SchanaPartyManagerClient {
     private ref map<string, ref SchanaPartyNametagsMenu> m_SchanaNametags;
     private ref SchanaPartyPositions positions;
     private ref map<string, float> healths;
-    private ref map<string,string> allPlayers;
-    private ref map<string,string> sortingMap;
+    private ref map<string, string> allPlayers;
+    private ref map<string, string> sortingMap;
 
     void SchanaPartyManagerClient () {
         SchanaPartyUtils.LogMessage ("Client Init " + SCHANA_PARTY_VERSION);
 
         positions = new SchanaPartyPositions ();
         healths = new ref map<string, float> ();
-        allPlayers = new ref map<string,string> ();
-        sortingMap = new ref map<string,string> ();
+        allPlayers = new ref map<string, string> ();
+        sortingMap = new ref map<string, string> ();
         m_SchanaNametags = new map<string, ref SchanaPartyNametagsMenu> ();
 
         GetRPCManager ().AddRPC ("SchanaModParty", "ClientUpdatePartyInfoRPC", this, SingleplayerExecutionType.Both);
@@ -50,7 +50,7 @@ class SchanaPartyManagerClient {
 
         int i;
         for (i = 0; i < party_ids.Count (); ++i) {
-            healths.Insert (party_ids.Get(i), server_healths.Get(i));
+            healths.Insert (party_ids.Get (i), server_healths.Get (i));
         }
     }
 
@@ -71,8 +71,8 @@ class SchanaPartyManagerClient {
 
             int i;
             for (i = 0; i < player_ids.Count (); ++i) {
-                if (player_ids.Get(i) != activePlayerId) {
-                    allPlayers.Insert (player_ids.Get(i), player_names.Get(i));
+                if (player_ids.Get (i) != activePlayerId) {
+                    allPlayers.Insert (player_ids.Get (i), player_names.Get (i));
                 }
             }
         }

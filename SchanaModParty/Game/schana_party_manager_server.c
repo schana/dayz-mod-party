@@ -80,7 +80,7 @@ class SchanaPartyManagerServer {
 
 		foreach (auto owner_id, auto party_ids : configurations) {
 			auto validated_party_ids = new ref set<string> ();
-			
+
 			foreach (string member_id : party_ids) {
 				if (configurations.Contains (member_id) && configurations.Get (member_id).Find (owner_id) != -1) {
 					validated_party_ids.Insert (member_id);
@@ -105,15 +105,15 @@ class SchanaPartyManagerServer {
 				id_map.Insert (player.GetIdentity ().GetId (), player);
 			}
 		}
-		
+
 		ref array<DayZPlayer> players = new ref array<DayZPlayer>;
 		ref set<string> member_ids = GetParties ().Get (id);
-		if (member_ids){
-			for (int i = 0; i < member_ids.Count(); i++){
-				string member_id = member_ids.Get(i);
+		if (member_ids) {
+			for (int i = 0; i < member_ids.Count (); i++) {
+				string member_id = member_ids.Get (i);
 				if (id_map.Contains (member_id)) {
-					DayZPlayer plr = DayZPlayer.Cast(id_map.Get (member_id));
-					if (plr){
+					DayZPlayer plr = DayZPlayer.Cast (id_map.Get (member_id));
+					if (plr) {
 						players.Insert (plr);
 					}
 				}
@@ -121,9 +121,8 @@ class SchanaPartyManagerServer {
 		}
 		return players;
 	}
-	
-	
-	private ref map<string,vector> GetPositions () {
+
+	private ref map<string, vector> GetPositions () {
 		auto positions = new ref map<string, vector> ();
 
 		ref array<Man> players = new array<Man>;
@@ -169,8 +168,8 @@ class SchanaPartyManagerServer {
 				}
 			}
 
-			GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Call(this.SendPartyInfo, id_map);
-			GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Call(this.SendPlayersInfo, id_map);
+			GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).Call (this.SendPartyInfo, id_map);
+			GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).Call (this.SendPlayersInfo, id_map);
 
 			canSendInfo = false;
 		}
@@ -193,23 +192,23 @@ class SchanaPartyManagerServer {
 		}
 
 		int maxPartySize = GetSchanaPartyServerSettings ().GetMaxPartySize ();
-        int SendDelay = 1;
+		int SendDelay = 1;
 		foreach (auto id, auto party_ids : parties) {
 			SendDelay++; //To help performance to devide up when the parties are all sent
 			SchanaPartyUtils.Trace ("SendInfo Begin " + id);
 			if (!positions.Contains (id)) {
 				configurations.Remove (id);
 			} else {
-				DayZPlayer player = DayZPlayer.Cast(id_map.Get (id));
-				if (player){
-					GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(this.SendPartyInfoToPlayer, SendDelay, false, id, party_ids, maxPartySize, positions, server_healths, player);
+				DayZPlayer player = DayZPlayer.Cast (id_map.Get (id));
+				if (player) {
+					GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).CallLater (this.SendPartyInfoToPlayer, SendDelay, false, id, party_ids, maxPartySize, positions, server_healths, player);
 				}
 			}
 			SchanaPartyUtils.Trace ("SendInfo End " + id);
 		}
 	}
 
-	private void SendPartyInfoToPlayer (string id, ref set<string> party_ids, int maxPartySize, ref map<string, vector> positions, ref map<string,float> server_healths, DayZPlayer player) {
+	private void SendPartyInfoToPlayer (string id, ref set<string> party_ids, int maxPartySize, ref map<string, vector> positions, ref map<string, float> server_healths, DayZPlayer player) {
 		auto ids = new ref array<string>;
 		auto locations = new ref array<vector>;
 		auto healths = new ref array<float>;

@@ -73,7 +73,7 @@ class SchanaPartyBasicMapAPI {
         int i;
 
         for (i = 0; i < markers.Count (); ++i) {
-            ClientAddBasicMapMarker (markers.Get(i).GetName (), markers.Get(i).GetPosition ());
+            ClientAddBasicMapMarker (markers.Get (i).GetName (), markers.Get (i).GetPosition ());
         }
     }
 
@@ -113,14 +113,14 @@ class SchanaPartyBasicMapAPI {
 
     void ServerRegisterBasicMapMarkers (string id, Param1<ref array<ref BasicMapMarker>> data) {
         auto manager = GetSchanaPartyManagerServer ();
-		ref array<DayZPlayer> players = manager.GetPartyPlayers (id)
-		if (players){
-			foreach (auto player : players) {
-				if (player && player.GetIdentity ()){
-					GetRPCManager ().SendRPC ("SchanaModParty", "ClientRegisterBasicMapMarkersRPC", data, false, player.GetIdentity ());
-				}
-			}
-		}
+        ref array<DayZPlayer> players = manager.GetPartyPlayers (id)
+        if (players) {
+            foreach (auto player : players) {
+                if (player && player.GetIdentity ()) {
+                    GetRPCManager ().SendRPC ("SchanaModParty", "ClientRegisterBasicMapMarkersRPC", data, false, player.GetIdentity ());
+                }
+            }
+        }
     }
 
     void ServerAddBasicMapMarkerRPC (CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target) {
