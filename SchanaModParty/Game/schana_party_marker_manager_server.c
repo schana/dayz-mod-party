@@ -1,10 +1,10 @@
 class SchanaPartyMarkerManagerServer {
-    private ref map<ref string, ref array<ref SchanaPartyMarkerInfo>> markers;
+    private ref map<string, ref array<ref SchanaPartyMarkerInfo>> markers;
     private bool canSendInfo = true;
 
     void SchanaPartyMarkerManagerServer () {
         SchanaPartyUtils.LogMessage ("PartyMarker Server Init");
-        markers = new ref map<ref string, ref array<ref SchanaPartyMarkerInfo>> ();
+        markers = new ref map<string, ref array<ref SchanaPartyMarkerInfo>> ();
         GetRPCManager ().AddRPC ("SchanaModParty", "ServerRegisterMarkersRPC", this, SingleplayerExecutionType.Both);
 
         GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).CallLater (this.SendMarkers, 10000, true);
@@ -48,7 +48,7 @@ class SchanaPartyMarkerManagerServer {
 
     void SendMarkers () {
         if (canSendInfo) {
-            auto id_map = new ref map<ref string, ref DayZPlayer> ();
+            auto id_map = new ref map<string, DayZPlayer> ();
             ref array<Man> players = new array<Man>;
             GetGame ().GetPlayers (players);
 
@@ -72,7 +72,7 @@ class SchanaPartyMarkerManagerServer {
         }
     }
 
-    private void SendMarkerInfoToPlayer (string id, ref set<ref string> party_ids, DayZPlayer player) {
+    private void SendMarkerInfoToPlayer (string id, ref set<string> party_ids, DayZPlayer player) {
         auto playerMarkers = new ref array<ref SchanaPartyMarkerInfo>;
         foreach (string party_id : party_ids) {
             if (markers.Contains (party_id)) {

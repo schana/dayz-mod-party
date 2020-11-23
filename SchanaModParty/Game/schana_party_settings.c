@@ -2,12 +2,12 @@ class SchanaModPartySettings {
     private static string DIR = "$profile:SchanaModParty";
     private static string PATH = DIR + "\\config_1.json";
 
-    private ref array<ref string> players;
-    private ref array<ref string> names;
+    private ref array<string> players;
+    private ref array<string> names;
 
     void SchanaModPartySettings () {
-        players = new ref array<ref string> ();
-        names = new ref array<ref string> ();
+        players = new ref array<string> ();
+        names = new ref array<string> ();
     }
 
     void Add (string id, string name) {
@@ -43,8 +43,8 @@ class SchanaModPartySettings {
         return index != -1;
     }
 
-    ref array<ref string> GetMembers () {
-        auto members = new ref array<ref string> ();
+    ref array<string> GetMembers () {
+        auto members = new ref array<string> ();
 
         for (int i = 0; i < players.Count (); ++i) {
             members.Insert (players.Get (i));
