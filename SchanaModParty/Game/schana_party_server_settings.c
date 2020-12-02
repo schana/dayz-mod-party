@@ -94,6 +94,9 @@ class SchanaModPartyServerSettings {
         if (settings.maxMarkers == 0) {
             settings.maxMarkers = DEFAULT_MAX_MARKERS;
         }
+        if (settings.maxPartyRefreshRate == 0) {
+            settings.maxPartyRefreshRate = DEFAULT_MAX_PARTY_REFRESH_RATE;
+        }
     }
 }
 
