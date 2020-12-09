@@ -120,7 +120,7 @@ class SchanaPartyManagerServer {
 
 		foreach (Man man : game_players) {
 			DayZPlayer player = DayZPlayer.Cast (man);
-			if (player && player.GetIdentity ()) {
+			if (player && player.GetIdentity () && player.IsAlive()) {
 				id_map.Insert (player.GetIdentity ().GetId (), player);
 			}
 		}
@@ -159,7 +159,7 @@ class SchanaPartyManagerServer {
 
 		foreach (Man man : players) {
 			DayZPlayer player = DayZPlayer.Cast (man);
-			if (player && player.GetIdentity ()) {
+			if (player && player.GetIdentity () && player.IsAlive()) {
 				player_positions.Insert (player.GetIdentity ().GetId (), player.GetPosition ());
 			}
 		}
@@ -189,7 +189,7 @@ class SchanaPartyManagerServer {
 
 		foreach (Man man : players) {
 			DayZPlayer player = DayZPlayer.Cast (man);
-			if (player && player.GetIdentity ()) {
+			if (player && player.GetIdentity () && player.IsAlive()) {
 				player_healths.Insert (player.GetIdentity ().GetId (), player.GetHealth ("", ""));
 			}
 		}
@@ -211,7 +211,7 @@ class SchanaPartyManagerServer {
 
 			foreach (Man man : players) {
 				DayZPlayer player = DayZPlayer.Cast (man);
-				if (player && player.GetIdentity ()) {
+				if (player && player.GetIdentity () && player.IsAlive()) {
 					id_map.Insert (player.GetIdentity ().GetId (), player);
 				}
 			}
