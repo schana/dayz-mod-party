@@ -218,6 +218,8 @@ class SchanaPartyManagerServer {
 
 			GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).Call (this.SendPartyInfo, id_map);
 			GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).Call (this.SendPlayersInfo, id_map);
+			int sendInfoFrequency = GetSchanaPartyServerSettings ().GetSendInfoFrequency ();
+			GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).CallLater (this.ResetSendInfoLock, sendInfoFrequency * 1000, false);
 
 			canSendInfo = false;
 		}
