@@ -31,7 +31,7 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu {
             m_SchanaPartyListHealthWidgets.Insert (ImageWidget.Cast (m_SchanaPartyListRootWidget.FindAnyWidget ("IconHealth" + i.ToString ())));
         }
 
-        m_SchanaPartyNametagPlayer = player;
+        m_SchanaPartyNametagPlayer = DayZPlayer.Cast(player);
         m_BasicMapHelper = new SchanaPartyMemberBasicMapMarkerHelper ();
 
         GetGame ().GetCallQueue (CALL_CATEGORY_GUI).CallLater (this.SchanaUpdate, 16, true);
@@ -96,7 +96,7 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu {
     }
 
     void SchanaPartyUpdatePlayer (DayZPlayer player) {
-        m_SchanaPartyNametagPlayer = player;
+        m_SchanaPartyNametagPlayer = DayZPlayer.Cast(player);
     }
 
     void SchanaPartyUpdateName (string name) {
