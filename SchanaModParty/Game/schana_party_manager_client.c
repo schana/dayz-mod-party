@@ -47,10 +47,11 @@ class SchanaPartyManagerClient {
     void ClientUpdatePartyInfo (ref array<string> party_ids, ref array<vector> server_positions, ref array<float> server_healths) {
         positions.Replace (party_ids, server_positions);
         healths.Clear ();
-
+		/*
         party_ids.Debug ();
         server_positions.Debug ();
         server_healths.Debug ();
+		*/
         int i;
         for (i = 0; i < party_ids.Count (); ++i) {
             healths.Insert (party_ids.Get (i), server_healths.Get (i));
