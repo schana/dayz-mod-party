@@ -42,7 +42,7 @@ class SchanaModPartyServerSettings {
     int GetMaxMarkers () {
         return maxMarkers;
     }
-	
+
     int GetMaxPartyRefreshRate () {
         return maxPartyRefreshRate;
     }

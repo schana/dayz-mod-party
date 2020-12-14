@@ -10,7 +10,7 @@ class SchanaPartyPositions {
     }
 
     void Replace (ref array<string> ids, ref array<vector> server_positions) {
-		positions.Clear();
+        positions.Clear ();
         for (int i = 0; i < ids.Count (); ++i) {
             positions.Insert (ids.Get (i), server_positions.Get (i));
         }
