@@ -1,2 +1,2 @@
 static const int SCHANA_PARTY_MENU = 2071036853;
-static const string SCHANA_PARTY_VERSION = "1.3.1";
+static const string SCHANA_PARTY_VERSION = "1.3.2";
