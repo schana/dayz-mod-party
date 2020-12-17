@@ -280,8 +280,13 @@ class SchanaPartyManagerServer {
 		auto all_player_ids = new ref array<string>;
 		auto all_player_names = new ref array<string>;
 		foreach (auto player_id, auto player_base_player : id_map) {
-			all_player_ids.Insert (player_id);
-			all_player_names.Insert (player_base_player.GetIdentity ().GetName ());
+			if (player_base_player){
+				PlayerIdentity theIdentity = PlayerIdentity.Cast (player_base_player.GetIdentity ());
+				if (theIdentity){
+					all_player_ids.Insert (player_id);
+					all_player_names.Insert (theIdentity.GetName ());
+				}
+			}
 		}
 
 		auto all_player_info = new ref Param2<ref array<string>, ref array<string>> (all_player_ids, all_player_names);
