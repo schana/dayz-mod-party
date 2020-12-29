@@ -269,8 +269,9 @@ class SchanaPartyManagerServer {
 			SchanaPartyUtils.Info ("SendInfo to " + id + " " + result);
 		}
 
-		if (player && player.GetIdentity ()) {
-			GetRPCManager ().SendRPC ("SchanaModParty", "ClientUpdatePartyInfoRPC", info, false, player.GetIdentity ());
+		DayZPlayer plyr = DayZPlayer.Cast (player);
+		if (plyr && plyr.GetIdentity ()) {
+			GetRPCManager ().SendRPC ("SchanaModParty", "ClientUpdatePartyInfoRPC", info, false, plyr.GetIdentity ());
 		} else {
 			SchanaPartyUtils.Warn ("SendInfo failed to " + id);
 		}
@@ -280,8 +281,9 @@ class SchanaPartyManagerServer {
 		auto all_player_ids = new ref array<string>;
 		auto all_player_names = new ref array<string>;
 		foreach (auto player_id, auto player_base_player : id_map) {
-			if (player_base_player){
-				PlayerIdentity theIdentity = PlayerIdentity.Cast (player_base_player.GetIdentity ());
+			DayZPlayer plyr = DayZPlayer.Cast (player_base_player);
+			if (plyr){
+				PlayerIdentity theIdentity = PlayerIdentity.Cast (plyr.GetIdentity ());
 				if (theIdentity){
 					all_player_ids.Insert (player_id);
 					all_player_names.Insert (theIdentity.GetName ());

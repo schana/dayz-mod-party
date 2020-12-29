@@ -60,8 +60,11 @@ class SchanaPartyMarkerManagerServer {
             }
 
             auto manager = GetSchanaPartyManagerServer ();
+			if (!manager)
+				return;
             auto parties = manager.GetParties ();
-
+			if (!parties)
+				return;
             foreach (auto id, auto party_ids : parties) {
                 SchanaPartyUtils.Trace ("SendMarkers Begin " + id);
                 SendMarkerInfoToPlayer (id, party_ids, id_map.Get (id));
