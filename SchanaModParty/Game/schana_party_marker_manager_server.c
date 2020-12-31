@@ -54,14 +54,17 @@ class SchanaPartyMarkerManagerServer {
 
             foreach (Man man : players) {
                 DayZPlayer player = DayZPlayer.Cast (man);
-                if (player && player.GetIdentity ()) {
+                if (player && player.GetIdentity () && player.IsAlive ()) {
                     id_map.Insert (player.GetIdentity ().GetId (), player);
                 }
             }
 
             auto manager = GetSchanaPartyManagerServer ();
+			if (!manager)
+				return;
             auto parties = manager.GetParties ();
-
+			if (!parties)
+				return;
             foreach (auto id, auto party_ids : parties) {
                 SchanaPartyUtils.Trace ("SendMarkers Begin " + id);
                 SendMarkerInfoToPlayer (id, party_ids, id_map.Get (id));
@@ -89,7 +92,7 @@ class SchanaPartyMarkerManagerServer {
             SchanaPartyUtils.Debug ("SendMarkers to " + id + " " + result);
         }
 
-        if (player && player.GetIdentity ()) {
+        if (player && player.GetIdentity () && player.IsAlive ()) {
             GetRPCManager ().SendRPC ("SchanaModParty", "ClientUpdatePartyMarkersRPC", info, false, player.GetIdentity ());
         } else {
             SchanaPartyUtils.Warn ("SendMarkers failed to " + id);
