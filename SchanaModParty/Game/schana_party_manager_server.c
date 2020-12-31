@@ -140,7 +140,7 @@ class SchanaPartyManagerServer {
 	}
 
 	private ref map<string, vector> GetPositions () {
-		if (!canGenerateHealth) {
+		if (!canGeneratePositions) {
 			return player_positions;
 		}
 
