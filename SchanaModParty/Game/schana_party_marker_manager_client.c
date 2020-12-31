@@ -88,7 +88,10 @@ class SchanaPartyMarkerManagerClient {
     }
 
     string GetNextName () {
+		if (GetGame ().GetPlayer () && GetGame ().GetPlayer ().GetIdentity ()){
         return GetGame ().GetPlayer ().GetIdentity ().GetName () + " " + (markers.Count () + 1).ToString ();
+		}
+		return "[NULL] " + (markers.Count () + 1).ToString ();
     }
 }
 
