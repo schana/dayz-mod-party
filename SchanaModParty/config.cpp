@@ -2,7 +2,7 @@ class CfgPatches
 {
 	class SchanaModParty
 	{
-		requiredAddons[] = {};
+		requiredAddons[] = { "SchanaModPartyDefine", "JM_CF_Scripts" };
 		units[] = {};
 		weapons[] = {};
 	};
