@@ -196,26 +196,31 @@ class SchanaPartyManagerServer {
 
 	private void SendInfo () {
 		if (canSendInfo) {
-			auto id_map = new ref map<string, DayZPlayer> ();
-
-			ref array<Man> players = new array<Man>;
-			GetGame ().GetPlayers (players);
-
-			foreach (Man man : players) {
-				DayZPlayer player = DayZPlayer.Cast (man);
-				if (player && player.GetIdentity () && player.IsAlive ()) {
-					id_map.Insert (player.GetIdentity ().GetId (), player);
-				}
-			}
-
-			GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).Call (this.SendPartyInfo, id_map);
-			GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).Call (this.SendPlayersInfo, id_map);
-			int sendInfoFrequency = GetSchanaPartyServerSettings ().GetSendInfoFrequency ();
-			GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).CallLater (this.ResetSendInfoLock, sendInfoFrequency * 1000, false);
-
-			canSendInfo = false;
+			thread SendInfoThread ();
 		}
 	}
+
+        private void SendInfoThread () {
+		auto id_map = new ref map<string, DayZPlayer> ();
+
+		ref array<Man> players = new array<Man>;
+		GetGame ().GetPlayers (players);
+
+		foreach (Man man : players) {
+			DayZPlayer player = DayZPlayer.Cast (man);
+			if (player && player.GetIdentity () && player.IsAlive ()) {
+				id_map.Insert (player.GetIdentity ().GetId (), player);
+			}
+		}
+
+		SendPartyInfo (id_map);
+		SendPlayersInfo (id_map);
+		int sendInfoFrequency = GetSchanaPartyServerSettings ().GetSendInfoFrequency ();
+		GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).CallLater (this.ResetSendInfoLock, sendInfoFrequency * 1000, false);
+
+		canSendInfo = false;
+	}
+
 
 	private void SendPartyInfo (ref map<string, DayZPlayer> id_map) {
 
@@ -243,7 +248,7 @@ class SchanaPartyManagerServer {
 			} else {
 				DayZPlayer player = DayZPlayer.Cast (id_map.Get (id));
 				if (player) {
-					GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).CallLater (this.SendPartyInfoToPlayer, SendDelay, false, id, party_ids, maxPartySize, positions, server_healths, player);
+					SendPartyInfoToPlayer (id, party_ids, maxPartySize, positions, server_healths, player);
 				}
 			}
 			SchanaPartyUtils.Trace ("SendInfo End " + id);
