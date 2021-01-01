@@ -60,8 +60,6 @@ class SchanaPartyBasicMapAPI {
         GetRPCManager ().AddRPC ("SchanaModParty", "ServerRemoveBasicMapMarkerRPC", this, SingleplayerExecutionType.Both);
     }
 
-#ifdef BASICMAP
-
     void ClientRegisterBasicMapMarkersRPC (CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target) {
 #ifdef BASICMAP
         Param1<ref array<ref BasicMapMarker>> data;
