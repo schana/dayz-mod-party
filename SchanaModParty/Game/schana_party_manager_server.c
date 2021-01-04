@@ -115,9 +115,9 @@ class SchanaPartyManagerServer {
 		ref map<string, DayZPlayer> id_map = new ref map<string, DayZPlayer> ();
 		ref array<Man> game_players = new array<Man>;
 		GetGame ().GetPlayers (game_players);
-
-		foreach (Man man : game_players) {
-			DayZPlayer player = DayZPlayer.Cast (man);
+		int i;
+		for (i = 0; i < game_players.Count (); ++i) {
+			DayZPlayer player = DayZPlayer.Cast (game_players.Get (i));
 			if (player && player.GetIdentity () && player.IsAlive ()) {
 				id_map.Insert (player.GetIdentity ().GetId (), player);
 			}
@@ -126,7 +126,7 @@ class SchanaPartyManagerServer {
 		ref array<DayZPlayer> players = new ref array<DayZPlayer>;
 		ref set<string> member_ids = GetParties ().Get (id);
 		if (member_ids) {
-			for (int i = 0; i < member_ids.Count (); i++) {
+			for (i = 0; i < member_ids.Count (); ++i) {
 				string member_id = member_ids.Get (i);
 				if (id_map.Contains (member_id)) {
 					DayZPlayer plr = DayZPlayer.Cast (id_map.Get (member_id));
@@ -285,12 +285,12 @@ class SchanaPartyManagerServer {
 	private void SendPlayersInfo (ref map<string, DayZPlayer> id_map) {
 		auto all_player_ids = new ref array<string>;
 		auto all_player_names = new ref array<string>;
-		foreach (auto player_id, auto player_base_player : id_map) {
-			DayZPlayer plyr = DayZPlayer.Cast (player_base_player);
+		for ( int i = 0; i < id_map.Count (); ++i ) {
+			DayZPlayer plyr = DayZPlayer.Cast (id_map.GetElement (i));
 			if (plyr && plyr.IsAlive ()){
 				PlayerIdentity theIdentity = PlayerIdentity.Cast (plyr.GetIdentity ());
 				if (theIdentity){
-					all_player_ids.Insert (player_id);
+					all_player_ids.Insert (id_map.GetKey (i));
 					all_player_names.Insert (theIdentity.GetName ());
 				}
 			}

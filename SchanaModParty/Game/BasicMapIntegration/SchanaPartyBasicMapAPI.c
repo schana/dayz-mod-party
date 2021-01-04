@@ -171,8 +171,8 @@ class SchanaPartyBasicMapAPI {
         auto manager = GetSchanaPartyManagerServer ();
         ref array<DayZPlayer> players = manager.GetPartyPlayers (id)
         if (players) {
-            foreach (auto player : players) {
-				DayZPlayer ply = DayZPlayer.Cast (player);
+            for (int i = 0; players.Count (); ++i) {
+				DayZPlayer ply = DayZPlayer.Cast (players.Get (i));
 				if (ply && ply.GetIdentity () && ply.IsAlive ()){
                     GetRPCManager ().SendRPC ("SchanaModParty", "ClientRegisterBasicMapMarkersRPC", data, false, ply.GetIdentity ());
                 }

@@ -51,9 +51,9 @@ class SchanaPartyMarkerManagerServer {
             auto id_map = new ref map<string, DayZPlayer> ();
             ref array<Man> players = new array<Man>;
             GetGame ().GetPlayers (players);
-
-            foreach (Man man : players) {
-                DayZPlayer player = DayZPlayer.Cast (man);
+			
+            for (int i = 0; i < players.Count (); ++i ) {
+                DayZPlayer player = DayZPlayer.Cast (players.Get (i));
                 if (player && player.GetIdentity () && player.IsAlive ()) {
                     id_map.Insert (player.GetIdentity ().GetId (), player);
                 }
@@ -67,7 +67,7 @@ class SchanaPartyMarkerManagerServer {
 				return;
             foreach (auto id, auto party_ids : parties) {
                 SchanaPartyUtils.Trace ("SendMarkers Begin " + id);
-                SendMarkerInfoToPlayer (id, party_ids, id_map.Get (id));
+                SendMarkerInfoToPlayer (id, party_ids, DayZPlayer.Cast (id_map.Get (id)));
                 SchanaPartyUtils.Trace ("SendMarkers End " + id);
             }
 
@@ -76,6 +76,9 @@ class SchanaPartyMarkerManagerServer {
     }
 
     private void SendMarkerInfoToPlayer (string id, ref set<string> party_ids, DayZPlayer player) {
+		if (!player){
+			return;
+		}
         auto playerMarkers = new ref array<ref SchanaPartyMarkerInfo>;
         foreach (string party_id : party_ids) {
             if (markers.Contains (party_id)) {
