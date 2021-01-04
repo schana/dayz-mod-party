@@ -2,12 +2,13 @@ class SchanaModPartyServerSettings {
     private static string DIR = "$profile:SchanaModParty";
     private static string PATH = DIR + "\\server-config.json";
 
-    private static const int DEFAULT_LOG_FREQUENCY = 10;
-    private static const int DEFAULT_VERBOSITY = 1;
+    private static const int DEFAULT_LOG_FREQUENCY = -1;
+    private static const int DEFAULT_VERBOSITY = -1;
     private static const int DEFAULT_MAX_PARTY_SIZE = -1;
     private static const int DEFAULT_SEND_INFO_FREQUENCY = 2;
     private static const int DEFAULT_SEND_MARKER_FREQUENCY = 2;
     private static const int DEFAULT_MAX_MARKERS = 10;
+    private static const int DEFAULT_MAX_PARTY_REFRESH_RATE = 4;
 
     private int logPartiesFrequencySeconds = DEFAULT_LOG_FREQUENCY;
     private int verbosity = DEFAULT_VERBOSITY;
@@ -15,6 +16,7 @@ class SchanaModPartyServerSettings {
     private int sendInfoFrequencySeconds = DEFAULT_SEND_INFO_FREQUENCY;
     private int sendMarkerFrequencySeconds = DEFAULT_SEND_MARKER_FREQUENCY;
     private int maxMarkers = DEFAULT_MAX_MARKERS;
+    private int maxPartyRefreshRate = DEFAULT_MAX_PARTY_REFRESH_RATE;
     private ref array<string> adminIds = new array<string> ();
 
     int GetLogFrequency () {
@@ -39,6 +41,10 @@ class SchanaModPartyServerSettings {
 
     int GetMaxMarkers () {
         return maxMarkers;
+    }
+
+    int GetMaxPartyRefreshRate () {
+        return maxPartyRefreshRate;
     }
 
     array<string> GetAdminIds () {
@@ -87,6 +93,9 @@ class SchanaModPartyServerSettings {
         }
         if (settings.maxMarkers == 0) {
             settings.maxMarkers = DEFAULT_MAX_MARKERS;
+        }
+        if (settings.maxPartyRefreshRate == 0) {
+            settings.maxPartyRefreshRate = DEFAULT_MAX_PARTY_REFRESH_RATE;
         }
     }
 }

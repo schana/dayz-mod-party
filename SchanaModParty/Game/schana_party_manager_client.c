@@ -8,7 +8,7 @@ class SchanaPartyManagerClient {
     void SchanaPartyManagerClient () {
         SchanaPartyUtils.LogMessage ("Client Init " + SCHANA_PARTY_VERSION);
 
-        positions = new SchanaPartyPositions ();
+        positions = new ref SchanaPartyPositions ();
         healths = new ref map<string, float> ();
         allPlayers = new ref map<string, string> ();
         sortingMap = new ref map<string, string> ();
@@ -47,11 +47,16 @@ class SchanaPartyManagerClient {
     void ClientUpdatePartyInfo (ref array<string> party_ids, ref array<vector> server_positions, ref array<float> server_healths) {
         positions.Replace (party_ids, server_positions);
         healths.Clear ();
-
+		/*
+        party_ids.Debug ();
+        server_positions.Debug ();
+        server_healths.Debug ();
+		*/
         int i;
         for (i = 0; i < party_ids.Count (); ++i) {
             healths.Insert (party_ids.Get (i), server_healths.Get (i));
         }
+
     }
 
     void ClientUpdatePlayersInfoRPC (CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target) {
@@ -81,6 +86,10 @@ class SchanaPartyManagerClient {
     private void Update () {
         DayZPlayer activePlayer = DayZPlayer.Cast (GetGame ().GetPlayer ());
 
+        if (!m_SchanaNametags) {
+            m_SchanaNametags = new map<string, ref SchanaPartyNametagsMenu> ();
+        }
+
         if (activePlayer && activePlayer.GetIdentity () && activePlayer.IsAlive ()) {
             string activePlayerId = activePlayer.GetIdentity ().GetId ();
 
@@ -100,15 +109,17 @@ class SchanaPartyManagerClient {
 
     private void AddAndUpdateNametags () {
         auto current_positions = positions.Get ();
-
         foreach (string party_id, vector position : current_positions) {
             if (!m_SchanaNametags.Contains (party_id)) {
                 SchanaPartyUtils.LogMessage ("Adding nametag " + party_id);
-                m_SchanaNametags[party_id] = new SchanaPartyNametagsMenu (null);
+                m_SchanaNametags.Insert (party_id, new SchanaPartyNametagsMenu (null));
             }
-            m_SchanaNametags[party_id].SchanaPartyUpdatePosition (position);
-            m_SchanaNametags[party_id].SchanaPartyUpdateHealth (healths.Get (party_id));
-            m_SchanaNametags[party_id].SchanaPartyUpdateName (GetSchanaPartySettings ().GetName (party_id));
+            if (!m_SchanaNametags.Get (party_id)) {
+                m_SchanaNametags.Set (party_id, new SchanaPartyNametagsMenu (null));
+            }
+            m_SchanaNametags.Get (party_id).SchanaPartyUpdatePosition (position);
+            m_SchanaNametags.Get (party_id).SchanaPartyUpdateHealth (healths.Get (party_id));
+            m_SchanaNametags.Get (party_id).SchanaPartyUpdateName (GetSchanaPartySettings ().GetName (party_id));
         }
     }
 
@@ -119,7 +130,7 @@ class SchanaPartyManagerClient {
         foreach (auto member_id : member_ids) {
             if (!current_positions.Contains (member_id)) {
                 SchanaPartyUtils.LogMessage ("Removing nametag " + member_id);
-                m_SchanaNametags[member_id].SchanaPartySetRemoveFlag ();
+                m_SchanaNametags.Get (member_id).SchanaPartySetRemoveFlag ();
                 m_SchanaNametags.Remove (member_id);
             }
         }
@@ -133,6 +144,10 @@ class SchanaPartyManagerClient {
             if (player && player.GetIdentity () && player.IsAlive ()) {
                 string id = player.GetIdentity ().GetId ();
                 if (current_positions.Contains (id) && id != activePlayerId) {
+                    if (!m_SchanaNametags.Contains (id)) {
+                        SchanaPartyUtils.LogMessage ("Adding nametag " + id);
+                        m_SchanaNametags.Insert (id, new SchanaPartyNametagsMenu (null));
+                    }
                     m_SchanaNametags[id].SchanaPartyUpdatePlayer (player);
                 }
             }
