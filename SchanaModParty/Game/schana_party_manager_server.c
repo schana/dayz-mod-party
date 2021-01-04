@@ -76,15 +76,11 @@ class SchanaPartyManagerServer {
 
 	private void ServerRegisterParty (string key, ref array<string> ids) {
 		SchanaPartyUtils.Info ("Register " + ids.Count ().ToString () + " to " + key);
-
+		party_members.Clear ();
 		foreach (string id : ids) {
 			if (!party_members.Contains(id)) {
 				party_members.Insert (id);
 			}
-			else {
-				return;
-			}
-			
 		}
 
 		string result;
