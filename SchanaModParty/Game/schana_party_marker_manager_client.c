@@ -8,7 +8,6 @@ class SchanaPartyMarkerManagerClient {
     void SchanaPartyMarkerManagerClient () {
         SchanaPartyUtils.LogMessage ("PartyMarker Client Init");
         markers = new ref array<ref SchanaPartyMarkerInfo>;
-        serverMarkers = new ref array<ref SchanaPartyMarkerInfo>;
         markerMenus = new ref array<ref SchanaPartyMarkerMenu>;
 
         GetRPCManager ().AddRPC ("SchanaModParty", "ClientUpdatePartyMarkersRPC", this, SingleplayerExecutionType.Both);
@@ -29,10 +28,6 @@ class SchanaPartyMarkerManagerClient {
 
     void Init () {
         auto positions = GetSchanaPartyMarkerSettings ().GetMarkers ();
-        for (int i = 0; i < positions.Count (); ++i) {
-            markers.Insert (new SchanaPartyMarkerInfo (GetNextName (), positions[i]));
-        }
-        ClientUpdatePartyMarkers (serverMarkers);
         initialized = true;
     }
 
@@ -44,34 +39,23 @@ class SchanaPartyMarkerManagerClient {
         ClientUpdatePartyMarkers (data.param1);
     }
 
-    void ClientUpdatePartyMarkers (ref array<ref SchanaPartyMarkerInfo> newServerMarkers) {
+    void ClientUpdatePartyMarkers (ref array<ref SchanaPartyMarkerInfo> serverMarkers) {
         SchanaPartyUtils.LogMessage ("ClientUpdatePartyMarkers");
-        serverMarkers = newServerMarkers;
-        int i;
-        for (i = 0; i < markerMenus.Count (); ++i) {
-            if (markerMenus.Get (i)) {
-                markerMenus.Get (i).SchanaPartySetRemoveFlag ();
-            }
-        }
-        for (i = 0; i < serverMarkers.Count (); ++i) {
+        markerMenus.Clear ();
+        for (int i = 0; i < serverMarkers.Count (); ++i) {
             markerMenus.Insert (new SchanaPartyMarkerMenu (serverMarkers.Get (i).GetName (), serverMarkers.Get (i).GetPosition ()));
-        }
-        for (i = 0; i < markers.Count (); ++i) {
-            markerMenus.Insert (new SchanaPartyMarkerMenu (markers.Get (i).GetName (), markers.Get (i).GetPosition ()));
         }
     }
 
     void Add (SchanaPartyMarkerInfo marker) {
         GetSchanaPartyMarkerSettings ().Add (marker.GetPosition ());
         markers.Insert (marker);
-        ClientUpdatePartyMarkers (serverMarkers);
         Send ();
     }
 
     void Reset () {
         GetSchanaPartyMarkerSettings ().Clear ();
         markers.Clear ();
-        ClientUpdatePartyMarkers (serverMarkers);
         Send ();
     }
 
@@ -89,7 +73,7 @@ class SchanaPartyMarkerManagerClient {
 
     string GetNextName () {
 		if (GetGame ().GetPlayer () && GetGame ().GetPlayer ().GetIdentity ()){
-        return GetGame ().GetPlayer ().GetIdentity ().GetName () + " " + (markers.Count () + 1).ToString ();
+            return GetGame ().GetPlayer ().GetIdentity ().GetName () + " " + (markers.Count () + 1).ToString ();
 		}
 		return "[NULL] " + (markers.Count () + 1).ToString ();
     }

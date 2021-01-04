@@ -2,5 +2,5 @@
     "logPartiesFrequencySeconds": 10,
     "verbosity": 1,
     "maxPartySize": -1,
-    "sendInfoFrequencySeconds": 2
+    "sendInfoFrequencySeconds": 1
 }

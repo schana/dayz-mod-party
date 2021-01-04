@@ -1,12 +1,14 @@
 modded class MissionGameplay extends MissionBase {
     private ref SchanaPartyMenu m_SchanaPartyMenu;
+    private auto party_client;
+    private auto marker_client
 
     override void OnInit () {
         super.OnInit ();
         delete g_SchanaPartyManagerClient;
-        GetSchanaPartyManagerClient ();
+        party_client = GetSchanaPartyManagerClient ();
         delete g_SchanaPartyMarkerManagerClient;
-        GetSchanaPartyMarkerManagerClient ();
+        marker_client = GetSchanaPartyMarkerManagerClient ();
     }
 
     override void OnMissionFinish () {
@@ -20,8 +22,8 @@ modded class MissionGameplay extends MissionBase {
 
         Man player = GetGame ().GetPlayer ();
 
-        if (player && !player.IsUnconscious () && !GetSchanaPartyMarkerManagerClient ().IsInitialized ()) {
-            GetSchanaPartyMarkerManagerClient ().Init ();
+        if (player && !player.IsUnconscious () && !party_client ().IsInitialized ()) {
+            party_client ().Init ();
         }
 
         if (GetUApi () && !m_UIManager.IsMenuOpen (MENU_CHAT_INPUT)) {
@@ -58,21 +60,21 @@ modded class MissionGameplay extends MissionBase {
             if (input.LocalPress ("UASchanaPartyPing", false)) {
                 vector position = SchanaPartyGetRaycastPosition ();
                 if (position != vector.Zero) {
-                    auto marker_client = GetSchanaPartyMarkerManagerClient ();
                     auto new_marker = new SchanaPartyMarkerInfo (marker_client.GetNextName (), position);
                     marker_client.Add (new_marker);
                 }
             }
 
             if (input.LocalPress ("UASchanaPartyPingClear", false)) {
-                GetSchanaPartyMarkerManagerClient ().Reset ();
+                marker_client.Reset ();
             }
         }
     }
 
     private vector SchanaPartyGetRaycastPosition () {
-        vector begin = GetGame ().GetCurrentCameraPosition () + GetGame ().GetCurrentCameraDirection ();
-        vector end = begin + GetGame ().GetCurrentCameraDirection () * 8000;
+        vector dir = GetGame ().GetCurrentCameraDirection ();
+        vector begin =  GetGame ().GetCurrentCameraPosition () + dir;
+        vector end = begin + dir * 8000;
         vector contactPos;
         vector contactDir;
         int contactComponent;
@@ -98,7 +100,7 @@ modded class MissionGameplay extends MissionBase {
 
 static ref SchanaPartyManagerClient g_SchanaPartyManagerClient;
 static ref SchanaPartyManagerClient GetSchanaPartyManagerClient () {
-    if (!g_Game.IsServer () && !g_SchanaPartyManagerClient) {
+    if (g_Game.IsClient () && !g_SchanaPartyManagerClient) {
         g_SchanaPartyManagerClient = new SchanaPartyManagerClient;
     }
     return g_SchanaPartyManagerClient;

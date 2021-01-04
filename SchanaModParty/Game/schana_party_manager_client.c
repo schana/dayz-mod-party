@@ -52,8 +52,7 @@ class SchanaPartyManagerClient {
         server_positions.Debug ();
         server_healths.Debug ();
 		*/
-        int i;
-        for (i = 0; i < party_ids.Count (); ++i) {
+        for (int i = 0; i < party_ids.Count (); ++i) {
             healths.Insert (party_ids.Get (i), server_healths.Get (i));
         }
 
@@ -74,8 +73,7 @@ class SchanaPartyManagerClient {
         if (activePlayer && activePlayer.GetIdentity () && activePlayer.IsAlive ()) {
             string activePlayerId = activePlayer.GetIdentity ().GetId ();
 
-            int i;
-            for (i = 0; i < player_ids.Count (); ++i) {
+            for (int i = 0; i < player_ids.Count (); ++i) {
                 if (player_ids.Get (i) != activePlayerId) {
                     allPlayers.Insert (player_ids.Get (i), player_names.Get (i));
                 }

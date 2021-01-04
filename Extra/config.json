@@ -1,5 +1,6 @@
 {
     "players": {
         "id": "name"
-    }
+    },
+    "autoBackupMarkers": 1
 }

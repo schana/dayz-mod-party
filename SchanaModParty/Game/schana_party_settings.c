@@ -1,7 +1,10 @@
 class SchanaModPartySettings {
     private static string DIR = "$profile:SchanaModParty";
-    private static string PATH = DIR + "\\config_1.json";
+    private static string PATH = DIR + "\\config.json";
 
+    private static const int DEFAULT_AUTO_BACKUP_MARKERS = 1;
+
+    private int autoBackupMarkers = DEFAULT_AUTO_BACKUP_MARKERS;
     private ref array<string> players;
     private ref array<string> names;
 
@@ -70,7 +73,24 @@ class SchanaModPartySettings {
             JsonFileLoader<SchanaModPartySettings>.JsonLoadFile (PATH, settings);
         }
 
+        LoadDefaultsIfMissing (settings);
+
+        settings.Save ();
+
         return settings;
+    }
+
+    static void LoadDefaultsIfMissing (SchanaModPartySettings settings) {
+        if (!settings.autoBackupMarkers) {
+            settings.autoBackupMarkers = DEFAULT_AUTO_BACKUP_MARKERS;
+        }
+    }
+
+    int GetAutoBackupMarkers () {
+        if (autoBackupMarkers < 1) {
+            return false;
+        }
+        return true;
     }
 }
 

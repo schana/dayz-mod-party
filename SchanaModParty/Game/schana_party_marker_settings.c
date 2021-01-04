@@ -1,4 +1,5 @@
 class SchanaModPartyMarkerSettings {
+    private ref SchanaPartySettings g_schanaPartySettings;
     private static string DIR = "$profile:SchanaModParty";
     private static string PATH = DIR + "\\markers.json";
 
@@ -6,6 +7,7 @@ class SchanaModPartyMarkerSettings {
 
     void SchanaModPartyMarkerSettings () {
         markers = new ref array<vector> ();
+        logging = g_schanaPartySettings. GetAutoBackupMarkers ();
     }
 
     void Add (vector mark) {
@@ -29,7 +31,7 @@ class SchanaModPartyMarkerSettings {
     }
 
     void Save () {
-        if (GetGame ().IsClient ()) {
+        if (GetGame ().IsClient () && logging) {
             if (!FileExist (DIR)) {
                 MakeDirectory (DIR);
             }

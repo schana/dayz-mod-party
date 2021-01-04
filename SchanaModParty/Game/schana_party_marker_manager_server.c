@@ -36,9 +36,9 @@ class SchanaPartyMarkerManagerServer {
 
     void ServerRegisterMarkers (string id, ref array<ref SchanaPartyMarkerInfo> playerMarkers) {
         int maxMarkers = GetSchanaPartyServerSettings ().GetMaxMarkers ();
-        if (maxMarkers != -1) {
-            while (playerMarkers.Count () > maxMarkers) {
-                playerMarkers.RemoveOrdered (0);
+        if (maxMarkers > -1 && playerMarkers.Count () > maxMarkers ) {
+            for (int i = maxMarkers; playerMarkers.Count (); ++maxMarkers) {
+                playerMarkers.Remove (i);
             }
         }
         markers.Set (id, playerMarkers);
