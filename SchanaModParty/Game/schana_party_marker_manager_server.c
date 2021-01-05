@@ -31,7 +31,7 @@ class SchanaPartyMarkerManagerServer {
             SchanaPartyUtils.Debug ("ServerRegisterMarkersRPC " + result);
         }
 
-        ServerRegisterMarkers (sender.GetId (), data.param1);
+        thread ServerRegisterMarkers (sender.GetId (), data.param1);
     }
 
     void ServerRegisterMarkers (string id, ref array<ref SchanaPartyMarkerInfo> playerMarkers) {
@@ -48,8 +48,9 @@ class SchanaPartyMarkerManagerServer {
 
     void SendMarkers () {
         if (canSendInfo) {
+			SchanaPartyUtils.Trace ("SendMarkers Start");
             auto id_map = new ref map<string, DayZPlayer> ();
-            ref array<Man> players = new array<Man>;
+            array<Man> players = new array<Man>;
             GetGame ().GetPlayers (players);
 			
             for (int i = 0; i < players.Count (); ++i ) {
@@ -66,19 +67,23 @@ class SchanaPartyMarkerManagerServer {
 			if (!parties)
 				return;
             foreach (auto id, auto party_ids : parties) {
-                SchanaPartyUtils.Trace ("SendMarkers Begin " + id);
-                SendMarkerInfoToPlayer (id, party_ids, DayZPlayer.Cast (id_map.Get (id)));
-                SchanaPartyUtils.Trace ("SendMarkers End " + id);
+				DayZPlayer plr = DayZPlayer.Cast (id_map.Get (id));
+				if (plr && plr.GetIdentity () && plr.IsAlive ()) {
+					SchanaPartyUtils.Trace ("SendMarkers Begin " + id);
+					SendMarkerInfoToPlayer (id, party_ids, plr.GetIdentity ());
+					SchanaPartyUtils.Trace ("SendMarkers End " + id);
+				}
             }
 
             canSendInfo = false;
         }
     }
 
-    protected void SendMarkerInfoToPlayer (string id, ref set<string> party_ids, DayZPlayer player) {
+    protected void SendMarkerInfoToPlayer (string id, ref set<string> party_ids, PlayerIdentity player) {
 		if (!player){
 			return;
 		}
+        SchanaPartyUtils.Trace ("SendMarkerInfoToPlayer Start");
         auto playerMarkers = new ref array<ref SchanaPartyMarkerInfo>;
         foreach (string party_id : party_ids) {
             if (markers.Contains (party_id)) {
@@ -95,8 +100,8 @@ class SchanaPartyMarkerManagerServer {
             SchanaPartyUtils.Debug ("SendMarkers to " + id + " " + result);
         }
 
-        if (player && player.GetIdentity () && player.IsAlive ()) {
-            GetRPCManager ().SendRPC ("SchanaModParty", "ClientUpdatePartyMarkersRPC", info, false, player.GetIdentity ());
+        if (player) {
+            GetRPCManager ().SendRPC ("SchanaModParty", "ClientUpdatePartyMarkersRPC", info, false, player);
         } else {
             SchanaPartyUtils.Warn ("SendMarkers failed to " + id);
         }
