@@ -35,7 +35,7 @@ FrameWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       text "Players"
+       text "#P_Players"
        font "gui/fonts/metron28"
        "text halign" center
        "text valign" center
@@ -48,7 +48,7 @@ FrameWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       text "Party"
+       text "#P_Party"
        font "gui/fonts/metron28"
        "text halign" center
        "text valign" center
@@ -81,7 +81,7 @@ FrameWidgetClass rootFrame {
        hexactsize 0
        vexactsize 0
        style MenuDefault
-       text "Add"
+       text "#P_ADD"
        font "gui/fonts/metron28"
       }
       ButtonWidgetClass ButtonRemove {
@@ -92,7 +92,7 @@ FrameWidgetClass rootFrame {
        hexactsize 0
        vexactsize 0
        style MenuDefault
-       text "Remove"
+       text "#P_Remove"
        font "gui/fonts/metron28"
       }
       MultilineTextWidgetClass TextHelpPlayers {
@@ -105,7 +105,7 @@ FrameWidgetClass rootFrame {
        hexactsize 0
        vexactsize 0
        scaled 1
-       text "List of online players. Click Add to add them to your party. If they add you back, you'll see each other's markers."
+       text "#P_text3"
        font "gui/fonts/metron28"
        wrap 1
       }
@@ -119,7 +119,7 @@ FrameWidgetClass rootFrame {
        hexactsize 0
        vexactsize 0
        scaled 1
-       text "List of players you've added to your party. Green: player online and in your party, Blue: player online but hasn't added you to their party, Gray: player offline."
+       text "#P_text2"
        font "gui/fonts/metron28"
        wrap 1
       }
