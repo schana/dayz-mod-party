@@ -6,7 +6,7 @@ class SchanaPartyBasicMapAPI {
     static const string DISPLAY_NAME_REMOTE = "PARTY MEMBER MARKERS";
     static const string DISPLAY_NAME_MEMBERS = "PARTY MEMBERS";
 
-    private static ref SchanaPartyBasicMapAPI api;
+    protected static ref SchanaPartyBasicMapAPI api;
 
     static SchanaPartyBasicMapAPI Get () {
         if (!api) {
@@ -21,10 +21,10 @@ class SchanaPartyBasicMapAPI {
     }
 
 #ifdef BASICMAP
-    private ref BasicMapController controller;
+    protected ref BasicMapController controller;
 #endif
 
-    private void SchanaPartyBasicMapAPI () { }
+    void SchanaPartyBasicMapAPI () { }
 
     void ~SchanaPartyBasicMapAPI () {
 #ifdef BASICMAP

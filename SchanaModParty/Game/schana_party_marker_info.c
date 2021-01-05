@@ -1,6 +1,6 @@
 class SchanaPartyMarkerInfo {
-    private string name;
-    private vector position;
+    protected string name;
+    protected vector position;
 
     void SchanaPartyMarkerInfo (string markerName, vector markerPosition) {
         name = markerName;

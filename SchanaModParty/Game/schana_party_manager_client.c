@@ -1,9 +1,9 @@
 class SchanaPartyManagerClient {
-    private ref map<string, ref SchanaPartyNametagsMenu> m_SchanaNametags;
-    private ref SchanaPartyPositions positions;
-    private ref map<string, float> healths;
-    private ref map<string, string> allPlayers;
-    private ref map<string, string> sortingMap;
+    protected ref map<string, ref SchanaPartyNametagsMenu> m_SchanaNametags;
+    protected ref SchanaPartyPositions positions;
+    protected ref map<string, float> healths;
+    protected ref map<string, string> allPlayers;
+    protected ref map<string, string> sortingMap;
 
     void SchanaPartyManagerClient () {
         SchanaPartyUtils.LogMessage ("Client Init " + SCHANA_PARTY_VERSION);
@@ -83,7 +83,7 @@ class SchanaPartyManagerClient {
         }
     }
 
-    private void Update () {
+    protected void Update () {
         DayZPlayer activePlayer = DayZPlayer.Cast (GetGame ().GetPlayer ());
 
         if (!m_SchanaNametags) {
@@ -101,13 +101,13 @@ class SchanaPartyManagerClient {
         }
     }
 
-    private void UpdateRegistration (string activePlayerId) {
+    protected void UpdateRegistration (string activePlayerId) {
         auto members = GetSchanaPartySettings ().GetMembers ();
         auto data = new Param2<string, ref array<string>> (activePlayerId, members);
         GetRPCManager ().SendRPC ("SchanaModParty", "ServerRegisterPartyRPC", data);
     }
 
-    private void AddAndUpdateNametags () {
+    protected void AddAndUpdateNametags () {
         auto current_positions = positions.Get ();
         foreach (string party_id, vector position : current_positions) {
             if (!m_SchanaNametags.Contains (party_id)) {
@@ -123,7 +123,7 @@ class SchanaPartyManagerClient {
         }
     }
 
-    private void RemoveInvalidNametags () {
+    protected void RemoveInvalidNametags () {
         auto current_positions = positions.Get ();
 
         auto member_ids = m_SchanaNametags.GetKeyArray ();
@@ -136,7 +136,7 @@ class SchanaPartyManagerClient {
         }
     }
 
-    private void UpdateNametagsWithLocalPlayers (string activePlayerId) {
+    protected void UpdateNametagsWithLocalPlayers (string activePlayerId) {
         auto current_positions = positions.Get ();
 
         foreach (Man man : ClientData.m_PlayerBaseList) {
@@ -154,7 +154,7 @@ class SchanaPartyManagerClient {
         }
     }
 
-    private void UpdateMenuListSorting () {
+    protected void UpdateMenuListSorting () {
         sortingMap.Clear ();
         auto member_ids = m_SchanaNametags.GetKeyArray ();
         foreach (auto sorting_id : member_ids) {

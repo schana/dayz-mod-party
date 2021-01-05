@@ -1,13 +1,13 @@
 class SchanaPartyMenu extends UIScriptedMenu {
-	private bool m_SchanaPartyIsInitialized;
-	private bool m_SchanaPartyMenuIsOpen;
+	protected bool m_SchanaPartyIsInitialized;
+	protected bool m_SchanaPartyMenuIsOpen;
 
-	private TextListboxWidget m_SchanaPartyPlayerList;
-	private TextListboxWidget m_SchanaPartyPartyList;
-	private ButtonWidget m_SchanaPartyButtonAdd;
-	private ButtonWidget m_SchanaPartyButtonRemove;
+	protected TextListboxWidget m_SchanaPartyPlayerList;
+	protected TextListboxWidget m_SchanaPartyPartyList;
+	protected ButtonWidget m_SchanaPartyButtonAdd;
+	protected ButtonWidget m_SchanaPartyButtonRemove;
 
-	private ref map<string, string> member_sorting_map;
+	protected ref map<string, string> member_sorting_map;
 
 	void SchanaPartyMenu () {
 		member_sorting_map = new map<string, string> ();

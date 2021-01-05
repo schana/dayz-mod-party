@@ -1,6 +1,6 @@
 class SchanaPartyMarkerManagerServer {
-    private ref map<string, ref array<ref SchanaPartyMarkerInfo>> markers;
-    private bool canSendInfo = true;
+    protected ref map<string, ref array<ref SchanaPartyMarkerInfo>> markers;
+    protected bool canSendInfo = true;
 
     void SchanaPartyMarkerManagerServer () {
         SchanaPartyUtils.LogMessage ("PartyMarker Server Init");
@@ -16,7 +16,7 @@ class SchanaPartyMarkerManagerServer {
         GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).Remove (this.ResetSendInfoLock);
     }
 
-    private void ResetSendInfoLock () {
+    protected void ResetSendInfoLock () {
         canSendInfo = true;
     }
 
@@ -75,7 +75,7 @@ class SchanaPartyMarkerManagerServer {
         }
     }
 
-    private void SendMarkerInfoToPlayer (string id, ref set<string> party_ids, DayZPlayer player) {
+    protected void SendMarkerInfoToPlayer (string id, ref set<string> party_ids, DayZPlayer player) {
 		if (!player){
 			return;
 		}

@@ -1,9 +1,9 @@
 class SchanaPartyMarkerManagerClient {
-    private ref array<ref SchanaPartyMarkerInfo> markers;
-    private ref array<ref SchanaPartyMarkerInfo> serverMarkers;
-    private ref array<ref SchanaPartyMarkerMenu> markerMenus;
-    private bool initialized = false;
-    private bool canSend = true;
+    protected ref array<ref SchanaPartyMarkerInfo> markers;
+    protected ref array<ref SchanaPartyMarkerInfo> serverMarkers;
+    protected ref array<ref SchanaPartyMarkerMenu> markerMenus;
+    protected bool initialized = false;
+    protected bool canSend = true;
 
     void SchanaPartyMarkerManagerClient () {
         SchanaPartyUtils.LogMessage ("PartyMarker Client Init");
@@ -19,7 +19,7 @@ class SchanaPartyMarkerManagerClient {
         GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).Remove (this.ResetSendLock);
     }
 
-    private void ResetSendLock () {
+    protected void ResetSendLock () {
         canSend = true;
     }
 

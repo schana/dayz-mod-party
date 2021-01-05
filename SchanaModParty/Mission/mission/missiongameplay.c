@@ -1,5 +1,5 @@
 modded class MissionGameplay extends MissionBase {
-    private ref SchanaPartyMenu m_SchanaPartyMenu;
+    protected ref SchanaPartyMenu m_SchanaPartyMenu;
 
     override void OnInit () {
         super.OnInit ();
@@ -70,7 +70,7 @@ modded class MissionGameplay extends MissionBase {
         }
     }
 
-    private vector SchanaPartyGetRaycastPosition () {
+    protected vector SchanaPartyGetRaycastPosition () {
         vector begin = GetGame ().GetCurrentCameraPosition () + GetGame ().GetCurrentCameraDirection ();
         vector end = begin + GetGame ().GetCurrentCameraDirection () * 8000;
         vector contactPos;
@@ -84,12 +84,12 @@ modded class MissionGameplay extends MissionBase {
         return vector.Zero;
     }
 
-    private void SchanaPartyLockControls () {
+    protected void SchanaPartyLockControls () {
         GetGame ().GetMission ().PlayerControlDisable (INPUT_EXCLUDE_MOUSE_ALL);
         GetGame ().GetUIManager ().ShowUICursor (true);
     }
 
-    private void SchanaPartyUnlockControls () {
+    protected void SchanaPartyUnlockControls () {
         GetGame ().GetMission ().PlayerControlEnable (false);
         GetGame ().GetInput ().ResetGameFocus ();
         GetGame ().GetUIManager ().ShowUICursor (false);

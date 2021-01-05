@@ -1,10 +1,10 @@
 class SchanaPartyManagerServer {
-	private ref map<string, ref set<string>> configurations;
-	private bool canSendInfo = true;
+	protected ref map<string, ref set<string>> configurations;
+	protected bool canSendInfo = true;
 
-	private bool canGenerateParties = true;
-	private bool canGeneratePositions = true;
-	private bool canGenerateHealth = true;
+	protected bool canGenerateParties = true;
+	protected bool canGeneratePositions = true;
+	protected bool canGenerateHealth = true;
 
 	ref map<string, ref set<string>> parties;
 	ref map<string, vector> player_positions;
@@ -34,11 +34,11 @@ class SchanaPartyManagerServer {
 		}
 	}
 
-	private void ResetSendInfoLock () {
+	protected void ResetSendInfoLock () {
 		canSendInfo = true;
 	}
 
-	private void LogParties () {
+	protected void LogParties () {
 		string result;
 		JsonSerializer ().WriteToString (parties, false, result);
 		SchanaPartyUtils.Warn ("Parties " + result);
@@ -58,7 +58,7 @@ class SchanaPartyManagerServer {
 		ServerRegisterParty (data.param1, data.param2);
 	}
 
-	private void ServerRegisterParty (string key, ref array<string> ids) {
+	protected void ServerRegisterParty (string key, ref array<string> ids) {
 		SchanaPartyUtils.Info ("Register " + ids.Count ().ToString () + " to " + key);
 		auto party_members = new ref set<string> ();
 		foreach (string id : ids) {
@@ -139,7 +139,7 @@ class SchanaPartyManagerServer {
 		return players;
 	}
 
-	private ref map<string, vector> GetPositions () {
+	protected ref map<string, vector> GetPositions () {
 		if (!canGeneratePositions) {
 			return player_positions;
 		}
@@ -167,7 +167,7 @@ class SchanaPartyManagerServer {
 		canGeneratePositions = true;
 	}
 
-	private ref map<string, float> GetHealths () {
+	protected ref map<string, float> GetHealths () {
 		if (!canGenerateHealth) {
 			return player_healths;
 		}
@@ -194,13 +194,13 @@ class SchanaPartyManagerServer {
 		canGenerateHealth = true;
 	}
 
-	private void SendInfo () {
+	protected void SendInfo () {
 		if (canSendInfo) {
 			thread SendInfoThread ();
 		}
 	}
 
-        private void SendInfoThread () {
+        protected void SendInfoThread () {
 		auto id_map = new ref map<string, DayZPlayer> ();
 
 		ref array<Man> players = new array<Man>;
@@ -222,7 +222,7 @@ class SchanaPartyManagerServer {
 	}
 
 
-	private void SendPartyInfo (ref map<string, DayZPlayer> id_map) {
+	protected void SendPartyInfo (ref map<string, DayZPlayer> id_map) {
 
 		auto positions = GetPositions ();
 		auto server_healths = GetHealths ();
@@ -255,7 +255,7 @@ class SchanaPartyManagerServer {
 		}
 	}
 
-	private void SendPartyInfoToPlayer (string id, ref set<string> party_ids, int maxPartySize, ref map<string, vector> positions, ref map<string, float> server_healths, DayZPlayer player) {
+	protected void SendPartyInfoToPlayer (string id, ref set<string> party_ids, int maxPartySize, ref map<string, vector> positions, ref map<string, float> server_healths, DayZPlayer player) {
 		auto ids = new ref array<string>;
 		auto locations = new ref array<vector>;
 		auto healths = new ref array<float>;
@@ -282,7 +282,7 @@ class SchanaPartyManagerServer {
 		}
 	}
 
-	private void SendPlayersInfo (ref map<string, DayZPlayer> id_map) {
+	protected void SendPlayersInfo (ref map<string, DayZPlayer> id_map) {
 		auto all_player_ids = new ref array<string>;
 		auto all_player_names = new ref array<string>;
 		for ( int i = 0; i < id_map.Count (); ++i ) {

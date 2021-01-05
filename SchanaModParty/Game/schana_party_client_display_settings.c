@@ -1,27 +1,27 @@
 class SchanaModPartyClientDisplaySettings {
-    private static string DIR = "$profile:SchanaModParty";
-    private static string PATH = DIR + "\\display_settings.json";
+    protected static string DIR = "$profile:SchanaModParty";
+    protected static string PATH = DIR + "\\display_settings.json";
 
-    private bool enable_party = true;
-    private bool show_markers = true;
+    protected bool enable_party = true;
+    protected bool show_markers = true;
 
-    private vector nametag_color = "255 255 255";
-    private vector distance_color = "255 255 255";
-    private vector icon_color = "255 255 255";
+    protected vector nametag_color = "255 255 255";
+    protected vector distance_color = "255 255 255";
+    protected vector icon_color = "255 255 255";
 
-    private bool nametag_enabled = true;
-    private int nametag_distance_start = 0;
-    private int nametag_distance_end = 15000;
+    protected bool nametag_enabled = true;
+    protected int nametag_distance_start = 0;
+    protected int nametag_distance_end = 15000;
 
-    private bool distance_enabled = true;
-    private int distance_distance_start = 0;
-    private int distance_distance_end = 2000;
+    protected bool distance_enabled = true;
+    protected int distance_distance_start = 0;
+    protected int distance_distance_end = 2000;
 
-    private bool icon_enabled = true;
-    private int icon_distance_start = 0;
-    private int icon_distance_end = 15000;
+    protected bool icon_enabled = true;
+    protected int icon_distance_start = 0;
+    protected int icon_distance_end = 15000;
 
-    private int snap_distance = 2000;
+    protected int snap_distance = 2000;
 
     void Save () {
         if (GetGame ().IsClient ()) {

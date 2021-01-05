@@ -1,5 +1,5 @@
 class SchanaPartyPositions {
-    private ref map<string, vector> positions;
+    protected ref map<string, vector> positions;
 
     void SchanaPartyPositions () {
         positions = new ref map<string, vector> ();

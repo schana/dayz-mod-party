@@ -1,23 +1,23 @@
 class SchanaModPartyServerSettings {
-    private static string DIR = "$profile:SchanaModParty";
-    private static string PATH = DIR + "\\server-config.json";
+    protected static string DIR = "$profile:SchanaModParty";
+    protected static string PATH = DIR + "\\server-config.json";
 
-    private static const int DEFAULT_LOG_FREQUENCY = -1;
-    private static const int DEFAULT_VERBOSITY = -1;
-    private static const int DEFAULT_MAX_PARTY_SIZE = -1;
-    private static const int DEFAULT_SEND_INFO_FREQUENCY = 2;
-    private static const int DEFAULT_SEND_MARKER_FREQUENCY = 2;
-    private static const int DEFAULT_MAX_MARKERS = 10;
-    private static const int DEFAULT_MAX_PARTY_REFRESH_RATE = 4;
+    protected static const int DEFAULT_LOG_FREQUENCY = -1;
+    protected static const int DEFAULT_VERBOSITY = -1;
+    protected static const int DEFAULT_MAX_PARTY_SIZE = -1;
+    protected static const int DEFAULT_SEND_INFO_FREQUENCY = 2;
+    protected static const int DEFAULT_SEND_MARKER_FREQUENCY = 2;
+    protected static const int DEFAULT_MAX_MARKERS = 10;
+    protected static const int DEFAULT_MAX_PARTY_REFRESH_RATE = 4;
 
-    private int logPartiesFrequencySeconds = DEFAULT_LOG_FREQUENCY;
-    private int verbosity = DEFAULT_VERBOSITY;
-    private int maxPartySize = DEFAULT_MAX_PARTY_SIZE;
-    private int sendInfoFrequencySeconds = DEFAULT_SEND_INFO_FREQUENCY;
-    private int sendMarkerFrequencySeconds = DEFAULT_SEND_MARKER_FREQUENCY;
-    private int maxMarkers = DEFAULT_MAX_MARKERS;
-    private int maxPartyRefreshRate = DEFAULT_MAX_PARTY_REFRESH_RATE;
-    private ref array<string> adminIds = new array<string> ();
+    protected int logPartiesFrequencySeconds = DEFAULT_LOG_FREQUENCY;
+    protected int verbosity = DEFAULT_VERBOSITY;
+    protected int maxPartySize = DEFAULT_MAX_PARTY_SIZE;
+    protected int sendInfoFrequencySeconds = DEFAULT_SEND_INFO_FREQUENCY;
+    protected int sendMarkerFrequencySeconds = DEFAULT_SEND_MARKER_FREQUENCY;
+    protected int maxMarkers = DEFAULT_MAX_MARKERS;
+    protected int maxPartyRefreshRate = DEFAULT_MAX_PARTY_REFRESH_RATE;
+    protected ref array<string> adminIds = new array<string> ();
 
     int GetLogFrequency () {
         return logPartiesFrequencySeconds;
