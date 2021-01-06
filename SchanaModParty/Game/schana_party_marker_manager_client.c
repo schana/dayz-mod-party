@@ -40,8 +40,11 @@ class SchanaPartyMarkerManagerClient {
         Param1<ref array<ref SchanaPartyMarkerInfo>> data;
         if (!ctx.Read (data))
             return;
-
-        ClientUpdatePartyMarkers (data.param1);
+		ref array<ref SchanaPartyMarkerInfo> newServerMarkers = new array<ref SchanaPartyMarkerInfo>;
+		foreach (SchanaPartyMarkerInfo m : data.param1 ){
+			newServerMarkers.Insert(m);
+		}
+        ClientUpdatePartyMarkers (newServerMarkers);
     }
 
     void ClientUpdatePartyMarkers (ref array<ref SchanaPartyMarkerInfo> newServerMarkers) {

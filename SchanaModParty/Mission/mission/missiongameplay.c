@@ -1,5 +1,7 @@
 modded class MissionGameplay extends MissionBase {
     protected ref SchanaPartyMenu m_SchanaPartyMenu;
+	
+	protected int SchanaPingTimerMax = 0;
 
     override void OnInit () {
         super.OnInit ();
@@ -17,7 +19,7 @@ modded class MissionGameplay extends MissionBase {
 
     override void OnUpdate (float timeslice) {
         super.OnUpdate (timeslice);
-
+		int NowTime = GetGame().GetTime();
         Man player = GetGame ().GetPlayer ();
 
         if (player && !player.IsUnconscious () && !GetSchanaPartyMarkerManagerClient ().IsInitialized ()) {
@@ -55,7 +57,8 @@ modded class MissionGameplay extends MissionBase {
                 }
             }
 
-            if (input.LocalPress ("UASchanaPartyPing", false)) {
+            if (input.LocalPress ("UASchanaPartyPing", false) && NowTime > SchanaPingTimerMax) {
+				SchanaPingTimerMax = NowTime + 700;
                 vector position = SchanaPartyGetRaycastPosition ();
                 if (position != vector.Zero) {
                     auto marker_client = GetSchanaPartyMarkerManagerClient ();
@@ -64,7 +67,8 @@ modded class MissionGameplay extends MissionBase {
                 }
             }
 
-            if (input.LocalPress ("UASchanaPartyPingClear", false)) {
+            if (input.LocalPress ("UASchanaPartyPingClear", false) && NowTime > SchanaPingTimerMax) {
+				SchanaPingTimerMax = NowTime + 1200;
                 GetSchanaPartyMarkerManagerClient ().Reset ();
             }
         }

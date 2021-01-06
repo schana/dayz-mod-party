@@ -40,8 +40,13 @@ class SchanaPartyManagerClient {
         Param3<ref array<string>, ref array<vector>, ref array<float>> data;
         if (!ctx.Read (data))
             return;
-
-        ClientUpdatePartyInfo (data.param1, data.param2, data.param3);
+		ref array<string> party_ids = new array<string>;
+		ref array<vector> server_positions = new array<vector>;
+		ref array<float> server_healths = new array<float>;
+		party_ids.Copy(data.param1);
+		server_positions.Copy(data.param2);
+		server_healths.Copy(data.param3);
+        ClientUpdatePartyInfo (party_ids, server_positions, server_healths);
     }
 
     void ClientUpdatePartyInfo (ref array<string> party_ids, ref array<vector> server_positions, ref array<float> server_healths) {
@@ -64,7 +69,11 @@ class SchanaPartyManagerClient {
         if (!ctx.Read (data))
             return;
 
-        ClientUpdatePlayersInfo (data.param1, data.param2);
+		ref array<string> player_ids = new array<string>;
+		ref array<string> player_names = new array<string>;
+		player_ids.Copy(data.param1);
+		player_names.Copy(data.param2);
+        ClientUpdatePlayersInfo (player_ids, player_names);
     }
 
     void ClientUpdatePlayersInfo (ref array<string> player_ids, ref array<string> player_names) {

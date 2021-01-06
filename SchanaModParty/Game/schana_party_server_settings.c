@@ -7,8 +7,8 @@ class SchanaModPartyServerSettings {
     protected static const int DEFAULT_MAX_PARTY_SIZE = -1;
     protected static const int DEFAULT_SEND_INFO_FREQUENCY = 2;
     protected static const int DEFAULT_SEND_MARKER_FREQUENCY = 2;
-    protected static const int DEFAULT_MAX_MARKERS = 10;
-    protected static const int DEFAULT_MAX_PARTY_REFRESH_RATE = 4;
+    protected static const int DEFAULT_MAX_MARKERS = 5;
+    protected static const int DEFAULT_MAX_PARTY_REFRESH_RATE = 1;
 
     protected int logPartiesFrequencySeconds = DEFAULT_LOG_FREQUENCY;
     protected int verbosity = DEFAULT_VERBOSITY;
