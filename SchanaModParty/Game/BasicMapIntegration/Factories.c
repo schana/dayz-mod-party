@@ -3,10 +3,10 @@
 class SchanaPartyBasicMapMarkerBaseFactory extends BasicMapMarkerFactory {
     override ref BasicMapMarker Create (string name, vector position) {
         BasicMapMarker marker = super.Create (name, position);
-        marker.SetIcon ("BasicMap\\gui\\images\\player.paa");
-        marker.Colour.Set (0, 33);
-        marker.Colour.Set (1, 233);
-        marker.Colour.Set (2, 255);
+        marker.SetIcon ("BasicMap\\gui\\images\\location.paa");
+        marker.Colour.Set (0, 28);
+        marker.Colour.Set (1, 234);
+        marker.Colour.Set (2, 245);
         return marker;
     }
 }
