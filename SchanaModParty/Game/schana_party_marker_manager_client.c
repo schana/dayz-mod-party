@@ -4,7 +4,8 @@ class SchanaPartyMarkerManagerClient {
     protected ref array<ref SchanaPartyMarkerMenu> markerMenus;
     protected bool initialized = false;
     protected bool canSend = true;
-
+	protected int CurrentCount = 1;
+	
     void SchanaPartyMarkerManagerClient () {
         SchanaPartyUtils.LogMessage ("PartyMarker Client Init");
         markers = new ref array<ref SchanaPartyMarkerInfo>;
@@ -65,13 +66,18 @@ class SchanaPartyMarkerManagerClient {
     }
 
     void Add (SchanaPartyMarkerInfo marker) {
+		CurrentCount++;
         GetSchanaPartyMarkerSettings ().Add (marker.GetPosition ());
         markers.Insert (marker);
+		if (markers.Count() > 0 && markers.Count() > GetSchanaPartyServerSettings ().GetMaxMarkers () && GetSchanaPartyServerSettings ().GetMaxMarkers () > 0){
+			markers.RemoveOrdered(0);
+		}
         ClientUpdatePartyMarkers (serverMarkers);
         Send ();
     }
 
     void Reset () {
+		CurrentCount = 1;
         GetSchanaPartyMarkerSettings ().Clear ();
         markers.Clear ();
         ClientUpdatePartyMarkers (serverMarkers);
@@ -92,9 +98,9 @@ class SchanaPartyMarkerManagerClient {
 
     string GetNextName () {
 		if (GetGame ().GetPlayer () && GetGame ().GetPlayer ().GetIdentity ()){
-        return GetGame ().GetPlayer ().GetIdentity ().GetName () + " " + (markers.Count () + 1).ToString ();
+			return GetGame ().GetPlayer ().GetIdentity ().GetName () + " " + (CurrentCount).ToString ();
 		}
-		return "[NULL] " + (markers.Count () + 1).ToString ();
+			return "[NULL] " + (CurrentCount).ToString ();
     }
 }
 

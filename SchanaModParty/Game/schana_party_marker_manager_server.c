@@ -54,8 +54,8 @@ class SchanaPartyMarkerManagerServer {
 		if (SchanaPartyUtils.WillLog (SchanaPartyUtils.TRACE)) {
 			playerMarkers.Debug();
 		}
-        if (maxMarkers > 0 && playerMarkers.Count () > 0 && playerMarkers) {
-            while (playerMarkers.Count () >= maxMarkers && MAXXLOOPCOUNT > 0 && playerMarkers.Count () > 0) {
+        if (maxMarkers > 0 && playerMarkers.Count () > maxMarkers && playerMarkers) {
+            while (playerMarkers.Count () > maxMarkers && MAXXLOOPCOUNT > 0) {
                 playerMarkers.RemoveOrdered (0);
 				MAXXLOOPCOUNT--;
             }
