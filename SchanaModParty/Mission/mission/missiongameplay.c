@@ -5,7 +5,7 @@ modded class MissionGameplay extends MissionBase {
 	
 	override void OnMissionStart(){
 		super.OnMissionStart();
-        GetRPCManager ().AddRPC ("SchanaModParty", "ClientUpdatePartyMarkersRPC", this, SingleplayerExecutionType.Both);
+        GetRPCManager ().AddRPC ("SchanaModParty", "SchanaPartyModSettingsRPC", this, SingleplayerExecutionType.Both);
 		SchanaPartyUtils.LogMessage ("Requesting settings from server");
 		GetRPCManager ().SendRPC ("SchanaModParty", "SchanaPartyModSettingsRPC", new Param1< SchanaModPartyServerSettings >( NULL ), true, NULL);
 	}
