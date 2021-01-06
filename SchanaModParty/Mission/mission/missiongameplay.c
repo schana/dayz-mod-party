@@ -2,7 +2,21 @@ modded class MissionGameplay extends MissionBase {
     protected ref SchanaPartyMenu m_SchanaPartyMenu;
 	
 	protected int SchanaPingTimerMax = 0;
-
+	
+	override void OnMissionStart(){
+		super.OnMissionStart();
+        GetRPCManager ().AddRPC ("SchanaModParty", "ClientUpdatePartyMarkersRPC", this, SingleplayerExecutionType.Both);
+		SchanaPartyUtils.LogMessage ("Requesting settings from server");
+		GetRPCManager ().SendRPC ("SchanaModParty", "SchanaPartyModSettingsRPC", new Param1< SchanaModPartyServerSettings >( NULL ), true, NULL);
+	}
+	
+	
+	void SchanaPartyModSettingsRPC( CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target ) {
+		Param1< SchanaModPartyServerSettings > data  //Player ID, Icon
+		if ( !ctx.Read( data ) ) return;
+		g_SchanaPartyServerSettings = data.param1;
+	}
+	
     override void OnInit () {
         super.OnInit ();
         delete g_SchanaPartyManagerClient;
@@ -57,7 +71,7 @@ modded class MissionGameplay extends MissionBase {
                 }
             }
 
-            if (input.LocalPress ("UASchanaPartyPing", false) && NowTime > SchanaPingTimerMax) {
+            if (input.LocalPress ("UASchanaPartyPing", false) && NowTime > SchanaPingTimerMax && GetGame ().GetUIManager ().GetMenu () == NULL) {
 				SchanaPingTimerMax = NowTime + 700;
                 vector position = SchanaPartyGetRaycastPosition ();
                 if (position != vector.Zero) {
@@ -67,7 +81,7 @@ modded class MissionGameplay extends MissionBase {
                 }
             }
 
-            if (input.LocalPress ("UASchanaPartyPingClear", false) && NowTime > SchanaPingTimerMax) {
+            if (input.LocalPress ("UASchanaPartyPingClear", false) && NowTime > SchanaPingTimerMax && GetGame ().GetUIManager ().GetMenu () == NULL) {
 				SchanaPingTimerMax = NowTime + 1200;
                 GetSchanaPartyMarkerManagerClient ().Reset ();
             }
