@@ -104,7 +104,7 @@ class SchanaPartyMarkerManagerServer {
 				DayZPlayer plr = DayZPlayer.Cast (id_map.Get ( parties.GetKey (i) ));
 				if (plr && plr.GetIdentity () && plr.IsAlive () && parties.GetElement (i)) {
 					SchanaPartyUtils.Trace ("SendMarkers Begin " + parties.GetKey (i));
-					if ( parties.GetElement (i).Count () > 0 ){
+					if ( parties.GetElement (i) ){
 						SendMarkerInfoToPlayer (parties.GetKey (i), parties.GetElement (i), plr.GetIdentity ());
 						SchanaPartyUtils.Trace ("SendMarkers End " + parties.GetKey (i));
 					}

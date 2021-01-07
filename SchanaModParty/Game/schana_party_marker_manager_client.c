@@ -96,7 +96,7 @@ class SchanaPartyMarkerManagerClient {
     }
 
     void Send (bool tryAgain = true) {
-        if (canSend && markers && markers.Count() > 0) {
+        if (canSend && markers) {
             SchanaPartyUtils.LogMessage ("SendMarkers");
             auto data = new Param1<ref array<ref SchanaPartyMarkerInfo>> (markers);
             GetRPCManager ().SendRPC ("SchanaModParty", "ServerRegisterMarkersRPC", data);
