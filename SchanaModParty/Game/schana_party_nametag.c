@@ -1,21 +1,21 @@
 class SchanaPartyNametagsMenu extends UIScriptedMenu {
     static string SCHANA_PARTY_NAMETAG_DELETE = "SCHANA_PARTY_NAMETAG_DELETE";
 
-    private Widget m_SchanaPartyNametagRoot;
-    private TextWidget m_SchanaPartyNametagNametag;
-    private TextWidget m_SchanaPartyNametagDistance;
-    private ImageWidget m_SchanaPartyNametagIcon;
+    protected Widget m_SchanaPartyNametagRoot;
+    protected TextWidget m_SchanaPartyNametagNametag;
+    protected TextWidget m_SchanaPartyNametagDistance;
+    protected ImageWidget m_SchanaPartyNametagIcon;
 
-    private Widget m_SchanaPartyListRootWidget;
-    private ref array<ImageWidget> m_SchanaPartyListHealthWidgets;
-    private TextWidget m_SchanaPartyListTextWidget;
+    protected Widget m_SchanaPartyListRootWidget;
+    protected ref array<ImageWidget> m_SchanaPartyListHealthWidgets;
+    protected TextWidget m_SchanaPartyListTextWidget;
 
-    private DayZPlayer m_SchanaPartyNametagPlayer;
-    private ref SchanaPartyMemberBasicMapMarkerHelper m_BasicMapHelper;
-    private vector m_SchanaPartyPlayerServerPosition = "0 0 0";
-    private float m_SchanaPartyPlayerServerHealth = 100;
-    private string m_SchanaPartyPlayerName = "";
-    private int m_SchanaPartyListIndex = 0;
+    protected DayZPlayer m_SchanaPartyNametagPlayer;
+    protected ref SchanaPartyMemberBasicMapMarkerHelper m_BasicMapHelper;
+    protected vector m_SchanaPartyPlayerServerPosition = "0 0 0";
+    protected float m_SchanaPartyPlayerServerHealth = 100;
+    protected string m_SchanaPartyPlayerName = "";
+    protected int m_SchanaPartyListIndex = 0;
 
     void SchanaPartyNametagsMenu (DayZPlayer player) {
         m_SchanaPartyNametagRoot = GetGame ().GetWorkspace ().CreateWidgets ("SchanaModParty/GUI/Layouts/nametag.layout");
@@ -62,7 +62,7 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu {
         }
     }
 
-    private bool SchanaPartyNametagShouldShow () {
+    protected bool SchanaPartyNametagShouldShow () {
         if (m_SchanaPartyNametagRoot == null) {
             return false;
         }
@@ -75,7 +75,7 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu {
         return true;
     }
 
-    private vector SchanaPartyGetPlayerPosition () {
+    protected vector SchanaPartyGetPlayerPosition () {
         if (m_SchanaPartyNametagPlayer && m_SchanaPartyNametagPlayer.IsAlive ()) {
             return m_SchanaPartyNametagPlayer.GetPosition ();
         } else {
@@ -83,7 +83,7 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu {
         }
     }
 
-    private float SchanaPartyGetPlayerHealth () {
+    protected float SchanaPartyGetPlayerHealth () {
         return m_SchanaPartyPlayerServerHealth;
     }
 
@@ -111,7 +111,7 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu {
         m_SchanaPartyPlayerName = SCHANA_PARTY_NAMETAG_DELETE;
     }
 
-    private string SchanaPartyGetPlayerName () {
+    protected string SchanaPartyGetPlayerName () {
         if (m_SchanaPartyNametagPlayer && m_SchanaPartyNametagPlayer.GetIdentity ()) {
             return m_SchanaPartyNametagPlayer.GetIdentity ().GetName ();
         } else {
@@ -160,7 +160,7 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu {
         m_SchanaPartyListRootWidget.SetPos (x, y);
     }
 
-    private bool SchanaPartyNametagVisibleOnScreen () {
+    protected bool SchanaPartyNametagVisibleOnScreen () {
         vector position = SchanaPartyGetPlayerPosition ();
         vector screenPositionRelative = GetGame ().GetScreenPosRelative (position);
 

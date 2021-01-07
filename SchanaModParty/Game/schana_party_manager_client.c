@@ -1,9 +1,9 @@
 class SchanaPartyManagerClient {
-    private ref map<string, ref SchanaPartyNametagsMenu> m_SchanaNametags;
-    private ref SchanaPartyPositions positions;
-    private ref map<string, float> healths;
-    private ref map<string, string> allPlayers;
-    private ref map<string, string> sortingMap;
+    protected ref map<string, ref SchanaPartyNametagsMenu> m_SchanaNametags;
+    protected ref SchanaPartyPositions positions;
+    protected ref map<string, float> healths;
+    protected ref map<string, string> allPlayers;
+    protected ref map<string, string> sortingMap;
 
     void SchanaPartyManagerClient () {
         SchanaPartyUtils.LogMessage ("Client Init " + SCHANA_PARTY_VERSION);
@@ -40,8 +40,13 @@ class SchanaPartyManagerClient {
         Param3<ref array<string>, ref array<vector>, ref array<float>> data;
         if (!ctx.Read (data))
             return;
-
-        ClientUpdatePartyInfo (data.param1, data.param2, data.param3);
+		ref array<string> party_ids = new array<string>;
+		ref array<vector> server_positions = new array<vector>;
+		ref array<float> server_healths = new array<float>;
+		party_ids.Copy(data.param1);
+		server_positions.Copy(data.param2);
+		server_healths.Copy(data.param3);
+        ClientUpdatePartyInfo (party_ids, server_positions, server_healths);
     }
 
     void ClientUpdatePartyInfo (ref array<string> party_ids, ref array<vector> server_positions, ref array<float> server_healths) {
@@ -64,7 +69,11 @@ class SchanaPartyManagerClient {
         if (!ctx.Read (data))
             return;
 
-        ClientUpdatePlayersInfo (data.param1, data.param2);
+		ref array<string> player_ids = new array<string>;
+		ref array<string> player_names = new array<string>;
+		player_ids.Copy(data.param1);
+		player_names.Copy(data.param2);
+        ClientUpdatePlayersInfo (player_ids, player_names);
     }
 
     void ClientUpdatePlayersInfo (ref array<string> player_ids, ref array<string> player_names) {
@@ -83,7 +92,7 @@ class SchanaPartyManagerClient {
         }
     }
 
-    private void Update () {
+    protected void Update () {
         DayZPlayer activePlayer = DayZPlayer.Cast (GetGame ().GetPlayer ());
 
         if (!m_SchanaNametags) {
@@ -101,13 +110,13 @@ class SchanaPartyManagerClient {
         }
     }
 
-    private void UpdateRegistration (string activePlayerId) {
+    protected void UpdateRegistration (string activePlayerId) {
         auto members = GetSchanaPartySettings ().GetMembers ();
         auto data = new Param2<string, ref array<string>> (activePlayerId, members);
         GetRPCManager ().SendRPC ("SchanaModParty", "ServerRegisterPartyRPC", data);
     }
 
-    private void AddAndUpdateNametags () {
+    protected void AddAndUpdateNametags () {
         auto current_positions = positions.Get ();
         foreach (string party_id, vector position : current_positions) {
             if (!m_SchanaNametags.Contains (party_id)) {
@@ -123,7 +132,7 @@ class SchanaPartyManagerClient {
         }
     }
 
-    private void RemoveInvalidNametags () {
+    protected void RemoveInvalidNametags () {
         auto current_positions = positions.Get ();
 
         auto member_ids = m_SchanaNametags.GetKeyArray ();
@@ -136,7 +145,7 @@ class SchanaPartyManagerClient {
         }
     }
 
-    private void UpdateNametagsWithLocalPlayers (string activePlayerId) {
+    protected void UpdateNametagsWithLocalPlayers (string activePlayerId) {
         auto current_positions = positions.Get ();
 
         foreach (Man man : ClientData.m_PlayerBaseList) {
@@ -154,7 +163,7 @@ class SchanaPartyManagerClient {
         }
     }
 
-    private void UpdateMenuListSorting () {
+    protected void UpdateMenuListSorting () {
         sortingMap.Clear ();
         auto member_ids = m_SchanaNametags.GetKeyArray ();
         foreach (auto sorting_id : member_ids) {

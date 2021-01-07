@@ -1,8 +1,8 @@
 class SchanaModPartyMarkerSettings {
-    private static string DIR = "$profile:SchanaModParty";
-    private static string PATH = DIR + "\\markers.json";
+    protected static string DIR = "$profile:SchanaModParty";
+    protected static string PATH = DIR + "\\markers.json";
 
-    private ref array<vector> markers;
+    protected ref array<vector> markers;
 
     void SchanaModPartyMarkerSettings () {
         markers = new ref array<vector> ();

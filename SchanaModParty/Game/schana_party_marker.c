@@ -1,13 +1,13 @@
 class SchanaPartyMarkerMenu extends UIScriptedMenu {
     static string SCHANA_PARTY_MARKER_DELETE = "SCHANA_PARTY_MARKER_DELETE";
 
-    private Widget m_SchanaPartyMarkerRoot;
-    private TextWidget m_SchanaPartyMarkerNametag;
-    private TextWidget m_SchanaPartyMarkerDistance;
-    private ImageWidget m_SchanaPartyMarkerIcon;
+    protected Widget m_SchanaPartyMarkerRoot;
+    protected TextWidget m_SchanaPartyMarkerNametag;
+    protected TextWidget m_SchanaPartyMarkerDistance;
+    protected ImageWidget m_SchanaPartyMarkerIcon;
 
-    private string m_SchanaPartyMarkerName = "";
-    private vector m_SchanaPartyMarkerPosition = "0 0 0";
+    protected string m_SchanaPartyMarkerName = "";
+    protected vector m_SchanaPartyMarkerPosition = "0 0 0";
 
     void SchanaPartyMarkerMenu (string name, vector position) {
         m_SchanaPartyMarkerRoot = GetGame ().GetWorkspace ().CreateWidgets ("SchanaModParty/GUI/Layouts/marker.layout");
@@ -39,7 +39,7 @@ class SchanaPartyMarkerMenu extends UIScriptedMenu {
         }
     }
 
-    private bool SchanaPartyMarkerShouldShow () {
+    protected bool SchanaPartyMarkerShouldShow () {
         if (m_SchanaPartyMarkerRoot == null) {
             return false;
         }
@@ -78,7 +78,7 @@ class SchanaPartyMarkerMenu extends UIScriptedMenu {
         m_SchanaPartyMarkerRoot.Show (SchanaPartyMarkerVisibleOnScreen ());
     }
 
-    private bool SchanaPartyMarkerVisibleOnScreen () {
+    protected bool SchanaPartyMarkerVisibleOnScreen () {
         vector position = m_SchanaPartyMarkerPosition;
         vector screenPositionRelative = GetGame ().GetScreenPosRelative (position);
 

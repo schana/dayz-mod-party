@@ -1,9 +1,9 @@
 class SchanaModPartySettings {
-    private static string DIR = "$profile:SchanaModParty";
-    private static string PATH = DIR + "\\config_1.json";
+    protected static string DIR = "$profile:SchanaModParty";
+    protected static string PATH = DIR + "\\config_1.json";
 
-    private ref array<string> players;
-    private ref array<string> names;
+    protected ref array<string> players;
+    protected ref array<string> names;
 
     void SchanaModPartySettings () {
         players = new ref array<string> ();
