@@ -74,7 +74,9 @@ class SchanaPartyBasicMapAPI {
         int i;
 
         for (i = 0; i < markersIn.Count (); ++i) {
-            ClientAddBasicMapMarker (markersIn.Get (i).GetName (), markersIn.Get (i).GetPosition ());
+			if (markersIn.Get (i)){
+				ClientAddBasicMapMarker (markersIn.Get (i).GetName (), markersIn.Get (i).GetPosition ());
+			}
         }
 #endif
     }
