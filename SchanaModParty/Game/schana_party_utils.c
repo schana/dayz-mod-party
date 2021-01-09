@@ -32,6 +32,9 @@ class SchanaPartyUtils {
     }
 
     static bool WillLog (int level) {
-        return GetSchanaPartyServerSettings ().GetVerbosity () >= level;
+		if (GetSchanaPartyServerSettings ()){
+			return GetSchanaPartyServerSettings ().GetVerbosity () >= level;
+		}
+		return false;
     }
 }
