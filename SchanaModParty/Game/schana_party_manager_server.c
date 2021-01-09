@@ -5,6 +5,9 @@ class SchanaPartyManagerServer {
 	protected bool canGenerateParties = true;
 	protected bool canGeneratePositions = true;
 	protected bool canGenerateHealth = true;
+	
+	
+	protected bool canGeneratePartiesThread = true; //To prevent possbilty of threads conflicting??
 
 	ref map<string, ref set<string>> parties;
 	ref map<string, vector> player_positions;
@@ -104,36 +107,45 @@ class SchanaPartyManagerServer {
 
 	void ThreadGenerateParties (){
 			SchanaPartyUtils.Trace ("ThreadGenerateParties Start");
-		thread GenerateParties ();
+			thread GenerateParties ();
 	}
 
 	void GenerateParties (){
-		SchanaPartyUtils.Trace ("GenerateParties Start");
-		int maxPartyRefreshRate = GetSchanaPartyServerSettings ().GetMaxPartyRefreshRate ();
-		GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).CallLater (this.ResetPartiesRefreshRate, maxPartyRefreshRate * 1000, false);
-		parties = new ref map<string, ref set<string>> ();
+		if (canGeneratePartiesThread){ //Prevents Two Threads from running at the same time?
+			canGeneratePartiesThread = false;
+			SchanaPartyUtils.Trace ("GenerateParties Start");
+			int maxPartyRefreshRate = GetSchanaPartyServerSettings ().GetMaxPartyRefreshRate ();
+			GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).CallLater (this.ResetPartiesRefreshRate, maxPartyRefreshRate * 1000, false);
+			parties = new ref map<string, ref set<string>> ();
 
-		for (int i = 0; i < configurations.Count (); ++i) {
-			auto validated_party_ids = new ref set<string>;
-			SchanaPartyUtils.Trace ("validated party id " + configurations.GetKey (i));
-			if (configurations.GetElement (i) && configurations.GetElement (i).Count () > 0){
-				foreach (string member_id : configurations.GetElement (i)) {
-					if (configurations.Contains (member_id) && configurations.Get (member_id).Find (configurations.GetKey (i)) != -1) {
-						SchanaPartyUtils.Trace ("validated party id " + configurations.GetKey (i) + " party_ids " +  member_id);
-						validated_party_ids.Insert (member_id);
-					} else if (configurations.Contains (member_id) && GetSchanaPartyServerSettings ().GetAdminIds ().Find (configurations.GetKey (i)) != -1) {
-						SchanaPartyUtils.Trace ("validated party id " + configurations.GetKey (i) + " party_ids " +  member_id);
-						validated_party_ids.Insert (member_id);
+			for (int i = 0; i < configurations.Count (); ++i) {
+				auto validated_party_ids = new ref set<string>;
+				SchanaPartyUtils.Trace ("validated party id " + configurations.GetKey (i));
+				if (configurations.GetElement (i) && configurations.GetElement (i).Count () > 0){
+					foreach (string member_id : configurations.GetElement (i)) {
+						if (configurations.Contains (member_id) && configurations.Get (member_id).Find (configurations.GetKey (i)) != -1) {
+							SchanaPartyUtils.Trace ("validated party id " + configurations.GetKey (i) + " party_ids " +  member_id);
+							validated_party_ids.Insert (member_id);
+						} else if (configurations.Contains (member_id) && GetSchanaPartyServerSettings ().GetAdminIds ().Find (configurations.GetKey (i)) != -1) {
+							SchanaPartyUtils.Trace ("validated party id " + configurations.GetKey (i) + " party_ids " +  member_id);
+							validated_party_ids.Insert (member_id);
+						}
 					}
 				}
+				SchanaPartyUtils.Trace ("parties Insert id " + configurations.GetKey (i));
+				if (configurations.GetKey (i) && validated_party_ids){
+					parties.Set (configurations.GetKey (i), validated_party_ids);
+				}
 			}
-			SchanaPartyUtils.Trace ("parties Insert id " + configurations.GetKey (i));
-			parties.Insert (configurations.GetKey (i), validated_party_ids);
+			SchanaPartyUtils.Trace ("GenerateParties End");
+			canGeneratePartiesThread = true;
+		} else {
+			SchanaPartyUtils.Trace ("GenerateParties Can't Run another thread already running");
 		}
 	}
 
 	void ResetPartiesRefreshRate () {
-			SchanaPartyUtils.Trace ("ResetPartiesRefreshRate Start");
+		SchanaPartyUtils.Trace ("ResetPartiesRefreshRate Start");
 		canGenerateParties = true;
 	}
 
