@@ -37,6 +37,7 @@ class SchanaPartyManagerClient {
     }
 
     void ClientUpdatePartyInfoRPC (CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target) {
+        SchanaPartyUtils.LogMessage ("ClientUpdatePartyInfoRPC");
         Param3<ref array<string>, ref array<vector>, ref array<float>> data;
         if (!ctx.Read (data))
             return;
@@ -65,6 +66,7 @@ class SchanaPartyManagerClient {
     }
 
     void ClientUpdatePlayersInfoRPC (CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target) {
+        SchanaPartyUtils.LogMessage ("ClientUpdatePlayersInfoRPC");
         Param2<ref array<string>, ref array<string>> data;
         if (!ctx.Read (data))
             return;
@@ -157,7 +159,7 @@ class SchanaPartyManagerClient {
                         SchanaPartyUtils.LogMessage ("Adding nametag " + id);
                         m_SchanaNametags.Insert (id, new SchanaPartyNametagsMenu (null));
                     }
-                    m_SchanaNametags[id].SchanaPartyUpdatePlayer (player);
+                    m_SchanaNametags.Get (id).SchanaPartyUpdatePlayer (player);
                 }
             }
         }
@@ -175,7 +177,7 @@ class SchanaPartyManagerClient {
         sorted_keys.Sort ();
         int sortedIndex = 0;
         foreach (auto sorted_key : sorted_keys) {
-            m_SchanaNametags[sortingMap.Get (sorted_key)].SchanaPartyUpdateListIndex (sortedIndex);
+            m_SchanaNametags.Get (sortingMap.Get (sorted_key)).SchanaPartyUpdateListIndex (sortedIndex);
             ++sortedIndex;
         }
     }

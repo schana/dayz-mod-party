@@ -236,22 +236,29 @@ class SchanaPartyManagerServer {
 	}
 
 	protected void SendInfo () {
-			SchanaPartyUtils.Trace ("SendInfo Start");
+		SchanaPartyUtils.Trace ("SendInfo Start");
 		if (canSendInfo) {
+			SchanaPartyUtils.Trace ("Call SendInfoThread");
 			thread SendInfoThread ();
 			
 			int sendInfoFrequency = GetSchanaPartyServerSettings ().GetSendInfoFrequency ();
 			GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).CallLater (this.ResetSendInfoLock, sendInfoFrequency * 1000, false);
 			
 			canSendInfo = false;
+			SchanaPartyUtils.Trace ("SendInfo End");
+		} else {
+			
+			SchanaPartyUtils.Trace ("SendInfo End (Not Run)");
 		}
 	}
 
     protected void SendInfoThread () {
-			SchanaPartyUtils.Trace ("SendInfoThread Start");
+		SchanaPartyUtils.Trace ("SendInfoThread Start");
 
 		SendPartyInfo ();
 		SendPlayersInfo ();
+		
+		SchanaPartyUtils.Trace ("SendInfoThread End");
 	}
 
 

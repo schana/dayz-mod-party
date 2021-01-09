@@ -150,7 +150,7 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu {
         float health = SchanaPartyGetPlayerHealth () * 0.01;
         int healthLevel = 4 - health * 4;
         for (int i = 0; i < 5; ++i) {
-            m_SchanaPartyListHealthWidgets[i].Show (healthLevel == i);
+            m_SchanaPartyListHealthWidgets.Get (i).Show (healthLevel == i);
         }
         float width, height, x, y;
         m_SchanaPartyListRootWidget.GetSize (width, height);
