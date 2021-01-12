@@ -53,7 +53,7 @@ class SchanaPartyManagerServer {
 		if (!ctx.Read (data))
 			return;
 		ref array<string> ids = new array<string>;
-		ids.Copy(data.param2)
+		ids.Copy (data.param2);
 		if (SchanaPartyUtils.WillLog (SchanaPartyUtils.INFO)) {
 			string result;
 			JsonSerializer ().WriteToString (data, false, result);
@@ -95,7 +95,7 @@ class SchanaPartyManagerServer {
 			return parties;
 		}
 		canGenerateParties = false;
-		GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(this.ThreadGenerateParties, 50);
+		GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).CallLater (this.ThreadGenerateParties, 50);
 		if (parties){
 			SchanaPartyUtils.Trace ("GetParties Returned Cached Parties and requested New Cache");
 			return parties;
@@ -162,12 +162,12 @@ class SchanaPartyManagerServer {
 			}
 		}
 		
-		SchanaPartyUtils.Trace ("id_map Count: " + id_map.Count());
+		SchanaPartyUtils.Trace ("id_map Count: " + id_map.Count ());
 		array<DayZPlayer> players = new array<DayZPlayer>;
 		SchanaPartyUtils.Trace ("member_ids Start");
 		set<string> member_ids = GetParties ().Get (id);
 		if (member_ids) {
-			SchanaPartyUtils.Trace ("member_ids Count: " + member_ids.Count());
+			SchanaPartyUtils.Trace ("member_ids Count: " + member_ids.Count ());
 			for (i = 0; i < member_ids.Count (); ++i) {
 				string member_id = member_ids.Get (i);
 				SchanaPartyUtils.Trace ("member_ids member_id: " + member_id);
@@ -306,9 +306,7 @@ class SchanaPartyManagerServer {
 		}
 
 		int maxPartySize = GetSchanaPartyServerSettings ().GetMaxPartySize ();
-		int SendDelay = 1;
 		foreach (auto id, auto party_ids : s_parties) {
-			SendDelay++; //To help performance to devide up when the parties are all sent
 			SchanaPartyUtils.Trace ("SendInfo Begin " + id);
 			if (!positions.Contains (id)) {
 				configurations.Remove (id);

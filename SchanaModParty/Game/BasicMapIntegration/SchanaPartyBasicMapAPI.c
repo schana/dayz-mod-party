@@ -192,7 +192,7 @@ class SchanaPartyBasicMapAPI {
     void ServerRegisterBasicMapMarkers (string id, Param1<ref array<ref BasicMapMarker>> data) {
 		SchanaPartyUtils.Trace ("ServerRegisterBasicMapMarkers Start");
         auto manager = GetSchanaPartyManagerServer ();
-        ref array<DayZPlayer> players = manager.GetPartyPlayers (id)
+        ref array<DayZPlayer> players = manager.GetPartyPlayers (id);
         if (players) {
             for (int i = 0; i < players.Count (); ++i) {
 				DayZPlayer ply = DayZPlayer.Cast (players.Get (i));
