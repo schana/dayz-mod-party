@@ -38,6 +38,7 @@ class SchanaPartyMarkerManagerClient {
     }
 
     void ClientUpdatePartyMarkersRPC (CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target) {
+        SchanaPartyUtils.Trace ("ClientUpdatePartyMarkers Start");
         Param1<array<SchanaPartyMarkerInfo>> data;
         if (!ctx.Read (data))
             return;
@@ -50,10 +51,10 @@ class SchanaPartyMarkerManagerClient {
 			}
 		}
         ClientUpdatePartyMarkers (newServerMarkers2);
+        SchanaPartyUtils.Trace ("ClientUpdatePartyMarkers End");
     }
 
     void ClientUpdatePartyMarkers (ref array<ref SchanaPartyMarkerInfo> newServerMarkers) {
-        SchanaPartyUtils.LogMessage ("ClientUpdatePartyMarkers");
 		if (!newServerMarkers){
 			return;
 		}
