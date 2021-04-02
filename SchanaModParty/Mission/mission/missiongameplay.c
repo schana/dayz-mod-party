@@ -11,7 +11,7 @@ modded class MissionGameplay extends MissionBase {
 	}
 	
 	
-	void SchanaPartyModSettingsRPC( CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target ) {
+	void SchanaPartyModSettingsRPC( CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target ) {
 		Param1< SchanaModPartyServerSettings > data  //Player ID, Icon
 		if ( !ctx.Read( data ) ) return;
 		g_SchanaPartyServerSettings = data.param1;
@@ -115,7 +115,7 @@ modded class MissionGameplay extends MissionBase {
 }
 
 static ref SchanaPartyManagerClient g_SchanaPartyManagerClient;
-static ref SchanaPartyManagerClient GetSchanaPartyManagerClient () {
+static SchanaPartyManagerClient GetSchanaPartyManagerClient () {
     if (!g_Game.IsServer () && !g_SchanaPartyManagerClient) {
         g_SchanaPartyManagerClient = new SchanaPartyManagerClient;
     }

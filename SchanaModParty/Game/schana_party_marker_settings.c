@@ -5,7 +5,7 @@ class SchanaModPartyMarkerSettings {
     protected ref array<vector> markers;
 
     void SchanaModPartyMarkerSettings () {
-        markers = new ref array<vector> ();
+        markers = new array<vector> ();
     }
 
     void Add (vector mark) {
@@ -18,8 +18,8 @@ class SchanaModPartyMarkerSettings {
         Save ();
     }
 
-    ref array<vector> GetMarkers () {
-        auto response = new ref array<vector> ();
+    array<vector> GetMarkers () {
+        auto response = new array<vector> ();
 
         for (int i = 0; i < markers.Count (); ++i) {
             response.Insert (markers.Get (i));
@@ -38,7 +38,7 @@ class SchanaModPartyMarkerSettings {
     }
 
     static ref SchanaModPartyMarkerSettings Get () {
-        auto settings = new ref SchanaModPartyMarkerSettings ();
+        auto settings = new SchanaModPartyMarkerSettings ();
 
         if (FileExist (PATH)) {
             JsonFileLoader<SchanaModPartyMarkerSettings>.JsonLoadFile (PATH, settings);

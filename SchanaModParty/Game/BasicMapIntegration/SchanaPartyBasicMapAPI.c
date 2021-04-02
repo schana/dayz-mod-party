@@ -10,7 +10,7 @@ class SchanaPartyBasicMapAPI {
 
     static SchanaPartyBasicMapAPI Get () {
         if (!api) {
-            api = new ref SchanaPartyBasicMapAPI;
+            api = new SchanaPartyBasicMapAPI;
             if (!GetGame ().IsServer ()) {
                 api.ClientInit ();
             } else if (GetGame ().IsServer ()){
@@ -23,7 +23,7 @@ class SchanaPartyBasicMapAPI {
     }
 
 #ifdef BASICMAP
-    protected ref BasicMapController controller;
+    protected BasicMapController controller;
 #endif
 
     void SchanaPartyBasicMapAPI () { 
@@ -71,10 +71,10 @@ class SchanaPartyBasicMapAPI {
 		
     }
 
-    void ClientRegisterBasicMapMarkersRPC (CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target) {
+    void ClientRegisterBasicMapMarkersRPC (CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target) {
 		SchanaPartyUtils.Trace ("ClientRegisterBasicMapMarkersRPC Start");
 #ifdef BASICMAP
-        Param1<ref array<BasicMapMarker>> data;
+        Param1<array<BasicMapMarker>> data;
         if (!ctx.Read (data) || GetGame ().IsServer ())
             return;
 
@@ -92,7 +92,7 @@ class SchanaPartyBasicMapAPI {
 #endif
     }
 
-    void ClientAddBasicMapMarkerRPC (CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target) {
+    void ClientAddBasicMapMarkerRPC (CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target) {
 		SchanaPartyUtils.Trace ("ClientAddBasicMapMarkerRPC Start");
 #ifdef BASICMAP
         Param2<string, vector> data;
@@ -103,7 +103,7 @@ class SchanaPartyBasicMapAPI {
 #endif
     }
 
-    void ClientRemoveBasicMapMarkerRPC (CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target) {
+    void ClientRemoveBasicMapMarkerRPC (CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target) {
 		SchanaPartyUtils.Trace ("ClientRemoveBasicMapMarkerRPC Start");
 #ifdef BASICMAP
 		
@@ -117,10 +117,10 @@ class SchanaPartyBasicMapAPI {
     }
 
 
-    void ServerRegisterBasicMapMarkersRPC (CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target) {
+    void ServerRegisterBasicMapMarkersRPC (CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target) {
 		SchanaPartyUtils.Trace ("ServerRegisterBasicMapMarkersRPC Start");
 #ifdef BASICMAP
-		Param1<ref array<ref BasicMapMarker>> data;
+		Param1<array<ref BasicMapMarker>> data;
 		if (!sender || !ctx.Read (data) || !GetGame().IsServer())
 			return;
 		string id = sender.GetId ();
@@ -130,7 +130,7 @@ class SchanaPartyBasicMapAPI {
     }
 
 
-    void ServerAddBasicMapMarkerRPC (CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target) {
+    void ServerAddBasicMapMarkerRPC (CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target) {
 		SchanaPartyUtils.Trace ("ServerAddBasicMapMarkerRPC Start");
 #ifdef BASICMAP
         Param2<string, vector> data;
@@ -159,7 +159,7 @@ class SchanaPartyBasicMapAPI {
 #endif
     }
 
-    void ServerRemoveBasicMapMarkerRPC (CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target) {
+    void ServerRemoveBasicMapMarkerRPC (CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target) {
 		SchanaPartyUtils.Trace ("ServerRemoveBasicMapMarkerRPC Start");
 #ifdef BASICMAP
         Param1<vector> data;
@@ -189,10 +189,10 @@ class SchanaPartyBasicMapAPI {
 	
 #ifdef BASICMAP
 
-    void ServerRegisterBasicMapMarkers (string id, Param1<ref array<ref BasicMapMarker>> data) {
+    void ServerRegisterBasicMapMarkers (string id, Param1<array<ref BasicMapMarker>> data) {
 		SchanaPartyUtils.Trace ("ServerRegisterBasicMapMarkers Start");
         auto manager = GetSchanaPartyManagerServer ();
-        ref array<DayZPlayer> players = manager.GetPartyPlayers (id);
+        array<DayZPlayer> players = manager.GetPartyPlayers (id);
         if (players) {
             for (int i = 0; i < players.Count (); ++i) {
 				DayZPlayer ply = DayZPlayer.Cast (players.Get (i));
@@ -212,17 +212,17 @@ class SchanaPartyBasicMapAPI {
     }
 	
     void SendMarkers () {
-        ref array<ref BasicMapMarker> markers = controller.GetMarkers (GROUP_ID_LOCAL);
+        array<ref BasicMapMarker> markers = controller.GetMarkers (GROUP_ID_LOCAL);
         auto data = new Param1<ref array<ref BasicMapMarker>> (markers);
         GetRPCManager ().SendRPC ("SchanaModParty", "ServerRegisterBasicMapMarkersRPC", data);
     }
 
-    void SendCreatedMarker (ref BasicMapMarker marker) {
+    void SendCreatedMarker (BasicMapMarker marker) {
         auto data = new Param2<string, vector> (marker.GetName (), marker.GetPosition ());
         GetRPCManager ().SendRPC ("SchanaModParty", "ServerAddBasicMapMarkerRPC", data);
     }
 
-    void SendDeletedMarker (ref BasicMapMarker marker) {
+    void SendDeletedMarker (BasicMapMarker marker) {
         auto data = new Param1<vector> (marker.GetPosition ());
         GetRPCManager ().SendRPC ("SchanaModParty", "ServerRemoveBasicMapMarkerRPC", data);
     }
