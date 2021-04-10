@@ -8,7 +8,7 @@ modded class MissionServer extends MissionBase {
 		GetRPCManager ().AddRPC ( "SchanaModParty", "SchanaPartyModSettingsRPC", this, SingeplayerExecutionType.Both );
 	}
 	
-	void SchanaPartyModSettingsRPC( CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target ) {
+	void SchanaPartyModSettingsRPC( CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target ) {
 		PlayerIdentity RequestedBy = PlayerIdentity.Cast(sender);
 		if (RequestedBy){
 			SchanaPartyUtils.Trace ("Settings Requested By " + RequestedBy.GetId());

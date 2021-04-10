@@ -8,10 +8,10 @@ class SchanaPartyManagerClient {
     void SchanaPartyManagerClient () {
         SchanaPartyUtils.LogMessage ("Client Init " + SCHANA_PARTY_VERSION);
 
-        positions = new ref SchanaPartyPositions ();
-        healths = new ref map<string, float> ();
-        allPlayers = new ref map<string, string> ();
-        sortingMap = new ref map<string, string> ();
+        positions = new SchanaPartyPositions ();
+        healths = new map<string, float> ();
+        allPlayers = new map<string, string> ();
+        sortingMap = new map<string, string> ();
         m_SchanaNametags = new map<string, ref SchanaPartyNametagsMenu> ();
 
         GetRPCManager ().AddRPC ("SchanaModParty", "ClientUpdatePartyInfoRPC", this, SingleplayerExecutionType.Both);
@@ -36,21 +36,21 @@ class SchanaPartyManagerClient {
         }
     }
 
-    void ClientUpdatePartyInfoRPC (CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target) {
+    void ClientUpdatePartyInfoRPC (CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target) {
         SchanaPartyUtils.Trace ("ClientUpdatePartyInfoRPC");
-        Param3<ref array<string>, ref array<vector>, ref array<float>> data;
+        Param3<array<string>, array<vector>, array<float>> data;
         if (!ctx.Read (data))
             return;
-		ref array<string> party_ids = new array<string>;
-		ref array<vector> server_positions = new array<vector>;
-		ref array<float> server_healths = new array<float>;
+		array<string> party_ids = new array<string>;
+		array<vector> server_positions = new array<vector>;
+		array<float> server_healths = new array<float>;
 		party_ids.Copy(data.param1);
 		server_positions.Copy(data.param2);
 		server_healths.Copy(data.param3);
         ClientUpdatePartyInfo (party_ids, server_positions, server_healths);
     }
 
-    void ClientUpdatePartyInfo (ref array<string> party_ids, ref array<vector> server_positions, ref array<float> server_healths) {
+    void ClientUpdatePartyInfo (array<string> party_ids, array<vector> server_positions, array<float> server_healths) {
         positions.Replace (party_ids, server_positions);
         healths.Clear ();
 		/*
@@ -65,20 +65,20 @@ class SchanaPartyManagerClient {
 
     }
 
-    void ClientUpdatePlayersInfoRPC (CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target) {
+    void ClientUpdatePlayersInfoRPC (CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target) {
         SchanaPartyUtils.Trace ("ClientUpdatePlayersInfoRPC");
-        Param2<ref array<string>, ref array<string>> data;
+        Param2<array<string>, array<string>> data;
         if (!ctx.Read (data))
             return;
 
-		ref array<string> player_ids = new array<string>;
-		ref array<string> player_names = new array<string>;
+		array<string> player_ids = new array<string>;
+		array<string> player_names = new array<string>;
 		player_ids.Copy(data.param1);
 		player_names.Copy(data.param2);
         ClientUpdatePlayersInfo (player_ids, player_names);
     }
 
-    void ClientUpdatePlayersInfo (ref array<string> player_ids, ref array<string> player_names) {
+    void ClientUpdatePlayersInfo (array<string> player_ids, array<string> player_names) {
         allPlayers.Clear ();
 
         DayZPlayer activePlayer = DayZPlayer.Cast (GetGame ().GetPlayer ());
@@ -114,7 +114,7 @@ class SchanaPartyManagerClient {
 
     protected void UpdateRegistration (string activePlayerId) {
         auto members = GetSchanaPartySettings ().GetMembers ();
-        auto data = new Param2<string, ref array<string>> (activePlayerId, members);
+        auto data = new Param2<string, array<string>> (activePlayerId, members);
         GetRPCManager ().SendRPC ("SchanaModParty", "ServerRegisterPartyRPC", data);
     }
 
@@ -203,11 +203,11 @@ class SchanaPartyManagerClient {
         return !positions.Get ().Contains (id) && allPlayers.Contains (id);
     }
 
-    ref map<string, string> GetOnlinePlayers () {
+    map<string, string> GetOnlinePlayers () {
         return allPlayers;
     }
 
-    ref map<string, vector> GetPositions () {
+    map<string, vector> GetPositions () {
         return positions.Get ();
     }
 }

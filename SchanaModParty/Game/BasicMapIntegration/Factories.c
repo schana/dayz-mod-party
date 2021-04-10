@@ -1,7 +1,7 @@
 #ifdef BASICMAP
 
 class SchanaPartyBasicMapMarkerBaseFactory extends BasicMapMarkerFactory {
-    override ref BasicMapMarker Create (string name, vector position) {
+    override BasicMapMarker Create (string name, vector position) {
         BasicMapMarker marker = super.Create (name, position);
         marker.SetIcon ("BasicMap\\gui\\images\\location.paa");
         marker.Colour.Set (0, 28);
@@ -12,7 +12,7 @@ class SchanaPartyBasicMapMarkerBaseFactory extends BasicMapMarkerFactory {
 }
 
 class SchanaPartyLocalMarkerFactory extends SchanaPartyBasicMapMarkerBaseFactory {
-    override ref BasicMapMarker Create (string name, vector position) {
+    override BasicMapMarker Create (string name, vector position) {
         BasicMapMarker marker = super.Create (name, position);
         marker.SetGroup (SchanaPartyBasicMapAPI.GROUP_ID_LOCAL);
         return marker;
@@ -20,7 +20,7 @@ class SchanaPartyLocalMarkerFactory extends SchanaPartyBasicMapMarkerBaseFactory
 }
 
 class SchanaPartyRemoteMarkerFactory extends SchanaPartyBasicMapMarkerBaseFactory {
-    override ref BasicMapMarker Create (string name, vector position) {
+    override BasicMapMarker Create (string name, vector position) {
         BasicMapMarker marker = super.Create (name, position);
         marker.SetGroup (SchanaPartyBasicMapAPI.GROUP_ID_REMOTE);
         return marker;
@@ -28,7 +28,7 @@ class SchanaPartyRemoteMarkerFactory extends SchanaPartyBasicMapMarkerBaseFactor
 }
 
 class SchanaPartyMemberMarkerFactory extends SchanaPartyBasicMapMarkerBaseFactory {
-    override ref BasicMapMarker Create (string name, vector position) {
+    override BasicMapMarker Create (string name, vector position) {
         BasicMapMarker marker = super.Create (name, position);
         marker.SetGroup (SchanaPartyBasicMapAPI.GROUP_ID_MEMBERS);
         return marker;

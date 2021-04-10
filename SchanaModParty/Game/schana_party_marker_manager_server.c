@@ -18,9 +18,9 @@ class SchanaPartyMarkerManagerServer {
         canSendInfo = true;
     }
 
-    void ServerRegisterMarkersRPC (CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target) {
+    void ServerRegisterMarkersRPC (CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target) {
 		SchanaPartyUtils.Trace ("ServerRegisterMarkersRPC Start");
-        Param1<ref array<SchanaPartyMarkerInfo>> data;
+        Param1<array<SchanaPartyMarkerInfo>> data;
         if (!ctx.Read (data))
             return;
         if (SchanaPartyUtils.WillLog (SchanaPartyUtils.DEBUG)) {
@@ -31,16 +31,16 @@ class SchanaPartyMarkerManagerServer {
 		if (!data.param1){
 			return;
 		}
-		ref array<SchanaPartyMarkerInfo> playerMarkers = new array<SchanaPartyMarkerInfo>;
+		array<SchanaPartyMarkerInfo> playerMarkers = new array<SchanaPartyMarkerInfo>;
 		playerMarkers.Copy(data.param1);
-		ref array<ref SchanaPartyMarkerInfo> playerMarkersrefs =  new array<ref SchanaPartyMarkerInfo>;
+		array<ref SchanaPartyMarkerInfo> playerMarkersrefs =  new array<ref SchanaPartyMarkerInfo>;
 		for (int i = 0; i < playerMarkers.Count(); ++i){
 			playerMarkersrefs.Insert(playerMarkers.Get(i));
 		}
         ServerRegisterMarkers (sender.GetId (), playerMarkersrefs);
     }
 
-    void ServerRegisterMarkers (string id, ref array<ref SchanaPartyMarkerInfo> playerMarkers) {
+    void ServerRegisterMarkers (string id, array<ref SchanaPartyMarkerInfo> playerMarkers) {
 		if (!playerMarkers){
 			return;
 		}
@@ -82,7 +82,7 @@ class SchanaPartyMarkerManagerServer {
 
     void SendMarkersThread () {
 			SchanaPartyUtils.Trace ("SendMarkersThread Start");
-            auto id_map = new ref map<string, DayZPlayer> ();
+            auto id_map = new map<string, DayZPlayer> ();
             array<Man> players = new array<Man>;
             GetGame ().GetPlayers (players);
 			int i = 0;
@@ -114,12 +114,12 @@ class SchanaPartyMarkerManagerServer {
 			SchanaPartyUtils.Trace ("SendMarkersThread Finish");
     }
 	
-    protected void SendMarkerInfoToPlayer (string id, ref set<string> party_ids, PlayerIdentity player) {
+    protected void SendMarkerInfoToPlayer (string id, set<string> party_ids, PlayerIdentity player) {
 		if (!player || !markers){
 			return;
 		}
         SchanaPartyUtils.Trace ("SendMarkerInfoToPlayer Start");
-        auto playerMarkers = new ref array<ref SchanaPartyMarkerInfo>;
+        auto playerMarkers = new array<ref SchanaPartyMarkerInfo>;
         foreach (string party_id : party_ids) {
             if (markers.Contains (party_id) && markers.Get (party_id)) {
                 for (int i = 0; i < markers.Get (party_id).Count(); ++i) {
@@ -129,7 +129,7 @@ class SchanaPartyMarkerManagerServer {
                 }
             }
         }
-        auto info = new ref Param1<ref array<ref SchanaPartyMarkerInfo>> (playerMarkers);
+        auto info = new Param1<array<ref SchanaPartyMarkerInfo>> (playerMarkers);
 
         if (SchanaPartyUtils.WillLog (SchanaPartyUtils.DEBUG)) {
             string result;
@@ -147,7 +147,7 @@ class SchanaPartyMarkerManagerServer {
 }
 
 static ref SchanaPartyMarkerManagerServer g_SchanaPartyMarkerManagerServer;
-static ref SchanaPartyMarkerManagerServer GetSchanaPartyMarkerManagerServer () {
+static SchanaPartyMarkerManagerServer GetSchanaPartyMarkerManagerServer () {
     if (g_Game.IsServer () && !g_SchanaPartyMarkerManagerServer) {
         g_SchanaPartyMarkerManagerServer = new SchanaPartyMarkerManagerServer;
     }

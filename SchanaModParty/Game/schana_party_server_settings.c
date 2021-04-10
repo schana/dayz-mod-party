@@ -60,9 +60,9 @@ class SchanaModPartyServerSettings {
         }
     }
 
-    static ref SchanaModPartyServerSettings Get () {
+    static SchanaModPartyServerSettings Get () {
 
-        auto settings = new ref SchanaModPartyServerSettings ();
+        auto settings = new SchanaModPartyServerSettings ();
 
         if (FileExist (PATH)) {
             JsonFileLoader<SchanaModPartyServerSettings>.JsonLoadFile (PATH, settings);
@@ -101,7 +101,7 @@ class SchanaModPartyServerSettings {
 }
 
 static ref SchanaModPartyServerSettings g_SchanaPartyServerSettings;
-static ref SchanaModPartyServerSettings GetSchanaPartyServerSettings () {
+static SchanaModPartyServerSettings GetSchanaPartyServerSettings () {
     if (g_Game.IsServer () && !g_SchanaPartyServerSettings) {
         g_SchanaPartyServerSettings = SchanaModPartyServerSettings.Get ();
     }

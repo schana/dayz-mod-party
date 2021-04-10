@@ -6,8 +6,8 @@ class SchanaModPartySettings {
     protected ref array<string> names;
 
     void SchanaModPartySettings () {
-        players = new ref array<string> ();
-        names = new ref array<string> ();
+        players = new array<string> ();
+        names = new array<string> ();
     }
 
     void Add (string id, string name) {
@@ -43,8 +43,8 @@ class SchanaModPartySettings {
         return index != -1;
     }
 
-    ref array<string> GetMembers () {
-        auto members = new ref array<string> ();
+    array<string> GetMembers () {
+        auto members = new array<string> ();
 
         for (int i = 0; i < players.Count (); ++i) {
             members.Insert (players.Get (i));
@@ -62,9 +62,9 @@ class SchanaModPartySettings {
         }
     }
 
-    static ref SchanaModPartySettings Get () {
+    static SchanaModPartySettings Get () {
 
-        auto settings = new ref SchanaModPartySettings ();
+        auto settings = new SchanaModPartySettings ();
 
         if (FileExist (PATH)) {
             JsonFileLoader<SchanaModPartySettings>.JsonLoadFile (PATH, settings);
@@ -75,7 +75,7 @@ class SchanaModPartySettings {
 }
 
 static ref SchanaModPartySettings g_SchanaPartySettings;
-static ref SchanaModPartySettings GetSchanaPartySettings () {
+static SchanaModPartySettings GetSchanaPartySettings () {
     if (g_Game.IsClient () && !g_SchanaPartySettings) {
         g_SchanaPartySettings = SchanaModPartySettings.Get ();
         g_SchanaPartySettings.Save ();

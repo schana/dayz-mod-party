@@ -8,9 +8,9 @@ class SchanaPartyMarkerManagerClient {
 	
     void SchanaPartyMarkerManagerClient () {
         SchanaPartyUtils.LogMessage ("PartyMarker Client Init");
-        markers = new ref array<ref SchanaPartyMarkerInfo>;
-        serverMarkers = new ref array<ref SchanaPartyMarkerInfo>;
-        markerMenus = new ref array<ref SchanaPartyMarkerMenu>;
+        markers = new array<ref SchanaPartyMarkerInfo>;
+        serverMarkers = new array<ref SchanaPartyMarkerInfo>;
+        markerMenus = new array<ref SchanaPartyMarkerMenu>;
 
         GetRPCManager ().AddRPC ("SchanaModParty", "ClientUpdatePartyMarkersRPC", this, SingleplayerExecutionType.Both);
         GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).CallLater (this.ResetSendLock, 1000, true);
@@ -37,13 +37,13 @@ class SchanaPartyMarkerManagerClient {
         initialized = true;
     }
 
-    void ClientUpdatePartyMarkersRPC (CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target) {
+    void ClientUpdatePartyMarkersRPC (CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target) {
         SchanaPartyUtils.Trace ("ClientUpdatePartyMarkers Start");
         Param1<array<SchanaPartyMarkerInfo>> data;
         if (!ctx.Read (data))
             return;
 		array<SchanaPartyMarkerInfo> newServerMarkers = new array<SchanaPartyMarkerInfo>;
-		ref array<ref SchanaPartyMarkerInfo> newServerMarkers2 = new array<ref SchanaPartyMarkerInfo>;
+		array<ref SchanaPartyMarkerInfo> newServerMarkers2 = new array<ref SchanaPartyMarkerInfo>;
 		newServerMarkers.Copy(data.param1);
 		for (int i = 0; i < newServerMarkers.Count (); ++i){
 			if (newServerMarkers.Get (i)){
@@ -117,7 +117,7 @@ class SchanaPartyMarkerManagerClient {
 }
 
 static ref SchanaPartyMarkerManagerClient g_SchanaPartyMarkerManagerClient;
-static ref SchanaPartyMarkerManagerClient GetSchanaPartyMarkerManagerClient () {
+static SchanaPartyMarkerManagerClient GetSchanaPartyMarkerManagerClient () {
     if (g_Game.IsClient () && !g_SchanaPartyMarkerManagerClient) {
         g_SchanaPartyMarkerManagerClient = new SchanaPartyMarkerManagerClient;
     }

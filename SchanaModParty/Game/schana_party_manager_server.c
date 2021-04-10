@@ -15,7 +15,7 @@ class SchanaPartyManagerServer {
 
 	void SchanaPartyManagerServer () {
 		SchanaPartyUtils.LogMessage ("Server Init " + SCHANA_PARTY_VERSION);
-		configurations = new ref map<string, ref set<string>> ();
+		configurations = new map<string,ref set<string>> ();
 		GetRPCManager ().AddRPC ("SchanaModParty", "ServerRegisterPartyRPC", this, SingleplayerExecutionType.Both);
 
 		GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).CallLater (this.SendInfo, 10000, true);
@@ -47,12 +47,12 @@ class SchanaPartyManagerServer {
 		SchanaPartyUtils.Warn ("Parties " + result);
 	}
 
-	void ServerRegisterPartyRPC (CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target) {
+	void ServerRegisterPartyRPC (CallType type, ParamsReadContext ctx, PlayerIdentity sender, Object target) {
 			SchanaPartyUtils.Trace ("ServerRegisterPartyRPC Start");
-		Param2<string, ref array<string>> data;
+		Param2<string, array<string>> data;
 		if (!ctx.Read (data))
 			return;
-		ref array<string> ids = new array<string>;
+		array<string> ids = new array<string>;
 		ids.Copy (data.param2);
 		if (SchanaPartyUtils.WillLog (SchanaPartyUtils.INFO)) {
 			string result;
@@ -63,10 +63,10 @@ class SchanaPartyManagerServer {
 		ServerRegisterParty (data.param1, ids);
 	}
 
-	protected void ServerRegisterParty (string key, ref array<string> ids) {
+	protected void ServerRegisterParty (string key, array<string> ids) {
 		SchanaPartyUtils.Trace ("ServerRegisterParty Start");
 		SchanaPartyUtils.Info ("Register " + ids.Count ().ToString () + " to " + key);
-		auto party_members = new ref set<string> ();
+		auto party_members = new set<string> ();
 		foreach (string id : ids) {
 			party_members.Insert (id);
 		}
@@ -116,10 +116,10 @@ class SchanaPartyManagerServer {
 			SchanaPartyUtils.Trace ("GenerateParties Start");
 			int maxPartyRefreshRate = GetSchanaPartyServerSettings ().GetMaxPartyRefreshRate ();
 			GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).CallLater (this.ResetPartiesRefreshRate, maxPartyRefreshRate * 1000, false);
-			parties = new ref map<string, ref set<string>> ();
+			parties = new map<string, ref set<string>> ();
 
 			for (int i = 0; i < configurations.Count (); ++i) {
-				auto validated_party_ids = new ref set<string>;
+				auto validated_party_ids = new set<string>;
 				SchanaPartyUtils.Trace ("validated party id " + configurations.GetKey (i));
 				if (configurations.GetElement (i) && configurations.GetElement (i).Count () > 0){
 					foreach (string member_id : configurations.GetElement (i)) {
@@ -184,14 +184,14 @@ class SchanaPartyManagerServer {
 		return players;
 	}
 
-	protected ref map<string, vector> GetPositions () {
+	protected map<string, vector> GetPositions () {
 			SchanaPartyUtils.Trace ("GetPositions Start");
 		if (!canGeneratePositions) {
 			return player_positions;
 		}
 
 		SchanaPartyUtils.Trace ("GetPositions Start ");
-		player_positions = new ref map<string, vector> ();
+		player_positions = new map<string, vector> ();
 
 		int maxPartyRefreshRate = GetSchanaPartyServerSettings ().GetMaxPartyRefreshRate ();
 		GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).CallLater (this.ResetPositionsRefreshRate, maxPartyRefreshRate * 1000, false);
@@ -216,13 +216,13 @@ class SchanaPartyManagerServer {
 		canGeneratePositions = true;
 	}
 
-	protected ref map<string, float> GetHealths () {
+	protected map<string, float> GetHealths () {
 			SchanaPartyUtils.Trace ("GetHealths Start");
 		if (!canGenerateHealth) {
 			return player_healths;
 		}
 		SchanaPartyUtils.Trace ("GetHealths Start 2");
-		player_healths = new ref map<string, float> ();
+		player_healths = new map<string, float> ();
 
 		int maxPartyRefreshRate = GetSchanaPartyServerSettings ().GetMaxPartyRefreshRate ();
 		GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).CallLater (this.ResetHealthsRefreshRate, maxPartyRefreshRate * 1000, false);
@@ -277,7 +277,7 @@ class SchanaPartyManagerServer {
 	protected void SendPartyInfo () {
 
 			SchanaPartyUtils.Trace ("SendPartyInfo Start");
-		auto id_map = new ref map<string, DayZPlayer> ();
+		auto id_map = new map<string, DayZPlayer> ();
 
 		array<Man> players = new array<Man>;
 		GetGame ().GetPlayers (players);
@@ -320,11 +320,11 @@ class SchanaPartyManagerServer {
 		}
 	}
 
-	protected void SendPartyInfoToPlayer (string id, ref set<string> party_ids, int maxPartySize, ref map<string, vector> positions, ref map<string, float> server_healths, PlayerIdentity player) {
+	protected void SendPartyInfoToPlayer (string id, set<string> party_ids, int maxPartySize, map<string, vector> positions, map<string, float> server_healths, PlayerIdentity player) {
 			SchanaPartyUtils.Trace ("SendPartyInfoToPlayer Start");
-		auto ids = new ref array<string>;
-		auto locations = new ref array<vector>;
-		auto healths = new ref array<float>;
+		auto ids = new array<string>;
+		auto locations = new array<vector>;
+		auto healths = new array<float>;
 		foreach (string party_id : party_ids) {
 			if (positions.Contains (party_id) && (maxPartySize < 0 || ids.Count () < maxPartySize)) {
 				ids.Insert (party_id);
@@ -332,7 +332,7 @@ class SchanaPartyManagerServer {
 				healths.Insert (server_healths.Get (party_id));
 			}
 		}
-		auto info = new ref Param3<ref array<string>, ref array<vector>, ref array<float>> (ids, locations, healths);
+		auto info = new Param3<array<string>, array<vector>, array<float>> (ids, locations, healths);
 
 		if (SchanaPartyUtils.WillLog (SchanaPartyUtils.INFO)) {
 			string result;
@@ -351,9 +351,9 @@ class SchanaPartyManagerServer {
 	protected void SendPlayersInfo () {
 			SchanaPartyUtils.Trace ("SendPlayersInfo Start");
 		
-		auto id_map = new ref map<string, DayZPlayer> ();
-		auto all_player_ids = new ref array<string>;
-		auto all_player_names = new ref array<string>;
+		auto id_map = new map<string, DayZPlayer> ();
+		auto all_player_ids = new array<string>;
+		auto all_player_names = new array<string>;
 
 		array<Man> players = new array<Man>;
 		GetGame ().GetPlayers (players);
@@ -366,7 +366,7 @@ class SchanaPartyManagerServer {
                 }
             }
 		
-		auto all_player_info = new ref Param2<ref array<string>, ref array<string>> (all_player_ids, all_player_names);
+		auto all_player_info = new Param2<array<string>, array<string>> (all_player_ids, all_player_names);
 
 		if (SchanaPartyUtils.WillLog (SchanaPartyUtils.DEBUG)) {
 			string result;
@@ -379,7 +379,7 @@ class SchanaPartyManagerServer {
 }
 
 static ref SchanaPartyManagerServer g_SchanaPartyManagerServer;
-static ref SchanaPartyManagerServer GetSchanaPartyManagerServer () {
+static SchanaPartyManagerServer GetSchanaPartyManagerServer () {
 	if (g_Game.IsServer () && !g_SchanaPartyManagerServer) {
 		g_SchanaPartyManagerServer = new SchanaPartyManagerServer;
 	}

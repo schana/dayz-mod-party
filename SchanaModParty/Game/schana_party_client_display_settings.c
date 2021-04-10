@@ -32,9 +32,9 @@ class SchanaModPartyClientDisplaySettings {
         }
     }
 
-    static ref SchanaModPartyClientDisplaySettings Get () {
+    static SchanaModPartyClientDisplaySettings Get () {
 
-        auto settings = new ref SchanaModPartyClientDisplaySettings ();
+        auto settings = new SchanaModPartyClientDisplaySettings ();
 
         if (FileExist (PATH)) {
             JsonFileLoader<SchanaModPartyClientDisplaySettings>.JsonLoadFile (PATH, settings);
@@ -45,7 +45,7 @@ class SchanaModPartyClientDisplaySettings {
 }
 
 static ref SchanaModPartyClientDisplaySettings g_SchanaModPartyClientDisplaySettings;
-static ref SchanaModPartyClientDisplaySettings GetSchanaModPartyClientDisplaySettings () {
+static SchanaModPartyClientDisplaySettings GetSchanaModPartyClientDisplaySettings () {
     if (g_Game.IsClient () && !g_SchanaModPartyClientDisplaySettings) {
         g_SchanaModPartyClientDisplaySettings = SchanaModPartyClientDisplaySettings.Get ();
         g_SchanaModPartyClientDisplaySettings.Save ();
