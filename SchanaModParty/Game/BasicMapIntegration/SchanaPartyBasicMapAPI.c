@@ -1,4 +1,4 @@
-class SchanaPartyBasicMapAPI {
+class SchanaPartyBasicMapAPI extends Managed {
     static const string GROUP_ID_LOCAL = "schanamodparty_local";
     static const string GROUP_ID_REMOTE = "schanamodparty_remote";
     static const string GROUP_ID_MEMBERS = "schanamodparty_members";
