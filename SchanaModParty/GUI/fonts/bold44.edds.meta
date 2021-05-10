@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{C2906FDACC1C38E1}TH_Fonts/bold44.edds"
+ Author "desktop-19meifj"
+ ChangeDate -1954403763
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "bold44.tga"
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}

@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{DA81A30B47569456}TH_Fonts/regular20.edds"
+ Author "desktop-19meifj"
+ ChangeDate -980276659
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "regular20.tga"
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}

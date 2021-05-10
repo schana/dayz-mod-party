@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{541A3DFDB894C5D9}SchanaModParty/GUI/data/remove.edds"
+ Author "desktop-m1abk2b"
+ ChangeDate -870667632
+ Configurations {
+  PNGResourceClass PC {
+   SourceFile "remove.png"
+  }
+  PNGResourceClass XBOX_ONE : PC {
+  }
+  PNGResourceClass PS4 : PC {
+  }
+  PNGResourceClass LINUX : PC {
+  }
+ }
+}
