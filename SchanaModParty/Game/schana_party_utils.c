@@ -1,4 +1,4 @@
-class SchanaPartyUtils {
+class SchanaPartyUtils  extends Managed {
     static const int NONE = 0;
     static const int WARN = 1;
     static const int INFO = 2;

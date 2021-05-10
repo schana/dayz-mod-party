@@ -7,11 +7,11 @@ class SchanaPartyNametagsMenu extends UIScriptedMenu {
     protected ImageWidget m_SchanaPartyNametagIcon;
 
     protected Widget m_SchanaPartyListRootWidget;
-    protected ref array<ImageWidget> m_SchanaPartyListHealthWidgets;
+    protected autoptr array<ImageWidget> m_SchanaPartyListHealthWidgets;
     protected TextWidget m_SchanaPartyListTextWidget;
 
     protected DayZPlayer m_SchanaPartyNametagPlayer;
-    protected ref SchanaPartyMemberBasicMapMarkerHelper m_BasicMapHelper;
+    protected autoptr SchanaPartyMemberBasicMapMarkerHelper m_BasicMapHelper;
     protected vector m_SchanaPartyPlayerServerPosition = "0 0 0";
     protected float m_SchanaPartyPlayerServerHealth = 100;
     protected string m_SchanaPartyPlayerName = "";

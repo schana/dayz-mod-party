@@ -1,9 +1,9 @@
-class SchanaPartyManagerClient {
-    protected ref map<string, ref SchanaPartyNametagsMenu> m_SchanaNametags;
-    protected ref SchanaPartyPositions positions;
-    protected ref map<string, float> healths;
-    protected ref map<string, string> allPlayers;
-    protected ref map<string, string> sortingMap;
+class SchanaPartyManagerClient extends Managed {
+    protected autoptr map<string, autoptr SchanaPartyNametagsMenu> m_SchanaNametags;
+    protected autoptr SchanaPartyPositions positions;
+    protected autoptr map<string, float> healths;
+    protected autoptr map<string, string> allPlayers;
+    protected autoptr map<string, string> sortingMap;
 
     void SchanaPartyManagerClient () {
         SchanaPartyUtils.LogMessage ("Client Init " + SCHANA_PARTY_VERSION);
@@ -12,7 +12,7 @@ class SchanaPartyManagerClient {
         healths = new map<string, float> ();
         allPlayers = new map<string, string> ();
         sortingMap = new map<string, string> ();
-        m_SchanaNametags = new map<string, ref SchanaPartyNametagsMenu> ();
+        m_SchanaNametags = new map<string, autoptr SchanaPartyNametagsMenu> ();
 
         GetRPCManager ().AddRPC ("SchanaModParty", "ClientUpdatePartyInfoRPC", this, SingleplayerExecutionType.Both);
         GetRPCManager ().AddRPC ("SchanaModParty", "ClientUpdatePlayersInfoRPC", this, SingleplayerExecutionType.Both);
@@ -98,7 +98,7 @@ class SchanaPartyManagerClient {
         DayZPlayer activePlayer = DayZPlayer.Cast (GetGame ().GetPlayer ());
 
         if (!m_SchanaNametags) {
-            m_SchanaNametags = new map<string, ref SchanaPartyNametagsMenu> ();
+            m_SchanaNametags = new map<string, autoptr SchanaPartyNametagsMenu> ();
         }
 
         if (activePlayer && activePlayer.GetIdentity () && activePlayer.IsAlive ()) {

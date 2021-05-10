@@ -1,5 +1,5 @@
-class SchanaPartyMemberBasicMapMarkerHelper {
 #ifdef BASICMAP
+class SchanaPartyMemberBasicMapMarkerHelper extends Managed {
     ref BasicMapMarker marker;
 #endif
 

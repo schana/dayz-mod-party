@@ -1,9 +1,9 @@
-class SchanaModPartySettings {
+class SchanaModPartySettings  extends Managed {
     protected static string DIR = "$profile:SchanaModParty";
     protected static string PATH = DIR + "\\config_1.json";
 
-    protected ref array<string> players;
-    protected ref array<string> names;
+    protected autoptr array<string> players;
+    protected autoptr array<string> names;
 
     void SchanaModPartySettings () {
         players = new array<string> ();

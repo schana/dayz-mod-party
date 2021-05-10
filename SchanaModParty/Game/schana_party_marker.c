@@ -10,7 +10,7 @@ class SchanaPartyMarkerMenu extends UIScriptedMenu {
     protected vector m_SchanaPartyMarkerPosition = "0 0 0";
 
     void SchanaPartyMarkerMenu (string name, vector position) {
-        m_SchanaPartyMarkerRoot = GetGame ().GetWorkspace ().CreateWidgets ("SchanaModParty/GUI/Layouts/marker.layout");
+        m_SchanaPartyMarkerRoot = Widget.Cast(GetGame ().GetWorkspace ().CreateWidgets ("SchanaModParty/GUI/Layouts/marker.layout"));
         m_SchanaPartyMarkerNametag = TextWidget.Cast (m_SchanaPartyMarkerRoot.FindAnyWidget ("nametag"));
         m_SchanaPartyMarkerDistance = TextWidget.Cast (m_SchanaPartyMarkerRoot.FindAnyWidget ("distance"));
         m_SchanaPartyMarkerIcon = ImageWidget.Cast (m_SchanaPartyMarkerRoot.FindAnyWidget ("icon"));
