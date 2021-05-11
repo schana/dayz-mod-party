@@ -70,6 +70,7 @@ class SchanaPartyMenu extends UIScriptedMenu {
 				SchanaPartyUtils.LogMessage ("Menu add " + id.param1);
 				GetSchanaPartyManagerClient ().AddPlayerToParty (id.param1);
 				SchanaPartyUpdateLists ();
+				return true;
 				break;
 
 			case m_SchanaPartyButtonRemove:
@@ -80,10 +81,12 @@ class SchanaPartyMenu extends UIScriptedMenu {
 				m_SchanaPartyPartyList.GetItemData (selectedRow, 0, id);
 				SchanaPartyUtils.LogMessage ("Menu remove " + id.param1);
 				GetSchanaPartyManagerClient ().RemovePlayerFromParty (id.param1);
-				SchanaPartyUpdateLists ();
 				m_SchanaPartyPartyList.SelectRow (selectedRow - 1);
+				SchanaPartyUpdateLists ();
+				return true;
 				break;
 		}
+		SchanaPartyUpdateLists ();
 		return super.OnClick (w, x, y, button);
 	}
 
@@ -163,6 +166,7 @@ class SchanaPartyMenu extends UIScriptedMenu {
 	}
 
 	void SchanaPartyUpdatePartyStatus () {
+		int selectedRow;
 		Param1<string> id;
 		for (int i = 0; i < m_SchanaPartyPartyList.GetNumItems (); ++i) {
 			m_SchanaPartyPartyList.GetItemData (i, 0, id);
@@ -177,6 +181,15 @@ class SchanaPartyMenu extends UIScriptedMenu {
 				// Gray 400
 				m_SchanaPartyPartyList.SetItemColor (i, 0, 0xFFBDBDBD);
 			}
+		}
+		
+		selectedRow = m_SchanaPartyPartyList.GetSelectedRow ();
+		if (selectedRow != -1){
+			m_SchanaPartyPartyList.SetItemColor (selectedRow, 0, 0xDDEDC131);
+		}
+		selectedRow = m_SchanaPartyPlayerList.GetSelectedRow ();
+		if (selectedRow != -1){
+				m_SchanaPartyPlayerList.SetItemColor (selectedRow, 0, 0xDDEDC131);
 		}
 	}
 

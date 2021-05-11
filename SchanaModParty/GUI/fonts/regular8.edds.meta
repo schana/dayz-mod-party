@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{21734E8F2300FE99}ffdin/regular8.edds"
+ Author "desktop-m1abk2b"
+ ChangeDate -1019434326
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "regular8.tga"
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}

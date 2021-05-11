@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{7007713F56B16D53}ffdin/bold14.edds"
+ Author "desktop-m1abk2b"
+ ChangeDate 153397930
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "bold14.tga"
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}

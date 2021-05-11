@@ -17,6 +17,7 @@ FrameWidgetClass rootFrame {
    vexactsize 0
    scaled 1
    text ""
+   font "SchanaModParty/gui/fonts/regular14"
    "size to text h" 1
    "text valign" center
   }

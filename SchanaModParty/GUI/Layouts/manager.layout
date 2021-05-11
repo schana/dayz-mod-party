@@ -59,7 +59,7 @@ FrameWidgetClass rootFrame {
          vexactpos 1
          hexactsize 1
          vexactsize 1
-         imageTexture "{4B9AFA014262987E}SchanaModParty/gui/data/person.edds"
+         imageTexture "{4B9AFA014262987E}SchanaModParty/GUI/data/person.edds"
          mode blend
          "src alpha" 1
          stretch 1
@@ -93,7 +93,7 @@ FrameWidgetClass rootFrame {
          vexactpos 1
          hexactsize 1
          vexactsize 1
-         imageTexture "{994A5DEE95CBE050}SchanaModParty/gui/data/party.edds"
+         imageTexture "{994A5DEE95CBE050}SchanaModParty/GUI/data/party.edds"
          mode blend
          "src alpha" 1
          stretch 1
@@ -122,7 +122,7 @@ FrameWidgetClass rootFrame {
          vexactpos 1
          hexactsize 1
          vexactsize 1
-         imageTexture "{000030886DA41AAE}SchanaModParty/gui/data/add.edds"
+         imageTexture "{000030886DA41AAE}SchanaModParty/GUI/data/add.edds"
          mode blend
          "src alpha" 1
          stretch 1
@@ -168,7 +168,7 @@ FrameWidgetClass rootFrame {
          vexactpos 1
          hexactsize 1
          vexactsize 1
-         imageTexture "{541A3DFDB894C5D9}SchanaModParty/gui/data/remove.edds"
+         imageTexture "{541A3DFDB894C5D9}SchanaModParty/GUI/data/remove.edds"
          mode blend
          "src alpha" 1
          stretch 1
@@ -302,7 +302,7 @@ FrameWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       imageTexture "{FA5E63537DE030DA}SchanaModParty/gui/data/info.edds"
+       imageTexture "{FA5E63537DE030DA}SchanaModParty/GUI/data/info.edds"
        mode blend
        "src alpha" 1
        stretch 1
@@ -329,41 +329,10 @@ FrameWidgetClass rootFrame {
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       imageTexture "{FA5E63537DE030DA}SchanaModParty/gui/data/info.edds"
+       imageTexture "{FA5E63537DE030DA}SchanaModParty/GUI/data/info.edds"
        mode blend
        "src alpha" 1
        stretch 1
-      }
-     }
-    }
-    PanelWidgetClass Player_background {
-     ignorepointer 1
-     color 0 0 0 0.549
-     position 0.06 0.08
-     size 0.39 0.8
-     halign right_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 0
-     style rover_sim_colorable
-     {
-      TextListboxWidgetClass Players {
-       clipchildren 1
-       color 0 0 0 0.549
-       size 0.95 1
-       halign center_ref
-       valign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 0
-       style TH
-       "no focus" 1
-       "title visible" 0
-       colums "group here"
-       lines 60
-       font "SchanaModParty/gui/fonts/regular18"
       }
      }
     }
@@ -372,6 +341,7 @@ FrameWidgetClass rootFrame {
      color 0 0 0 0.549
      position 0.06 0.08
      size 0.39 0.8
+     halign right_ref
      hexactpos 0
      vexactpos 0
      hexactsize 0
@@ -391,8 +361,40 @@ FrameWidgetClass rootFrame {
        style TH
        "no focus" 1
        "title visible" 0
+       colums "group here"
+       lines 60
+       "highlight row" 1
+       font "SchanaModParty/gui/fonts/regular18"
+      }
+     }
+    }
+    PanelWidgetClass Players_background {
+     ignorepointer 1
+     color 0 0 0 0.549
+     position 0.06 0.08
+     size 0.39 0.8
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style rover_sim_colorable
+     {
+      TextListboxWidgetClass Players {
+       clipchildren 1
+       color 0 0 0 0.549
+       size 0.95 1
+       halign center_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style TH
+       "no focus" 1
+       "title visible" 0
        colums "players here"
        lines 60
+       "highlight row" 1
        font "SchanaModParty/gui/fonts/regular18"
       }
      }
