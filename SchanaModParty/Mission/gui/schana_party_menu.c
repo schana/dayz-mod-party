@@ -167,8 +167,9 @@ class SchanaPartyMenu extends UIScriptedMenu {
 
 	void SchanaPartyUpdatePartyStatus () {
 		int selectedRow;
+		int i;
 		Param1<string> id;
-		for (int i = 0; i < m_SchanaPartyPartyList.GetNumItems (); ++i) {
+		for (i = 0; i < m_SchanaPartyPartyList.GetNumItems (); ++i) {
 			m_SchanaPartyPartyList.GetItemData (i, 0, id);
 
 			if (GetSchanaPartyManagerClient ().IsPartyMemberOnline (id.param1)) {
@@ -182,7 +183,10 @@ class SchanaPartyMenu extends UIScriptedMenu {
 				m_SchanaPartyPartyList.SetItemColor (i, 0, 0xFFBDBDBD);
 			}
 		}
-		
+		for (i = 0; i < m_SchanaPartyPlayerList.GetNumItems (); ++i){
+			// Gray 400
+			m_SchanaPartyPlayerList.SetItemColor (i, 0, 0xFFBDBDBD);
+		}
 		selectedRow = m_SchanaPartyPartyList.GetSelectedRow ();
 		if (selectedRow != -1){
 			m_SchanaPartyPartyList.SetItemColor (selectedRow, 0, 0xDDEDC131);
