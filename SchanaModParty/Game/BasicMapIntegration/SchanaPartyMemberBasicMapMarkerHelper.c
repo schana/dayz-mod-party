@@ -25,6 +25,7 @@ class SchanaPartyMemberBasicMapMarkerHelper extends Managed {
     void ~SchanaPartyMemberBasicMapMarkerHelper () {
 #ifdef BASICMAP
         BasicMap ().RemoveMarker (SchanaPartyBasicMapAPI.GROUP_ID_MEMBERS, marker);
+		delete marker;
 #endif
     }
 
