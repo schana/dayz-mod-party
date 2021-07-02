@@ -70,6 +70,7 @@ class SchanaPartyMenu extends UIScriptedMenu {
 				SchanaPartyUtils.LogMessage ("Menu add " + id.param1);
 				GetSchanaPartyManagerClient ().AddPlayerToParty (id.param1);
 				SchanaPartyUpdateLists ();
+				return true;
 				break;
 
 			case m_SchanaPartyButtonRemove:
@@ -80,10 +81,12 @@ class SchanaPartyMenu extends UIScriptedMenu {
 				m_SchanaPartyPartyList.GetItemData (selectedRow, 0, id);
 				SchanaPartyUtils.LogMessage ("Menu remove " + id.param1);
 				GetSchanaPartyManagerClient ().RemovePlayerFromParty (id.param1);
-				SchanaPartyUpdateLists ();
 				m_SchanaPartyPartyList.SelectRow (selectedRow - 1);
+				SchanaPartyUpdateLists ();
+				return true;
 				break;
 		}
+		SchanaPartyUpdateLists ();
 		return super.OnClick (w, x, y, button);
 	}
 
@@ -163,8 +166,10 @@ class SchanaPartyMenu extends UIScriptedMenu {
 	}
 
 	void SchanaPartyUpdatePartyStatus () {
+		int selectedRow;
+		int i;
 		Param1<string> id;
-		for (int i = 0; i < m_SchanaPartyPartyList.GetNumItems (); ++i) {
+		for (i = 0; i < m_SchanaPartyPartyList.GetNumItems (); ++i) {
 			m_SchanaPartyPartyList.GetItemData (i, 0, id);
 
 			if (GetSchanaPartyManagerClient ().IsPartyMemberOnline (id.param1)) {
@@ -178,6 +183,18 @@ class SchanaPartyMenu extends UIScriptedMenu {
 				m_SchanaPartyPartyList.SetItemColor (i, 0, 0xFFBDBDBD);
 			}
 		}
+		for (i = 0; i < m_SchanaPartyPlayerList.GetNumItems (); ++i){
+			// Gray 400
+			m_SchanaPartyPlayerList.SetItemColor (i, 0, 0xFFBDBDBD);
+		}
+		selectedRow = m_SchanaPartyPartyList.GetSelectedRow ();
+		if (selectedRow != -1){
+			m_SchanaPartyPartyList.SetItemColor (selectedRow, 0, 0xDDEDC131);
+		}
+		selectedRow = m_SchanaPartyPlayerList.GetSelectedRow ();
+		if (selectedRow != -1){
+				m_SchanaPartyPlayerList.SetItemColor (selectedRow, 0, 0xDDEDC131);
+		}
 	}
 
 	bool SchanaPartyMenuIsOpen () {
@@ -186,5 +203,76 @@ class SchanaPartyMenu extends UIScriptedMenu {
 
 	void SchanaPartyMenuSetOpen (bool open) {
 		m_SchanaPartyMenuIsOpen = open;
+	}
+
+	override bool OnMouseEnter(Widget w, int x, int y)
+	{
+	    ColorHighlight (w);
+	    return true;
+	}
+
+	override bool OnMouseLeave(Widget w, Widget enterW, int x, int y)
+	{
+	    ColorNormal (w);
+	    return true;
+	}
+
+	protected void ColorHighlight(Widget w)
+	{
+	    if (!w)
+	        return;
+
+	    ButtonSetColor(w, ARGB(0, 0, 0, 0));
+	    ButtonSetTextColor(w, ARGB(255, 235, 168, 68));
+	    ImagenSetColor(w, ARGB(255, 235, 168, 68));
+	};
+
+	protected void ColorNormal(Widget w)
+	{
+	    if (!w)
+	        return;
+
+	    ButtonSetColor(w, ARGB(0, 0, 0, 0));
+	    ButtonSetTextColor(w, ARGB(255, 255, 255, 255));
+	    ImagenSetColor(w, ARGB(255, 255, 255, 255));
+	};
+
+	protected void ButtonSetColor(Widget w, int color)
+	{
+	    if (!w)
+	        return;
+	        
+	    Widget panel = w.FindWidget(w.GetName() + "_panel");
+
+	    if (panel)
+	    {
+	        panel.SetColor(color);
+	    };
+	};
+
+	protected void ButtonSetTextColor(Widget w, int color)
+	{
+	    if (!w)
+	        return;
+
+	    TextWidget label = TextWidget.Cast(w.FindAnyWidget(w.GetName() + "_label"));
+	                
+	    if (label)
+	    {
+	        label.SetColor(color);
+	    };
+	};
+
+	void ImagenSetColor( Widget w, int color )
+	{
+		if( !w )
+			return;
+		
+		Widget panel = w.FindWidget( w.GetName() + "_img" );
+		
+		if( panel )
+		{
+			panel.SetColor( color );
+		}
 	}
 }

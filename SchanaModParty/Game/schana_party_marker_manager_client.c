@@ -1,16 +1,16 @@
-class SchanaPartyMarkerManagerClient {
-    protected ref array<ref SchanaPartyMarkerInfo> markers;
-    protected ref array<ref SchanaPartyMarkerInfo> serverMarkers;
-    protected ref array<ref SchanaPartyMarkerMenu> markerMenus;
+class SchanaPartyMarkerManagerClient  extends Managed {
+    protected autoptr array<autoptr SchanaPartyMarkerInfo> markers;
+    protected autoptr array<autoptr SchanaPartyMarkerInfo> serverMarkers;
+    protected autoptr array<autoptr SchanaPartyMarkerMenu> markerMenus;
     protected bool initialized = false;
     protected bool canSend = true;
 	protected int CurrentCount = 1;
 	
     void SchanaPartyMarkerManagerClient () {
         SchanaPartyUtils.LogMessage ("PartyMarker Client Init");
-        markers = new array<ref SchanaPartyMarkerInfo>;
-        serverMarkers = new array<ref SchanaPartyMarkerInfo>;
-        markerMenus = new array<ref SchanaPartyMarkerMenu>;
+        markers = new array<autoptr SchanaPartyMarkerInfo>;
+        serverMarkers = new array<autoptr SchanaPartyMarkerInfo>;
+        markerMenus = new array<autoptr SchanaPartyMarkerMenu>;
 
         GetRPCManager ().AddRPC ("SchanaModParty", "ClientUpdatePartyMarkersRPC", this, SingleplayerExecutionType.Both);
         GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).CallLater (this.ResetSendLock, 1000, true);
@@ -43,7 +43,7 @@ class SchanaPartyMarkerManagerClient {
         if (!ctx.Read (data))
             return;
 		array<SchanaPartyMarkerInfo> newServerMarkers = new array<SchanaPartyMarkerInfo>;
-		array<ref SchanaPartyMarkerInfo> newServerMarkers2 = new array<ref SchanaPartyMarkerInfo>;
+		array<autoptr SchanaPartyMarkerInfo> newServerMarkers2 = new array<autoptr SchanaPartyMarkerInfo>;
 		newServerMarkers.Copy(data.param1);
 		for (int i = 0; i < newServerMarkers.Count (); ++i){
 			if (newServerMarkers.Get (i)){
@@ -54,7 +54,7 @@ class SchanaPartyMarkerManagerClient {
         SchanaPartyUtils.Trace ("ClientUpdatePartyMarkers End");
     }
 
-    void ClientUpdatePartyMarkers (ref array<ref SchanaPartyMarkerInfo> newServerMarkers) {
+    void ClientUpdatePartyMarkers (autoptr array<autoptr SchanaPartyMarkerInfo> newServerMarkers) {
 		if (!newServerMarkers){
 			return;
 		}
@@ -99,7 +99,7 @@ class SchanaPartyMarkerManagerClient {
     void Send (bool tryAgain = true) {
         if (canSend && markers) {
             SchanaPartyUtils.LogMessage ("SendMarkers");
-            auto data = new Param1<ref array<ref SchanaPartyMarkerInfo>> (markers);
+            auto data = new Param1<autoptr array<autoptr SchanaPartyMarkerInfo>> (markers);
             GetRPCManager ().SendRPC ("SchanaModParty", "ServerRegisterMarkersRPC", data);
 
             canSend = false;

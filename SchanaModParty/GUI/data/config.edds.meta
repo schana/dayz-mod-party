@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{A9804600B920DB18}SchanaModParty/gui/data/config.edds"
+ Author "desktop-m1abk2b"
+ ChangeDate -594859376
+ Configurations {
+  PNGResourceClass PC {
+   SourceFile "config.png"
+  }
+  PNGResourceClass XBOX_ONE : PC {
+  }
+  PNGResourceClass PS4 : PC {
+  }
+  PNGResourceClass LINUX : PC {
+  }
+ }
+}

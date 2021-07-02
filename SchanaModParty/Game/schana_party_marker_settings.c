@@ -1,8 +1,8 @@
-class SchanaModPartyMarkerSettings {
+class SchanaModPartyMarkerSettings  extends Managed {
     protected static string DIR = "$profile:SchanaModParty";
     protected static string PATH = DIR + "\\markers.json";
 
-    protected ref array<vector> markers;
+    protected autoptr array<vector> markers;
 
     void SchanaModPartyMarkerSettings () {
         markers = new array<vector> ();
@@ -37,7 +37,7 @@ class SchanaModPartyMarkerSettings {
         }
     }
 
-    static ref SchanaModPartyMarkerSettings Get () {
+    static SchanaModPartyMarkerSettings Get () {
         auto settings = new SchanaModPartyMarkerSettings ();
 
         if (FileExist (PATH)) {
@@ -49,7 +49,7 @@ class SchanaModPartyMarkerSettings {
 }
 
 static ref SchanaModPartyMarkerSettings g_SchanaPartyMarkerSettings;
-static ref SchanaModPartyMarkerSettings GetSchanaPartyMarkerSettings () {
+static SchanaModPartyMarkerSettings GetSchanaPartyMarkerSettings () {
     if (g_Game.IsClient () && !g_SchanaPartyMarkerSettings) {
         g_SchanaPartyMarkerSettings = SchanaModPartyMarkerSettings.Get ();
         g_SchanaPartyMarkerSettings.Save ();

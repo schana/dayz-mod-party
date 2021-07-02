@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{4B9AFA014262987E}SchanaModParty/gui/data/person.edds"
+ Author "desktop-m1abk2b"
+ ChangeDate -1450530160
+ Configurations {
+  PNGResourceClass PC {
+   SourceFile "person.png"
+  }
+  PNGResourceClass XBOX_ONE : PC {
+  }
+  PNGResourceClass PS4 : PC {
+  }
+  PNGResourceClass LINUX : PC {
+  }
+ }
+}

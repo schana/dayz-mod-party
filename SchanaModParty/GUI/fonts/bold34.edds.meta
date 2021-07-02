@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{10165FDC556B9CE3}TH_Fonts/bold34.edds"
+ Author "desktop-19meifj"
+ ChangeDate -2021512627
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "bold34.tga"
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}

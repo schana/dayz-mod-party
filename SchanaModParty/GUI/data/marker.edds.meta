@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{DE01A9F5E49657C4}SchanaModParty/GUI/data/marker.edds"
+ Author "desktop-tdpoqud"
+ ChangeDate -1642304854
+ Configurations {
+  PNGResourceClass PC {
+   SourceFile "marker.png"
+  }
+  PNGResourceClass XBOX_ONE : PC {
+  }
+  PNGResourceClass PS4 : PC {
+  }
+  PNGResourceClass LINUX : PC {
+  }
+ }
+}

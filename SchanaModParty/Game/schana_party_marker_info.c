@@ -1,4 +1,4 @@
-class SchanaPartyMarkerInfo {
+class SchanaPartyMarkerInfo  extends Managed {
     protected string name;
     protected vector position;
 

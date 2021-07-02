@@ -1,5 +1,5 @@
-class SchanaPartyManagerServer {
-	protected ref map<string, ref set<string>> configurations;
+class SchanaPartyManagerServer  extends Managed {
+	protected autoptr map<string, autoptr set<string>> configurations;
 	protected bool canSendInfo = true;
 
 	protected bool canGenerateParties = true;
@@ -9,13 +9,13 @@ class SchanaPartyManagerServer {
 	
 	protected bool canGeneratePartiesThread = true; //To prevent possbilty of threads conflicting??
 
-	ref map<string, ref set<string>> parties;
-	ref map<string, vector> player_positions;
-	ref map<string, float> player_healths;
+	autoptr map<string, autoptr set<string>> parties;
+	autoptr map<string, vector> player_positions;
+	autoptr map<string, float> player_healths;
 
 	void SchanaPartyManagerServer () {
 		SchanaPartyUtils.LogMessage ("Server Init " + SCHANA_PARTY_VERSION);
-		configurations = new map<string,ref set<string>> ();
+		configurations = new map<string,autoptr set<string>> ();
 		GetRPCManager ().AddRPC ("SchanaModParty", "ServerRegisterPartyRPC", this, SingleplayerExecutionType.Both);
 
 		GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).CallLater (this.SendInfo, 10000, true);
@@ -88,7 +88,7 @@ class SchanaPartyManagerServer {
 		SendInfo ();
 	}
 
-	ref map<string, ref set<string>> GetParties () {
+	autoptr map<string, autoptr set<string>> GetParties () {
 		SchanaPartyUtils.Trace ("GetParties Start");
 		if (!canGenerateParties) {
 			SchanaPartyUtils.Trace ("GetParties Returned Cached Parties");
@@ -116,7 +116,7 @@ class SchanaPartyManagerServer {
 			SchanaPartyUtils.Trace ("GenerateParties Start");
 			int maxPartyRefreshRate = GetSchanaPartyServerSettings ().GetMaxPartyRefreshRate ();
 			GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).CallLater (this.ResetPartiesRefreshRate, maxPartyRefreshRate * 1000, false);
-			parties = new map<string, ref set<string>> ();
+			parties = new map<string, autoptr set<string>> ();
 
 			for (int i = 0; i < configurations.Count (); ++i) {
 				auto validated_party_ids = new set<string>;
@@ -149,7 +149,7 @@ class SchanaPartyManagerServer {
 		canGenerateParties = true;
 	}
 
-	ref array<DayZPlayer> GetPartyPlayers (string id) {
+	autoptr array<DayZPlayer> GetPartyPlayers (string id) {
 		SchanaPartyUtils.Trace ("GetPartyPlayers Start");
 		map<string, DayZPlayer> id_map = new map<string, DayZPlayer> ();
 		array<Man> game_players = new array<Man>;

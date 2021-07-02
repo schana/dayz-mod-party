@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{72F4BB2C68177C53}TH_Fonts/light32.edds"
+ Author "desktop-19meifj"
+ ChangeDate -1551226291
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "light32.tga"
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}

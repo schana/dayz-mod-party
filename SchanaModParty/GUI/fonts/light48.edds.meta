@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{24F29D48D9A7CAE0}TH_Fonts/light48.edds"
+ Author "desktop-19meifj"
+ ChangeDate -1450562995
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "light48.tga"
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}

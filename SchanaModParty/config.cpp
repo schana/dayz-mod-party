@@ -24,6 +24,13 @@ class CfgMods
 		};
 		class defs
 		{
+			class widgetStyles
+			{
+				files[]= 
+				{
+					"SchanaModParty/gui/looknfeel/estilos.styles"
+				};
+			};
 			class gameScriptModule
 			{
 				value = "";

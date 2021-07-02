@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{0AFFED55BB085D03}ffdin/regular10.edds"
+ Author "desktop-m1abk2b"
+ ChangeDate -1019434326
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "regular10.tga"
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}

@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{F4F606038EF97DA3}ffdin/light8.edds"
+ Author "desktop-m1abk2b"
+ ChangeDate 288139946
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "light8.tga"
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}

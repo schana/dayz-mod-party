@@ -1,4 +1,4 @@
-class SchanaModPartyServerSettings {
+class SchanaModPartyServerSettings  extends Managed {
     protected static string DIR = "$profile:SchanaModParty";
     protected static string PATH = DIR + "\\server-config.json";
 
@@ -17,7 +17,7 @@ class SchanaModPartyServerSettings {
     protected int sendMarkerFrequencySeconds = DEFAULT_SEND_MARKER_FREQUENCY;
     protected int maxMarkers = DEFAULT_MAX_MARKERS;
     protected int maxPartyRefreshRate = DEFAULT_MAX_PARTY_REFRESH_RATE;
-    protected ref array<string> adminIds = new array<string> ();
+    protected autoptr array<string> adminIds = new array<string> ();
 
     int GetLogFrequency () {
         return logPartiesFrequencySeconds;

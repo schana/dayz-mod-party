@@ -1,4 +1,4 @@
-class SchanaModPartyClientDisplaySettings {
+class SchanaModPartyClientDisplaySettings extends Managed  {
     protected static string DIR = "$profile:SchanaModParty";
     protected static string PATH = DIR + "\\display_settings.json";
 

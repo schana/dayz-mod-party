@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{31B83DD3B5862DEE}TH_Fonts/light28.edds"
+ Author "desktop-19meifj"
+ ChangeDate -1584780723
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "light28.tga"
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}
