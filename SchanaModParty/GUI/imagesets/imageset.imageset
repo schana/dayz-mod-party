@@ -1,0 +1,104 @@
+ImageSetClass {
+ Name "imageset"
+ RefSize 1024 1024
+ Textures {
+  ImageSetTextureClass {
+   mpix 1
+   path "{812040DCA7DD5F02}SchanaModParty/GUI/imagesets/imageset.edds"
+  }
+ }
+ Images {
+  ImageSetDefClass th_check {
+   Name "th_check"
+   Pos 6 7
+   Size 24 24
+   Flags 0
+  }
+  ImageSetDefClass th_check_select {
+   Name "th_check_select"
+   Pos 32 7
+   Size 24 24
+   Flags 0
+  }
+  ImageSetDefClass th_check_highlight {
+   Name "th_check_highlight"
+   Pos 84 7
+   Size 24 24
+   Flags 0
+  }
+  ImageSetDefClass regua {
+   Name "regua"
+   Pos 50 50
+   Size 26 9
+   Flags 0
+  }
+  ImageSetDefClass th_check_disable {
+   Name "th_check_disable"
+   Pos 58 7
+   Size 24 24
+   Flags 0
+  }
+  ImageSetDefClass slider {
+   Name "slider"
+   Pos 6 34
+   Size 1 1
+   Flags 0
+  }
+  ImageSetDefClass th_left_top {
+   Name "th_left_top"
+   Pos 6 38
+   Size 1 1
+   Flags 0
+  }
+  ImageSetDefClass th_top {
+   Name "th_top"
+   Pos 8 38
+   Size 21 1
+   Flags 0
+  }
+  ImageSetDefClass th_right_top {
+   Name "th_right_top"
+   Pos 30 38
+   Size 1 1
+   Flags 0
+  }
+  ImageSetDefClass th_left {
+   Name "th_left"
+   Pos 6 40
+   Size 1 21
+   Flags 0
+  }
+  ImageSetDefClass th_right {
+   Name "th_right"
+   Pos 30 40
+   Size 1 21
+   Flags 0
+  }
+  ImageSetDefClass th_bottom_left {
+   Name "th_bottom_left"
+   Pos 6 62
+   Size 1 1
+   Flags 0
+  }
+  ImageSetDefClass th_bottom {
+   Name "th_bottom"
+   Pos 8 62
+   Size 21 1
+   Flags 0
+  }
+  ImageSetDefClass th_bottom_right {
+   Name "th_bottom_right"
+   Pos 30 62
+   Size 1 1
+   Flags 0
+  }
+  ImageSetDefClass th_center {
+   Name "th_center"
+   Pos 35 41
+   Size 1 1
+   Flags 0
+  }
+ }
+ Groups {
+ }
+}
