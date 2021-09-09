@@ -33,51 +33,51 @@ FrameWidgetClass rootFrame {
      {
       GridSpacerWidgetClass GridSpacerWidget0 {
        ignorepointer 1
-       size 0.95 1
+       position 0 0
+       size 1 1
        halign center_ref
        valign center_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       Padding 10
+       Padding 5
        Margin 0
        "Size To Content H" 1
        "Size To Content V" 1
        Columns 1
-       Rows 7
+       Rows 10
        {
         CheckBoxWidgetClass CheckEnableParty {
+         color 0.9216 0.6588 0.2667 1
          position 0 0.05
-         size 0.95 26
+         size 270 30
          halign center_ref
          hexactpos 0
          vexactpos 0
-         hexactsize 0
+         hexactsize 1
          vexactsize 1
-         style Default
+         style TH
          font "SchanaModParty/gui/fonts/regular16"
          {
           TextWidgetClass CheckEnableParty_label {
            ignorepointer 1
-           position 0 0
-           size 1 1
-           halign center_ref
+           position 0.12 0
+           size 200 30
            valign center_ref
            hexactpos 0
            vexactpos 0
-           hexactsize 0
-           vexactsize 0
+           hexactsize 1
+           vexactsize 1
            text "Enable party"
            font "SchanaModParty/gui/fonts/regular16"
-           "text offset" 20 0
            "text valign" center
           }
          }
         }
         SliderWidgetClass SliderDistance {
          visible 1
-         color 0.7059 0.7059 0.7059 1
+         color 0.9216 0.6588 0.2667 1
          position 0 0.12
          size 0.95 26
          halign center_ref
@@ -85,7 +85,7 @@ FrameWidgetClass rootFrame {
          vexactpos 0
          hexactsize 0
          vexactsize 1
-         style Default
+         style TH
          maximum 5000
          step 100
          current 4000
@@ -93,7 +93,6 @@ FrameWidgetClass rootFrame {
           TextWidgetClass SliderDistanceValue {
            visible 1
            ignorepointer 1
-           color 1 0 0 1
            size 1 1
            halign center_ref
            valign center_ref
@@ -101,6 +100,7 @@ FrameWidgetClass rootFrame {
            vexactpos 0
            hexactsize 0
            vexactsize 0
+           style Normal
            text "100m"
            font "SchanaModParty/gui/fonts/regular16"
            "exact text" 1
@@ -112,91 +112,89 @@ FrameWidgetClass rootFrame {
          }
         }
         CheckBoxWidgetClass CheckDistanceSnapBottom {
+         color 0.9216 0.6588 0.2667 1
          position 0 0.32
-         size 0.95 26
+         size 270 30
          halign center_ref
          hexactpos 0
          vexactpos 0
-         hexactsize 0
+         hexactsize 1
          vexactsize 1
-         style Default
+         style TH
          font "SchanaModParty/gui/fonts/regular16"
          {
           TextWidgetClass CheckDistanceSnapBottom_label {
            ignorepointer 1
-           position 0 0
-           size 1 1
-           halign center_ref
+           position 0.12 0
+           size 200 30
            valign center_ref
            hexactpos 0
            vexactpos 0
-           hexactsize 0
-           vexactsize 0
+           hexactsize 1
+           vexactsize 1
            text "Snap to bottom"
            font "SchanaModParty/gui/fonts/regular16"
-           "text offset" 20 0
            "text valign" center
           }
          }
         }
         CheckBoxWidgetClass CheckDistanceSnapTop {
+         color 0.9216 0.6588 0.2667 1
          position 0 0.26
-         size 0.94 26
+         size 270 30
          halign center_ref
          hexactpos 0
          vexactpos 0
-         hexactsize 0
+         hexactsize 1
          vexactsize 1
-         style Default
+         style TH
          font "SchanaModParty/gui/fonts/regular16"
          {
           TextWidgetClass CheckDistanceSnapTop_label {
            ignorepointer 1
-           position 0 0
-           size 1 1
-           halign center_ref
+           position 0.12 0
+           size 200 30
            valign center_ref
            hexactpos 0
            vexactpos 0
-           hexactsize 0
-           vexactsize 0
+           hexactsize 1
+           vexactsize 1
            text "Snap to top"
            font "SchanaModParty/gui/fonts/regular16"
-           "text offset" 20 0
            "text valign" center
           }
          }
         }
         CheckBoxWidgetClass CheckDistanceHide {
          visible 1
+         color 0.9216 0.6588 0.2667 1
          position 0 0.19
-         size 0.95 26
+         size 270 30
          halign center_ref
          hexactpos 0
          vexactpos 0
-         hexactsize 0
+         hexactsize 1
          vexactsize 1
-         style Default
+         style TH
          font "SchanaModParty/gui/fonts/regular16"
          {
           TextWidgetClass CheckDistanceHide_label {
            ignorepointer 1
-           position 0 0
-           size 1 1
-           halign center_ref
+           position 0.12 0
+           size 200 30
            valign center_ref
            hexactpos 0
            vexactpos 0
-           hexactsize 0
-           vexactsize 0
+           hexactsize 1
+           vexactsize 1
            text "Hide"
            font "SchanaModParty/gui/fonts/regular16"
-           "text offset" 20 0
            "text valign" center
           }
          }
         }
         XComboBoxWidgetClass SelectNametagStyle {
+         color 0.9216 0.6588 0.2667 1
          position 0 0.6
          size 1 26
          hexactpos 0
@@ -211,69 +209,19 @@ FrameWidgetClass rootFrame {
       }
      }
     }
-    PanelWidgetClass PanelWidget0 {
-     visible 1
-     ignorepointer 1
-     position 0 0
-     size 2 1
-     valign center_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 1
-     vexactsize 0
-     style rover_sim_colorable
-    }
-    PanelWidgetClass PanelWidget1 {
-     visible 1
-     ignorepointer 1
-     position 0 0
-     size 1 1
-     halign center_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 1
-     style rover_sim_colorable
-    }
-    PanelWidgetClass PanelWidget3 {
-     ignorepointer 1
-     position 0 0
-     size 1 1
-     halign right_ref
-     valign center_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 1
-     vexactsize 0
-     style rover_sim_colorable
-    }
-    PanelWidgetClass PanelWidget4 {
-     ignorepointer 1
-     position 0 0
-     size 1 1
-     halign center_ref
-     valign bottom_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 1
-     style rover_sim_colorable
-    }
    }
   }
-  ImageWidgetClass logo {
+  PanelWidgetClass Outline {
    ignorepointer 1
-   position 0 0.25
-   size 128 128
+   color 0.9216 0.6588 0.2667 1
+   size 0.2 0.22
    halign center_ref
-   hexactpos 0
-   vexactpos 0
-   hexactsize 1
-   vexactsize 1
-   imageTexture "{A9804600B920DB18}SchanaModParty/gui/data/config.edds"
-   mode blend
-   "src alpha" 1
-   stretch 1
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   style Outline_1px
   }
  }
 }

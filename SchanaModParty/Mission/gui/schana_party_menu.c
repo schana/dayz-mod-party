@@ -29,6 +29,38 @@ class SchanaPartyMenu extends UIScriptedMenu {
 		return layoutRoot;
 	}
 
+	/*
+	static void PopulateTextList(TextListboxWidget w, int count, string col1, string col2 = "", string col3 = "", string col4 = "", string col5 = "")
+	{
+    	TextListboxWidget twidget = TextListboxWidget.Cast(w);
+    	for (int i = 0; i < count; i++)
+    	{
+	        string text = col1 + i;
+	        int row = twidget.AddItem(text, NULL, 0);
+	        if (col2 != "")
+	        {
+	            text = col2 + i;
+	            twidget.AddItem(text, NULL, 1, row);
+        	}
+        	if (col3 != "")
+        	{
+	            text = col3 + i;
+	            twidget.AddItem(text, NULL, 2, row);
+        	}
+        	if (col4 != "")
+        	{
+	            text = col4 + i;
+	            twidget.AddItem(text, NULL, 3, row);
+        	}
+        	if (col5 != "")
+        	{
+	            text = col5 + i;
+	            twidget.AddItem(text, NULL, 4, row);
+        	};
+    	};
+	};
+	*/
+
 	void ~SchanaPartyMenu () {
 		GetGame ().GetCallQueue (CALL_CATEGORY_GUI).Remove (this.SchanaPartyUpdateLists);
 
@@ -45,6 +77,9 @@ class SchanaPartyMenu extends UIScriptedMenu {
 	override void OnShow () {
 		super.OnShow ();
 		GetGame ().GetCallQueue (CALL_CATEGORY_GUI).CallLater (this.SchanaPartyUpdateLists, 500, true);
+
+    	GetGame().GetMission().GetHud().Show(false);
+    	PPEffects.SetBlurInventory(0.5);
 	}
 
 	override void OnHide () {
@@ -54,6 +89,11 @@ class SchanaPartyMenu extends UIScriptedMenu {
 		g_Game.GetUIManager ().ShowCursor (true);
 		g_Game.GetUIManager ().ShowUICursor (false);
 		GetGame ().GetInput ().ResetGameFocus ();
+
+	    GetGame().GetMission().GetHud().Show(true);
+	    GetGame().GetUIManager().Back();
+	    PPEffects.SetBlurInventory(0);
+	    Close();
 	}
 
 	override bool OnClick (Widget w, int x, int y, int button) {
@@ -131,6 +171,8 @@ class SchanaPartyMenu extends UIScriptedMenu {
 		if (m_SchanaPartyPartyList.GetSelectedRow () >= insert_row) {
 			m_SchanaPartyPartyList.SelectRow (insert_row - 1);
 		}
+
+		//PopulateTextList(m_SchanaPartyPartyList, 40, "Party_");
 	}
 
 	void SchanaPartyUpdatePlayerList () {
@@ -163,6 +205,8 @@ class SchanaPartyMenu extends UIScriptedMenu {
 		if (m_SchanaPartyPlayerList.GetSelectedRow () >= insert_row) {
 			m_SchanaPartyPlayerList.SelectRow (insert_row - 1);
 		}
+
+		//PopulateTextList(m_SchanaPartyPlayerList, 40, "Player_");
 	}
 
 	void SchanaPartyUpdatePartyStatus () {

@@ -26,10 +26,11 @@ class CfgMods
 		{
 			class widgetStyles
 			{
-				files[]= 
-				{
-					"SchanaModParty/gui/looknfeel/estilos.styles"
-				};
+				files[] = {"SchanaModParty/gui/looknfeel/prefabs.styles"};
+			};
+			class imageSets
+			{
+				files[] = {"SchanaModParty/gui/imagesets/imageset.imageset","SchanaModParty/gui/imagesets/prefabs.imageset"};
 			};
 			class gameScriptModule
 			{

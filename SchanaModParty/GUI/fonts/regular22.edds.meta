@@ -1,7 +1,7 @@
 MetaFileClass {
- Name "{7061CDD0F506722D}TH_Fonts/regular22.edds"
- Author "desktop-19meifj"
- ChangeDate -980276659
+ Name "{0FE9BBADE7DB7B06}Example/gui/fonts/regular22.edds"
+ Author "desktop-291ln96"
+ ChangeDate 1455123181
  Configurations {
   TGAResourceClass PC {
    SourceFile "regular22.tga"
