@@ -24,6 +24,14 @@ class CfgMods
 		};
 		class defs
 		{
+			class widgetStyles
+			{
+				files[] = {"SchanaModParty/gui/looknfeel/prefabs.styles"};
+			};
+			class imageSets
+			{
+				files[] = {"SchanaModParty/gui/imagesets/imageset.imageset","SchanaModParty/gui/imagesets/prefabs.imageset"};
+			};
 			class gameScriptModule
 			{
 				value = "";

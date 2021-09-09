@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{812040DCA7DD5F02}SchanaModParty/GUI/imagesets/imageset.edds"
+ Author "desktop-291ln96"
+ ChangeDate 1104816914
+ Configurations {
+  PNGResourceClass PC {
+   SourceFile "imageset.png"
+  }
+  PNGResourceClass XBOX_ONE : PC {
+  }
+  PNGResourceClass PS4 : PC {
+  }
+  PNGResourceClass LINUX : PC {
+  }
+ }
+}

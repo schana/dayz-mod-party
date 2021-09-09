@@ -29,6 +29,38 @@ class SchanaPartyMenu extends UIScriptedMenu {
 		return layoutRoot;
 	}
 
+	/*
+	static void PopulateTextList(TextListboxWidget w, int count, string col1, string col2 = "", string col3 = "", string col4 = "", string col5 = "")
+	{
+    	TextListboxWidget twidget = TextListboxWidget.Cast(w);
+    	for (int i = 0; i < count; i++)
+    	{
+	        string text = col1 + i;
+	        int row = twidget.AddItem(text, NULL, 0);
+	        if (col2 != "")
+	        {
+	            text = col2 + i;
+	            twidget.AddItem(text, NULL, 1, row);
+        	}
+        	if (col3 != "")
+        	{
+	            text = col3 + i;
+	            twidget.AddItem(text, NULL, 2, row);
+        	}
+        	if (col4 != "")
+        	{
+	            text = col4 + i;
+	            twidget.AddItem(text, NULL, 3, row);
+        	}
+        	if (col5 != "")
+        	{
+	            text = col5 + i;
+	            twidget.AddItem(text, NULL, 4, row);
+        	};
+    	};
+	};
+	*/
+
 	void ~SchanaPartyMenu () {
 		GetGame ().GetCallQueue (CALL_CATEGORY_GUI).Remove (this.SchanaPartyUpdateLists);
 
@@ -45,6 +77,9 @@ class SchanaPartyMenu extends UIScriptedMenu {
 	override void OnShow () {
 		super.OnShow ();
 		GetGame ().GetCallQueue (CALL_CATEGORY_GUI).CallLater (this.SchanaPartyUpdateLists, 500, true);
+
+    	GetGame().GetMission().GetHud().Show(false);
+    	PPEffects.SetBlurInventory(0.5);
 	}
 
 	override void OnHide () {
@@ -54,6 +89,11 @@ class SchanaPartyMenu extends UIScriptedMenu {
 		g_Game.GetUIManager ().ShowCursor (true);
 		g_Game.GetUIManager ().ShowUICursor (false);
 		GetGame ().GetInput ().ResetGameFocus ();
+
+	    GetGame().GetMission().GetHud().Show(true);
+	    GetGame().GetUIManager().Back();
+	    PPEffects.SetBlurInventory(0);
+	    Close();
 	}
 
 	override bool OnClick (Widget w, int x, int y, int button) {
@@ -70,6 +110,7 @@ class SchanaPartyMenu extends UIScriptedMenu {
 				SchanaPartyUtils.LogMessage ("Menu add " + id.param1);
 				GetSchanaPartyManagerClient ().AddPlayerToParty (id.param1);
 				SchanaPartyUpdateLists ();
+				return true;
 				break;
 
 			case m_SchanaPartyButtonRemove:
@@ -80,10 +121,12 @@ class SchanaPartyMenu extends UIScriptedMenu {
 				m_SchanaPartyPartyList.GetItemData (selectedRow, 0, id);
 				SchanaPartyUtils.LogMessage ("Menu remove " + id.param1);
 				GetSchanaPartyManagerClient ().RemovePlayerFromParty (id.param1);
-				SchanaPartyUpdateLists ();
 				m_SchanaPartyPartyList.SelectRow (selectedRow - 1);
+				SchanaPartyUpdateLists ();
+				return true;
 				break;
 		}
+		SchanaPartyUpdateLists ();
 		return super.OnClick (w, x, y, button);
 	}
 
@@ -128,6 +171,8 @@ class SchanaPartyMenu extends UIScriptedMenu {
 		if (m_SchanaPartyPartyList.GetSelectedRow () >= insert_row) {
 			m_SchanaPartyPartyList.SelectRow (insert_row - 1);
 		}
+
+		//PopulateTextList(m_SchanaPartyPartyList, 40, "Party_");
 	}
 
 	void SchanaPartyUpdatePlayerList () {
@@ -160,11 +205,15 @@ class SchanaPartyMenu extends UIScriptedMenu {
 		if (m_SchanaPartyPlayerList.GetSelectedRow () >= insert_row) {
 			m_SchanaPartyPlayerList.SelectRow (insert_row - 1);
 		}
+
+		//PopulateTextList(m_SchanaPartyPlayerList, 40, "Player_");
 	}
 
 	void SchanaPartyUpdatePartyStatus () {
+		int selectedRow;
+		int i;
 		Param1<string> id;
-		for (int i = 0; i < m_SchanaPartyPartyList.GetNumItems (); ++i) {
+		for (i = 0; i < m_SchanaPartyPartyList.GetNumItems (); ++i) {
 			m_SchanaPartyPartyList.GetItemData (i, 0, id);
 
 			if (GetSchanaPartyManagerClient ().IsPartyMemberOnline (id.param1)) {
@@ -178,6 +227,18 @@ class SchanaPartyMenu extends UIScriptedMenu {
 				m_SchanaPartyPartyList.SetItemColor (i, 0, 0xFFBDBDBD);
 			}
 		}
+		for (i = 0; i < m_SchanaPartyPlayerList.GetNumItems (); ++i){
+			// Gray 400
+			m_SchanaPartyPlayerList.SetItemColor (i, 0, 0xFFBDBDBD);
+		}
+		selectedRow = m_SchanaPartyPartyList.GetSelectedRow ();
+		if (selectedRow != -1){
+			m_SchanaPartyPartyList.SetItemColor (selectedRow, 0, 0xDDEDC131);
+		}
+		selectedRow = m_SchanaPartyPlayerList.GetSelectedRow ();
+		if (selectedRow != -1){
+				m_SchanaPartyPlayerList.SetItemColor (selectedRow, 0, 0xDDEDC131);
+		}
 	}
 
 	bool SchanaPartyMenuIsOpen () {
@@ -186,5 +247,76 @@ class SchanaPartyMenu extends UIScriptedMenu {
 
 	void SchanaPartyMenuSetOpen (bool open) {
 		m_SchanaPartyMenuIsOpen = open;
+	}
+
+	override bool OnMouseEnter(Widget w, int x, int y)
+	{
+	    ColorHighlight (w);
+	    return true;
+	}
+
+	override bool OnMouseLeave(Widget w, Widget enterW, int x, int y)
+	{
+	    ColorNormal (w);
+	    return true;
+	}
+
+	protected void ColorHighlight(Widget w)
+	{
+	    if (!w)
+	        return;
+
+	    ButtonSetColor(w, ARGB(0, 0, 0, 0));
+	    ButtonSetTextColor(w, ARGB(255, 235, 168, 68));
+	    ImagenSetColor(w, ARGB(255, 235, 168, 68));
+	};
+
+	protected void ColorNormal(Widget w)
+	{
+	    if (!w)
+	        return;
+
+	    ButtonSetColor(w, ARGB(0, 0, 0, 0));
+	    ButtonSetTextColor(w, ARGB(255, 255, 255, 255));
+	    ImagenSetColor(w, ARGB(255, 255, 255, 255));
+	};
+
+	protected void ButtonSetColor(Widget w, int color)
+	{
+	    if (!w)
+	        return;
+	        
+	    Widget panel = w.FindWidget(w.GetName() + "_panel");
+
+	    if (panel)
+	    {
+	        panel.SetColor(color);
+	    };
+	};
+
+	protected void ButtonSetTextColor(Widget w, int color)
+	{
+	    if (!w)
+	        return;
+
+	    TextWidget label = TextWidget.Cast(w.FindAnyWidget(w.GetName() + "_label"));
+	                
+	    if (label)
+	    {
+	        label.SetColor(color);
+	    };
+	};
+
+	void ImagenSetColor( Widget w, int color )
+	{
+		if( !w )
+			return;
+		
+		Widget panel = w.FindWidget( w.GetName() + "_img" );
+		
+		if( panel )
+		{
+			panel.SetColor( color );
+		}
 	}
 }

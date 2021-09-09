@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{0AE5DBBAACC92BB8}SchanaModParty/GUI/data/groups.edds"
+ Author "desktop-291ln96"
+ ChangeDate 709094158
+ Configurations {
+  PNGResourceClass PC {
+   SourceFile "groups.png"
+  }
+  PNGResourceClass XBOX_ONE : PC {
+  }
+  PNGResourceClass PS4 : PC {
+  }
+  PNGResourceClass LINUX : PC {
+  }
+ }
+}

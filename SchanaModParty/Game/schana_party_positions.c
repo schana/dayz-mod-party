@@ -1,5 +1,5 @@
-class SchanaPartyPositions {
-    protected ref map<string, vector> positions;
+class SchanaPartyPositions  extends Managed {
+    protected autoptr map<string, vector> positions;
 
     void SchanaPartyPositions () {
         positions = new map<string, vector> ();

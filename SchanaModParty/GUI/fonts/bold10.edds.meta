@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{E5B80DC1C903B991}Example/gui/fonts/bold10.edds"
+ Author "desktop-291ln96"
+ ChangeDate 752052973
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "bold10.tga"
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}

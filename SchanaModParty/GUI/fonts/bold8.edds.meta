@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{83A1E7F8FD2F2941}ffdin/bold8.edds"
+ Author "desktop-m1abk2b"
+ ChangeDate 119843498
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "bold8.tga"
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}

@@ -21,8 +21,9 @@ FrameWidgetClass rootFrame {
    scaled 1
    style Normal
    text "[KGB] Sample Player"
-   font "gui/fonts/metron-bold12"
+   font "SchanaModParty/gui/fonts/regular10"
    "exact text" 1
+   text_proportion 0.8
    "size to text h" 1
    "size to text v" 1
    "text halign" center
@@ -43,8 +44,9 @@ FrameWidgetClass rootFrame {
      scaled 1
      style Normal
      text "888m"
-     font "gui/fonts/metron-bold12"
+     font "SchanaModParty/gui/fonts/bold10"
      "exact text" 1
+     text_proportion 0.7
      "size to text h" 1
      "size to text v" 1
      "text halign" center
@@ -56,23 +58,21 @@ FrameWidgetClass rootFrame {
    visible 1
    clipchildren 0
    ignorepointer 1
-   color 0.1333 0.6941 0 1
-   position 1.5 -22
-   size 20 20
+   color 0.149 0.9216 0.6627 1
+   position 1.5 -12
+   size 12 12
    halign center_ref
    hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 1
    fixaspect fixwidth
-   imageTexture "{9D15AA5672F81909}gui/textures/arrow_raw.edds"
+   imageTexture "{DE01A9F5E49657C4}SchanaModParty/GUI/data/marker.edds"
    mode blend
    "src alpha" 1
    "no wrap" 0
    stretch 1
-   "flip v" 1
    filter 1
-   rotation 0 0 337
   }
  }
 }

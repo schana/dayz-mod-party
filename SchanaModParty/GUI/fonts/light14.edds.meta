@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{D98645202FD79727}ffdin/light14.edds"
+ Author "desktop-m1abk2b"
+ ChangeDate 321694378
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "light14.tga"
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}

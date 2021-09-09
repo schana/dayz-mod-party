@@ -1,28 +1,40 @@
 FrameWidgetClass rootFrame {
  ignorepointer 1
  position 2 2
- size 0.5 20
+ size 0.5 70
  hexactpos 1
  vexactpos 1
  hexactsize 0
  vexactsize 1
  {
   TextWidgetClass Nametag {
+   visible 1
    ignorepointer 1
    position 22 0
-   size 0 1
+   size 0 22
    hexactpos 1
    vexactpos 0
    hexactsize 0
-   vexactsize 0
+   vexactsize 1
    scaled 1
-   text ""
+   text "Mauricio 'TH' de Britto"
+   font "SchanaModParty/gui/fonts/regular14"
    "size to text h" 1
    "text valign" center
   }
+  ProgressBarWidgetClass HealthProgress {
+   ignorepointer 1
+   position 22 22
+   size 200 2
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Stamina
+  }
   FrameWidgetClass FrameHealth {
    ignorepointer 1
-   position 0 0
+   position 50 0
    size 20 1
    hexactpos 0
    vexactpos 0

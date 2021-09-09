@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{B89CB9672ED0949F}Example/gui/fonts/regular14.edds"
+ Author "desktop-291ln96"
+ ChangeDate 1455123181
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "regular14.tga"
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}

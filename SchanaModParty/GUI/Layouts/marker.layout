@@ -12,16 +12,17 @@ FrameWidgetClass rootFrame {
    clipchildren 0
    ignorepointer 1
    color 0.8118 0.8471 0.8627 1
+   position 0 -16
    size 0 0
    halign center_ref
    hexactpos 0
-   vexactpos 0
+   vexactpos 1
    hexactsize 1
    vexactsize 1
    scaled 1
    style Normal
-   text "[KGB] Sample Player"
-   font "gui/fonts/metron-bold12"
+   text "PlayerName 1"
+   font "SchanaModParty/gui/fonts/regular10"
    "exact text" 1
    "size to text h" 1
    "size to text v" 1
@@ -29,7 +30,7 @@ FrameWidgetClass rootFrame {
    "text valign" center
    {
     TextWidgetClass distance {
-     visible 1
+     visible 0
      clipchildren 0
      ignorepointer 1
      color 0.8118 0.8471 0.8627 1
@@ -43,7 +44,7 @@ FrameWidgetClass rootFrame {
      scaled 1
      style Normal
      text "888m"
-     font "gui/fonts/metron-bold12"
+     font "SchanaModParty/gui/fonts/regular10"
      "exact text" 1
      "size to text h" 1
      "size to text v" 1
@@ -56,23 +57,22 @@ FrameWidgetClass rootFrame {
    visible 1
    clipchildren 0
    ignorepointer 1
-   color 0.749 0.8471 0 1
-   position 1.5 -22
-   size 20 20
+   color 1 0.3294 0.1843 1
+   position 1.5 -2
+   size 14 14
    halign center_ref
    hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 1
    fixaspect fixwidth
-   imageTexture "{9D15AA5672F81909}gui/textures/arrow_raw.edds"
+   imageTexture "{1A9C8175377666C4}SchanaModParty/GUI/data/ping.edds"
    mode blend
    "src alpha" 1
    "no wrap" 0
    stretch 1
-   "flip v" 1
+   "flip v" 0
    filter 1
-   rotation 0 0 337
   }
  }
 }

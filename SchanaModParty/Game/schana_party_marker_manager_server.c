@@ -1,10 +1,10 @@
-class SchanaPartyMarkerManagerServer {
-    protected ref map<string, ref array<ref SchanaPartyMarkerInfo>> markers;
+class SchanaPartyMarkerManagerServer  extends Managed {
+    protected autoptr map<string, autoptr array<autoptr SchanaPartyMarkerInfo>> markers;
     protected bool canSendInfo = true;
 
     void SchanaPartyMarkerManagerServer () {
         SchanaPartyUtils.LogMessage ("PartyMarker Server Init");
-        markers = new map<string, ref array<ref SchanaPartyMarkerInfo>> ();
+        markers = new map<string, autoptr array<autoptr SchanaPartyMarkerInfo>> ();
         GetRPCManager ().AddRPC ("SchanaModParty", "ServerRegisterMarkersRPC", this, SingleplayerExecutionType.Both);
 
         GetGame ().GetCallQueue (CALL_CATEGORY_SYSTEM).CallLater (this.SendMarkers, GetSchanaPartyServerSettings ().GetSendMarkerFrequency () * 1000, true);
@@ -33,14 +33,14 @@ class SchanaPartyMarkerManagerServer {
 		}
 		array<SchanaPartyMarkerInfo> playerMarkers = new array<SchanaPartyMarkerInfo>;
 		playerMarkers.Copy(data.param1);
-		array<ref SchanaPartyMarkerInfo> playerMarkersrefs =  new array<ref SchanaPartyMarkerInfo>;
+		array<autoptr SchanaPartyMarkerInfo> playerMarkersautoptrs =  new array<autoptr SchanaPartyMarkerInfo>;
 		for (int i = 0; i < playerMarkers.Count(); ++i){
-			playerMarkersrefs.Insert(playerMarkers.Get(i));
+			playerMarkersautoptrs.Insert(playerMarkers.Get(i));
 		}
-        ServerRegisterMarkers (sender.GetId (), playerMarkersrefs);
+        ServerRegisterMarkers (sender.GetId (), playerMarkersautoptrs);
     }
 
-    void ServerRegisterMarkers (string id, array<ref SchanaPartyMarkerInfo> playerMarkers) {
+    void ServerRegisterMarkers (string id, array<autoptr SchanaPartyMarkerInfo> playerMarkers) {
 		if (!playerMarkers){
 			return;
 		}
@@ -119,7 +119,7 @@ class SchanaPartyMarkerManagerServer {
 			return;
 		}
         SchanaPartyUtils.Trace ("SendMarkerInfoToPlayer Start");
-        auto playerMarkers = new array<ref SchanaPartyMarkerInfo>;
+        auto playerMarkers = new array<autoptr SchanaPartyMarkerInfo>;
         foreach (string party_id : party_ids) {
             if (markers.Contains (party_id) && markers.Get (party_id)) {
                 for (int i = 0; i < markers.Get (party_id).Count(); ++i) {
@@ -129,7 +129,7 @@ class SchanaPartyMarkerManagerServer {
                 }
             }
         }
-        auto info = new Param1<array<ref SchanaPartyMarkerInfo>> (playerMarkers);
+        auto info = new Param1<array<autoptr SchanaPartyMarkerInfo>> (playerMarkers);
 
         if (SchanaPartyUtils.WillLog (SchanaPartyUtils.DEBUG)) {
             string result;
