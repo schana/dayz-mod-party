@@ -44,7 +44,7 @@ FrameWidgetClass rootFrame {
      scaled 1
      style Normal
      text "888m"
-	 font "SchanaModParty/gui/fonts/regular10"
+     font "SchanaModParty/gui/fonts/regular10"
      "exact text" 1
      "size to text h" 1
      "size to text v" 1

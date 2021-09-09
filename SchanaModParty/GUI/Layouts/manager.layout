@@ -13,8 +13,8 @@ FrameWidgetClass rootFrame {
   PanelWidgetClass SchanaPartyManagerWidget {
    visible 1
    ignorepointer 1
-   color 0 0 0 0.8824
-   size 0.43 0.7
+   color 0 0 0 0.9412
+   size 0.35 0.55
    halign center_ref
    valign center_ref
    hexactpos 0
@@ -24,7 +24,7 @@ FrameWidgetClass rootFrame {
    scaled 1
    style rover_sim_colorable
    {
-    PanelWidgetClass PanelWidget0 {
+    PanelWidgetClass PanelWidget {
      visible 1
      ignorepointer 1
      position 0.01 0
@@ -37,74 +37,87 @@ FrameWidgetClass rootFrame {
       TextWidgetClass TitlePlayers {
        ignorepointer 1
        color 0.9216 0.6588 0.149 1
-       position 0.05 0.02
-       size 0.4 40
+       position 0.04 0.02
+       size 0.41 40
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 1
        style Normal
-       text "#P_Players"
+       text "#P_PLAYERS"
        font "SchanaModParty/gui/fonts/bold24"
-       "text offset" 50 0
        "exact text" 1
        "size to text h" 0
        "size to text v" 0
+       "text halign" center
        "text valign" center
        {
-        ImageWidgetClass TitlePlayers_img {
+        ImageWidgetClass TitlePlayers_imagem {
          ignorepointer 1
-         size 40 40
+         position 0.05 0
+         size 30 30
          valign center_ref
-         hexactpos 1
-         vexactpos 1
+         hexactpos 0
+         vexactpos 0
          hexactsize 1
          vexactsize 1
          imageTexture "{4B9AFA014262987E}SchanaModParty/GUI/data/person.edds"
          mode blend
          "src alpha" 1
+         "no wrap" 1
          stretch 1
+         "flip u" 0
+         "flip v" 0
+         filter 1
+         nocache 0
         }
        }
       }
       TextWidgetClass TitleParty {
+       visible 1
        ignorepointer 1
        color 0.9216 0.6588 0.149 1
-       position 0.05 0.02
-       size 0.4 40
+       position 0.04 0.02
+       size 0.41 40
        halign right_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 1
        style Normal
-       text "#P_Party"
+       text "#P_PARTY"
        font "SchanaModParty/gui/fonts/bold24"
-       "text offset" 50 0
        "exact text" 1
        "size to text h" 0
        "size to text v" 0
+       "text halign" center
        "text valign" center
        {
-        ImageWidgetClass TitleParty_img {
+        ImageWidgetClass TitleParty_imagem {
          ignorepointer 1
-         size 40 40
+         position 0.05 0
+         size 30 30
          valign center_ref
-         hexactpos 1
-         vexactpos 1
+         hexactpos 0
+         vexactpos 0
          hexactsize 1
          vexactsize 1
-         imageTexture "{994A5DEE95CBE050}SchanaModParty/GUI/data/party.edds"
+         imageTexture "{0AE5DBBAACC92BB8}SchanaModParty/GUI/data/groups.edds"
          mode blend
          "src alpha" 1
+         "no wrap" 1
          stretch 1
+         "flip u" 0
+         "flip v" 0
+         filter 1
+         nocache 0
         }
        }
       }
       ButtonWidgetClass ButtonAdd {
-       color 0 0 0 0.549
-       position 0.1 0.02
-       size 0.3 48
+       color 0 0 0 0.7843
+       position 0.04 0
+       size 0.41 40
        valign bottom_ref
        hexactpos 0
        vexactpos 0
@@ -114,10 +127,10 @@ FrameWidgetClass rootFrame {
        "no focus" 1
        font "SchanaModParty/gui/fonts/bold24"
        {
-        ImageWidgetClass ButtonAdd_img {
+        ImageWidgetClass ButtonAdd_imagem {
          ignorepointer 1
          position 10 0
-         size 40 40
+         size 30 30
          valign center_ref
          hexactpos 1
          vexactpos 1
@@ -147,9 +160,9 @@ FrameWidgetClass rootFrame {
        }
       }
       ButtonWidgetClass ButtonRemove {
-       color 0 0 0 0.549
-       position 0.1 0.02
-       size 0.3 48
+       color 0 0 0 0.7843
+       position 0.04 0
+       size 0.41 40
        halign right_ref
        valign bottom_ref
        hexactpos 0
@@ -160,10 +173,10 @@ FrameWidgetClass rootFrame {
        "no focus" 1
        font "SchanaModParty/gui/fonts/bold24"
        {
-        ImageWidgetClass ButtonRemove_img {
+        ImageWidgetClass ButtonRemove_imagem {
          ignorepointer 1
          position 10 0
-         size 40 40
+         size 30 30
          valign center_ref
          hexactpos 1
          vexactpos 1
@@ -184,7 +197,7 @@ FrameWidgetClass rootFrame {
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         text "#P_Remove"
+         text "#P_REMOVE"
          font "SchanaModParty/gui/fonts/bold24"
          "exact text" 1
          "text halign" center
@@ -222,127 +235,41 @@ FrameWidgetClass rootFrame {
        font "gui/fonts/metron28"
        wrap 1
       }
-     }
-    }
-    PanelWidgetClass PanelWidget1 {
-     ignorepointer 1
-     color 0.9216 0.6588 0.149 1
-     position 0 0
-     size 1 0.9
-     halign center_ref
-     valign center_ref
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 0
-     style rover_sim_colorable
-    }
-    PanelWidgetClass PanelWidget2 {
-     ignorepointer 1
-     color 0 0 0 1
-     position 0 0
-     size 1 1
-     halign center_ref
-     hexactpos 1
-     vexactpos 1
-     hexactsize 0
-     vexactsize 1
-     style rover_sim_colorable
-    }
-    PanelWidgetClass PanelWidget3 {
-     ignorepointer 1
-     color 0 0 0 1
-     size 1 1
-     valign center_ref
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 0
-     style rover_sim_colorable
-    }
-    PanelWidgetClass PanelWidget4 {
-     ignorepointer 1
-     color 0 0 0 1
-     size 1 1
-     halign center_ref
-     valign bottom_ref
-     hexactpos 1
-     vexactpos 1
-     hexactsize 0
-     vexactsize 1
-     style rover_sim_colorable
-    }
-    PanelWidgetClass PanelWidget5 {
-     ignorepointer 1
-     color 0 0 0 1
-     size 1 1
-     halign right_ref
-     valign center_ref
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 0
-     style rover_sim_colorable
-    }
-    ButtonWidgetClass players_info {
-     visible 0
-     position 0.03 0.01
-     size 40 40
-     hexactpos 0
-     vexactpos 0
-     hexactsize 1
-     vexactsize 1
-     {
-      ImageWidgetClass ImageWidget0 {
+      PanelWidgetClass Outline0 {
        ignorepointer 1
-       position 0 0
-       size 1 1
-       halign center_ref
-       valign center_ref
+       color 0.9216 0.6588 0.2667 1
+       position 0.04 0
+       size 0.41 40
+       valign bottom_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
-       vexactsize 0
-       imageTexture "{FA5E63537DE030DA}SchanaModParty/GUI/data/info.edds"
-       mode blend
-       "src alpha" 1
-       stretch 1
+       vexactsize 1
+       style Outline_1px
       }
-     }
-    }
-    ButtonWidgetClass party_info {
-     visible 0
-     position 0.03 0.01
-     size 40 40
-     halign right_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 1
-     vexactsize 1
-     {
-      ImageWidgetClass ImageWidget1 {
+      PanelWidgetClass Outline1 {
        ignorepointer 1
-       position 0 0
-       size 1 1
-       halign center_ref
-       valign center_ref
+       color 0.9216 0.6588 0.2667 1
+       position 0.04 0
+       size 0.41 40
+       halign right_ref
+       valign bottom_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
-       vexactsize 0
-       imageTexture "{FA5E63537DE030DA}SchanaModParty/GUI/data/info.edds"
-       mode blend
-       "src alpha" 1
-       stretch 1
+       vexactsize 1
+       style Outline_1px
       }
      }
     }
     PanelWidgetClass Party_background {
+     visible 1
      ignorepointer 1
      color 0 0 0 0.549
-     position 0.06 0.08
-     size 0.39 0.8
+     position 0.05 0
+     size 0.4 0.8
      halign right_ref
+     valign center_ref
      hexactpos 0
      vexactpos 0
      hexactsize 0
@@ -351,18 +278,18 @@ FrameWidgetClass rootFrame {
      {
       TextListboxWidgetClass Party {
        clipchildren 1
-       color 0 0 0 0.549
-       size 0.95 1
+       color 0.9216 0.6588 0.2667 1
+       size 0.98 0.98
        halign center_ref
        valign center_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style TH
+       style TinScroll
        "no focus" 1
        "title visible" 0
-       colums "group here"
+       colums "party here"
        lines 60
        "highlight row" 1
        font "SchanaModParty/gui/fonts/regular18"
@@ -372,8 +299,9 @@ FrameWidgetClass rootFrame {
     PanelWidgetClass Players_background {
      ignorepointer 1
      color 0 0 0 0.549
-     position 0.06 0.08
-     size 0.39 0.8
+     position 0.05 0
+     size 0.4 0.8
+     valign center_ref
      hexactpos 0
      vexactpos 0
      hexactsize 0
@@ -382,15 +310,15 @@ FrameWidgetClass rootFrame {
      {
       TextListboxWidgetClass Players {
        clipchildren 1
-       color 0 0 0 0.549
-       size 0.95 1
+       color 0.9216 0.6588 0.2667 1
+       size 0.98 0.98
        halign center_ref
        valign center_ref
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       style TH
+       style TinScroll
        "no focus" 1
        "title visible" 0
        colums "players here"
@@ -400,7 +328,97 @@ FrameWidgetClass rootFrame {
       }
      }
     }
+    PanelWidgetClass Disable {
+     visible 0
+     ignorepointer 1
+     position 5000 10
+     size 48 48
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     {
+      ButtonWidgetClass players_info {
+       visible 0
+       position 0.03 0.01
+       size 40 40
+       hexactpos 0
+       vexactpos 0
+       hexactsize 1
+       vexactsize 1
+       {
+        ImageWidgetClass ImageWidget0 {
+         ignorepointer 1
+         position 0 0
+         size 1 1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         imageTexture "{FA5E63537DE030DA}SchanaModParty/GUI/data/info.edds"
+         mode blend
+         "src alpha" 1
+         stretch 1
+        }
+       }
+      }
+      ButtonWidgetClass party_info {
+       visible 0
+       position 0.03 0.01
+       size 40 40
+       halign right_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 1
+       vexactsize 1
+       {
+        ImageWidgetClass ImageWidget1 {
+         ignorepointer 1
+         position 0 0
+         size 1 1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         imageTexture "{FA5E63537DE030DA}SchanaModParty/GUI/data/info.edds"
+         mode blend
+         "src alpha" 1
+         stretch 1
+        }
+       }
+      }
+     }
+    }
+    PanelWidgetClass MiddleLine {
+     visible 0
+     ignorepointer 1
+     color 0.9216 0.6588 0.2667 1
+     size 1 0.6
+     halign center_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 0
+     style Outline_1px
+    }
    }
+  }
+  PanelWidgetClass Outline {
+   ignorepointer 1
+   color 0.9216 0.6588 0.2667 1
+   size 0.35 0.55
+   halign center_ref
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   style Outline_1px
   }
  }
 }

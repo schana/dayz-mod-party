@@ -1,10 +1,10 @@
 MetaFileClass {
- Name "{000030886DA41AAE}SchanaModParty/GUI/data/add.edds"
+ Name "{812040DCA7DD5F02}SchanaModParty/GUI/imagesets/imageset.edds"
  Author "desktop-291ln96"
- ChangeDate 709094158
+ ChangeDate 1104816914
  Configurations {
   PNGResourceClass PC {
-   SourceFile "add.png"
+   SourceFile "imageset.png"
   }
   PNGResourceClass XBOX_ONE : PC {
   }
