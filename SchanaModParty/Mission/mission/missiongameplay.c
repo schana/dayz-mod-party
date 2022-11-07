@@ -19,15 +19,11 @@ modded class MissionGameplay extends MissionBase {
 	
     override void OnInit () {
         super.OnInit ();
-        delete g_SchanaPartyManagerClient;
         GetSchanaPartyManagerClient ();
-        delete g_SchanaPartyMarkerManagerClient;
         GetSchanaPartyMarkerManagerClient ();
     }
 
     override void OnMissionFinish () {
-        delete g_SchanaPartyManagerClient;
-        delete g_SchanaPartyMarkerManagerClient;
         super.OnMissionFinish ();
     }
 
@@ -112,12 +108,4 @@ modded class MissionGameplay extends MissionBase {
         GetGame ().GetInput ().ResetGameFocus ();
         GetGame ().GetUIManager ().ShowUICursor (false);
     }
-}
-
-static ref SchanaPartyManagerClient g_SchanaPartyManagerClient;
-static SchanaPartyManagerClient GetSchanaPartyManagerClient () {
-    if (!g_Game.IsServer () && !g_SchanaPartyManagerClient) {
-        g_SchanaPartyManagerClient = new SchanaPartyManagerClient;
-    }
-    return g_SchanaPartyManagerClient;
 }

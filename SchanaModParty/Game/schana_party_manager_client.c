@@ -211,3 +211,11 @@ class SchanaPartyManagerClient extends Managed {
         return positions.Get ();
     }
 }
+
+static ref SchanaPartyManagerClient g_SchanaPartyManagerClient;
+static SchanaPartyManagerClient GetSchanaPartyManagerClient () {
+    if (!g_Game.IsServer () && !g_SchanaPartyManagerClient) {
+        g_SchanaPartyManagerClient = new SchanaPartyManagerClient;
+    }
+    return g_SchanaPartyManagerClient;
+}
