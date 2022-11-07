@@ -360,7 +360,7 @@ class SchanaPartyManagerServer  extends Managed {
 
             for (int i = 0; i < players.Count (); ++i ) {
                 DayZPlayer player = DayZPlayer.Cast (players.Get (i));
-                if (player && player.GetIdentity () && player.IsAlive ()) {
+                if (player && player.GetIdentity () && player.IsAlive () && GetSchanaPartyServerSettings ().GetAdminIds ().Find (player.GetIdentity ().GetId ()) == -1) {
 					all_player_ids.Insert (player.GetIdentity ().GetId ());
 					all_player_names.Insert (player.GetIdentity ().GetName ());
                 }
